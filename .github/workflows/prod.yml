@@ -1,0 +1,51 @@
+name: Deploy React App to S3 and CloudFront
+
+on:
+  push:
+    branches:
+      - main  # Trigger deployment when changes are pushed to the main branch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout the code from the repository
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      # Setup Node.js (ensure you're using the correct Node.js version)
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18  # Use Node.js version 18 (adjust if necessary)
+
+      # Install dependencies, including legacy peer dependencies
+      - name: Install dependencies
+        run: npm install --legacy-peer-deps
+
+      # Build the React project for production (dist folder)
+      - name: Build project
+        run: CI=false npm run build
+
+      # Upload the build output to S3 bucket
+      - name: Upload to S3
+        uses: jakejarvis/s3-sync-action@master
+        with:
+          args: --delete  # Deletes files in S3 that are no longer in the build
+        env:
+          AWS_S3_BUCKET: ${{ secrets.S3_BUCKET }}  # S3 Bucket name (set this in GitHub secrets)
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}  # AWS Access Key (set this in GitHub secrets)
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}  # AWS Secret Access Key (set this in GitHub secrets)
+          AWS_REGION: ${{ secrets.AWS_REGION }}  # AWS region for S3 bucket (set this in GitHub secrets)
+          SOURCE_DIR: dist  # Directory to sync (adjust to your build output, assuming dist folder here)
+
+      # Invalidate CloudFront cache so new content is served
+      - name: Invalidate CloudFront cache
+        uses: chetan/invalidate-cloudfront-action@v2
+        env:
+          DISTRIBUTION: ${{ secrets.DISTRIBUTION_ID }}  # CloudFront Distribution ID (set this in GitHub secrets)
+          PATHS: "/*"  # Path to invalidate (this will clear the entire cache)
+          AWS_REGION: ${{ secrets.AWS_REGION }}  # AWS region (set this in GitHub secrets)
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}  # AWS Access Key (set this in GitHub secrets)
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}  # AWS Secret Access Key (set this in GitHub secrets)

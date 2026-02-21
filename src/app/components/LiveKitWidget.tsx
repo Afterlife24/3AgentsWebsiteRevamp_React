@@ -59,10 +59,10 @@ export default function LiveKitWidget({ onClose }: LiveKitWidgetProps) {
   }, [getToken]);
 
   /**
-   * LiveKit server URL from environment variables
+   * LiveKit server URL - hardcoded for production deployment
    */
   const liveKitUrl =
-    import.meta.env.VITE_LIVEKIT_URL || "wss://your-livekit-server.com";
+    import.meta.env.VITE_LIVEKIT_URL || "wss://webagent-n2z20mdr.livekit.cloud";
 
   /**
    * Audio capture configuration for high-quality voice input

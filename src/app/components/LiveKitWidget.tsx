@@ -32,12 +32,12 @@ export default function LiveKitWidget({ onClose }: LiveKitWidgetProps) {
   const getToken = useCallback(async () => {
     try {
       const backendUrl =
-        import.meta.env.VITE_BACKEND_URL || "https://backend.afterlife.org.in";
-      
+        import.meta.env.VITE_BACKEND_URL || "https://web.afterlife.org.in";
+
       if (!backendUrl) {
         throw new Error("Backend URL is not configured");
       }
-      
+
       const response = await fetch(`${backendUrl}/getToken?name=admin`);
 
       if (!response.ok) {

@@ -1,5 +1,6 @@
 import { useCallback, useState, useEffect } from "react";
-import { LiveKitRoom, RoomAudioRenderer } from "@livekit/components-react";
+import { LiveKitRoom, RoomAudioRenderer, useRoomContext } from "@livekit/components-react";
+import { DataPacket_Kind, RoomEvent } from "livekit-client";
 import AvatarVoiceAgent from "./AvatarVoiceAgent";
 
 /**
@@ -7,6 +8,58 @@ import AvatarVoiceAgent from "./AvatarVoiceAgent";
  */
 interface LiveKitWidgetProps {
   onClose: () => void;
+}
+
+/**
+ * NavigationHandler component - Listens for navigation commands from agent
+ * This component must be inside LiveKitRoom context to access room events
+ */
+function NavigationHandler() {
+  const room = useRoomContext();
+
+  useEffect(() => {
+    if (!room) return;
+
+    console.log("[NavigationHandler] Setting up data message listener");
+
+    const handleDataReceived = (
+      payload: Uint8Array,
+      participant?: any,
+      kind?: DataPacket_Kind
+    ) => {
+      try {
+        const decoder = new TextDecoder();
+        const message = decoder.decode(payload);
+        console.log("[NavigationHandler] Received data message:", message);
+        
+        const data = JSON.parse(message);
+        
+        if (data.type === "navigate") {
+          console.log("[NavigationHandler] Navigation command received:", data);
+          
+          if (data.action === "open_url") {
+            console.log(`[NavigationHandler] Opening URL in new tab: ${data.url}`);
+            window.open(data.url, "_blank");
+          } else if (data.action === "navigate_to_section") {
+            console.log(`[NavigationHandler] Navigating to section: ${data.section}, URL: ${data.url}`);
+            window.location.href = data.url;
+          }
+        }
+      } catch (error) {
+        console.error("[NavigationHandler] Error processing data message:", error);
+      }
+    };
+
+    room.on(RoomEvent.DataReceived, handleDataReceived);
+    console.log("[NavigationHandler] Data message listener registered");
+
+    return () => {
+      console.log("[NavigationHandler] Cleaning up data message listener");
+      room.off(RoomEvent.DataReceived, handleDataReceived);
+    };
+  }, [room]);
+
+  return null;
 }
 
 /**
@@ -19,6 +72,7 @@ interface LiveKitWidgetProps {
  * - Handles connection errors and cleanup
  * - Renders AvatarVoiceAgent within LiveKit context
  * - Closes widget on disconnection or error
+ * - Listens for navigation commands from agent via data channel
  *
  * Requirements: 3.2, 3.3, 3.5
  */
@@ -126,6 +180,9 @@ export default function LiveKitWidget({ onClose }: LiveKitWidgetProps) {
     >
       {/* RoomAudioRenderer handles audio playback from LiveKit room */}
       <RoomAudioRenderer />
+
+      {/* NavigationHandler listens for navigation commands from agent */}
+      <NavigationHandler />
 
       {/* AvatarVoiceAgent with voice controls and 3D avatar */}
       <AvatarVoiceAgent onClose={onClose} />

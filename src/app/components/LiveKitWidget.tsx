@@ -1,6 +1,6 @@
 import { useCallback, useState, useEffect } from "react";
 import { LiveKitRoom, RoomAudioRenderer, useRoomContext } from "@livekit/components-react";
-import { DataPacket_Kind, RoomEvent } from "livekit-client";
+import { RoomEvent } from "livekit-client";
 import AvatarVoiceAgent from "./AvatarVoiceAgent";
 
 /**
@@ -22,11 +22,7 @@ function NavigationHandler() {
 
     console.log("[NavigationHandler] Setting up data message listener");
 
-    const handleDataReceived = (
-      payload: Uint8Array,
-      participant?: any,
-      kind?: DataPacket_Kind
-    ) => {
+    const handleDataReceived = (payload: Uint8Array) => {
       try {
         const decoder = new TextDecoder();
         const message = decoder.decode(payload);

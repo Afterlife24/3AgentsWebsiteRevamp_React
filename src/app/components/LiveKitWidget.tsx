@@ -37,8 +37,8 @@ function NavigationHandler() {
             console.log(`[NavigationHandler] Opening URL in new tab: ${data.url}`);
             window.open(data.url, "_blank");
           } else if (data.action === "navigate_to_section") {
-            console.log(`[NavigationHandler] Navigating to section: ${data.section}, URL: ${data.url}`);
-            window.location.href = data.url;
+            console.log(`[NavigationHandler] Opening section in new tab: ${data.section}, URL: ${data.url}`);
+            window.open(data.url, "_blank");
           }
         }
       } catch (error) {

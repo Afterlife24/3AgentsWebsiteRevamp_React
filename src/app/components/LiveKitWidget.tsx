@@ -1,6 +1,9 @@
 import { useCallback, useState, useEffect } from "react";
-import { LiveKitRoom, RoomAudioRenderer, useRoomContext } from "@livekit/components-react";
-import { RoomEvent } from "livekit-client";
+import {
+  LiveKitRoom,
+  RoomAudioRenderer,
+  useRoomContext,
+} from "@livekit/components-react";
 import AvatarVoiceAgent from "./AvatarVoiceAgent";
 
 /**
@@ -11,47 +14,90 @@ interface LiveKitWidgetProps {
 }
 
 /**
- * NavigationHandler component - Listens for navigation commands from agent
- * This component must be inside LiveKitRoom context to access room events
+ * NavigationHandler component - Registers RPC method to handle navigation commands from agent
+ * This component must be inside LiveKitRoom context to access room and local participant
  */
 function NavigationHandler() {
   const room = useRoomContext();
 
   useEffect(() => {
-    if (!room) return;
+    if (!room || !room.localParticipant) return;
 
-    console.log("[NavigationHandler] Setting up data message listener");
+    console.log("[NavigationHandler] Registering RPC method 'navigate'");
 
-    const handleDataReceived = (payload: Uint8Array) => {
+    // Register the RPC method handler
+    room.localParticipant.registerRpcMethod("navigate", async (data) => {
       try {
-        const decoder = new TextDecoder();
-        const message = decoder.decode(payload);
-        console.log("[NavigationHandler] Received data message:", message);
-        
-        const data = JSON.parse(message);
-        
-        if (data.type === "navigate") {
-          console.log("[NavigationHandler] Navigation command received:", data);
-          
-          if (data.action === "open_url") {
-            console.log(`[NavigationHandler] Opening URL in new tab: ${data.url}`);
-            window.open(data.url, "_blank");
-          } else if (data.action === "navigate_to_section") {
-            console.log(`[NavigationHandler] Opening section in new tab: ${data.section}, URL: ${data.url}`);
-            window.open(data.url, "_blank");
+        console.log(
+          "[NavigationHandler] RPC method called with payload:",
+          data.payload,
+        );
+
+        const navigationData = JSON.parse(data.payload);
+        console.log(
+          "[NavigationHandler] Parsed navigation data:",
+          navigationData,
+        );
+
+        if (navigationData.type === "navigate") {
+          if (navigationData.action === "open_url") {
+            // Open external URLs in new tab
+            console.log(
+              `[NavigationHandler] Opening URL in new tab: ${navigationData.url}`,
+            );
+            window.open(navigationData.url, "_blank");
+            return JSON.stringify({ success: true, message: "URL opened" });
+          } else if (navigationData.action === "navigate_same_tab") {
+            // Navigate in same tab using React Router
+            console.log(
+              `[NavigationHandler] Navigating in same tab to: ${navigationData.path}, section: ${navigationData.section}`,
+            );
+
+            // Build the URL with query parameters if section is specified
+            let targetUrl = navigationData.path;
+            if (navigationData.section) {
+              // Determine action type based on section
+              const scrollSections = ["vision", "services", "testimonials"];
+              const action = scrollSections.includes(navigationData.section)
+                ? "scroll"
+                : "expand";
+              targetUrl = `${navigationData.path}?action=${action}&section=${navigationData.section}`;
+            }
+
+            // Dispatch custom event for React Router navigation
+            // This keeps the LiveKit connection alive by avoiding page reload
+            const navigationEvent = new CustomEvent("agent-navigate", {
+              detail: { url: targetUrl },
+            });
+            window.dispatchEvent(navigationEvent);
+
+            console.log(
+              `[NavigationHandler] Dispatched navigation event for: ${targetUrl}`,
+            );
+            return JSON.stringify({
+              success: true,
+              message: "Navigation initiated",
+            });
           }
         }
-      } catch (error) {
-        console.error("[NavigationHandler] Error processing data message:", error);
-      }
-    };
 
-    room.on(RoomEvent.DataReceived, handleDataReceived);
-    console.log("[NavigationHandler] Data message listener registered");
+        return JSON.stringify({
+          success: false,
+          message: "Unknown navigation action",
+        });
+      } catch (error) {
+        console.error("[NavigationHandler] Error processing RPC call:", error);
+        return JSON.stringify({ success: false, message: `Error: ${error}` });
+      }
+    });
+
+    console.log(
+      "[NavigationHandler] RPC method 'navigate' registered successfully",
+    );
 
     return () => {
-      console.log("[NavigationHandler] Cleaning up data message listener");
-      room.off(RoomEvent.DataReceived, handleDataReceived);
+      console.log("[NavigationHandler] Unregistering RPC method 'navigate'");
+      room.localParticipant?.unregisterRpcMethod("navigate");
     };
   }, [room]);
 
@@ -68,7 +114,7 @@ function NavigationHandler() {
  * - Handles connection errors and cleanup
  * - Renders AvatarVoiceAgent within LiveKit context
  * - Closes widget on disconnection or error
- * - Listens for navigation commands from agent via data channel
+ * - Registers RPC method to handle navigation commands from agent
  *
  * Requirements: 3.2, 3.3, 3.5
  */
@@ -177,7 +223,7 @@ export default function LiveKitWidget({ onClose }: LiveKitWidgetProps) {
       {/* RoomAudioRenderer handles audio playback from LiveKit room */}
       <RoomAudioRenderer />
 
-      {/* NavigationHandler listens for navigation commands from agent */}
+      {/* NavigationHandler registers RPC method for navigation commands from agent */}
       <NavigationHandler />
 
       {/* AvatarVoiceAgent with voice controls and 3D avatar */}

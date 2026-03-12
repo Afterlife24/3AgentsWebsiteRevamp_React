@@ -1,4 +1,5 @@
-import { useState, useEffect, lazy, Suspense } from "react";
+import { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import {
   Monitor,
   MessageCircle,
@@ -33,13 +34,13 @@ import ServicesSection from "../../../components/ServicesSection";
 import TestimonialsSection from "../../../components/TestimonialsSection";
 import Footer from "../../../components/Footer";
 import { useLanguage } from "../contexts/LanguageContext";
-
-const LiveKitWidget = lazy(() => import("../components/LiveKitWidget"));
+import { useWidget } from "../contexts/WidgetContext";
 
 export default function Home() {
   const { t } = useLanguage();
+  const { showWidget, openWidget } = useWidget();
+  const location = useLocation();
   const [activeId, setActiveId] = useState<string | null>("voice");
-  const [showAvatarWidget, setShowAvatarWidget] = useState(false);
   const [isAnyAgentOpen, setIsAnyAgentOpen] = useState(false);
   const [selectedCountry, setSelectedCountry] =
     useState<Country>(DEFAULT_COUNTRY);
@@ -93,9 +94,15 @@ export default function Home() {
   useEffect(() => {
     if (!mounted) return;
 
-    const params = new URLSearchParams(window.location.search);
+    const params = new URLSearchParams(location.search);
     const action = params.get("action");
     const section = params.get("section");
+
+    console.log("[Home] URL params changed:", {
+      action,
+      section,
+      search: location.search,
+    });
 
     if (action && section) {
       // Small delay to ensure page is fully loaded
@@ -107,25 +114,31 @@ export default function Home() {
             section === "web" ||
             section === "whatsapp"
           ) {
+            console.log("[Home] Expanding product card:", section);
             setExpandedCard(section);
             setActiveId(section);
 
             // Scroll to the card smoothly
             const element = document.getElementById(`product-${section}`);
             if (element) {
+              console.log("[Home] Scrolling to product card");
               element.scrollIntoView({ behavior: "smooth", block: "center" });
             }
           }
         } else if (action === "scroll") {
           // Scroll to specific section
+          console.log("[Home] Scrolling to section:", section);
           const element = document.getElementById(section);
           if (element) {
+            console.log("[Home] Element found, scrolling");
             element.scrollIntoView({ behavior: "smooth", block: "start" });
+          } else {
+            console.warn("[Home] Section element not found:", section);
           }
         }
       }, 500);
     }
-  }, [mounted]);
+  }, [mounted, location.search]);
 
   // Prevent hydration mismatch
   if (!mounted) {
@@ -378,7 +391,7 @@ export default function Home() {
     if (productId === "web") {
       // Hide preview entirely (including border box) when widget is open
       // Only show on hover when widget is not open
-      const shouldShowPreview = isActive && !showAvatarWidget;
+      const shouldShowPreview = isActive && !showWidget;
 
       if (!shouldShowPreview && !isPreviewClosing) {
         return null; // Hide entire mockup including border box
@@ -555,7 +568,7 @@ export default function Home() {
                           onClick={() => {
                             setIsPreviewClosing(true);
                             setTimeout(() => {
-                              setShowAvatarWidget(true);
+                              openWidget();
                               setIsAnyAgentOpen(true);
                               setIsPreviewClosing(false);
                             }, 500); // Match transition duration
@@ -767,18 +780,6 @@ export default function Home() {
           <TestimonialsSection />
           <Footer />
         </div>
-
-        {/* Mobile Avatar Widget */}
-        {showAvatarWidget && mounted && (
-          <Suspense fallback={<SimpleLoadingSpinner />}>
-            <LiveKitWidget
-              onClose={() => {
-                setShowAvatarWidget(false);
-                setIsAnyAgentOpen(false);
-              }}
-            />
-          </Suspense>
-        )}
       </div>
     );
   }
@@ -911,7 +912,7 @@ export default function Home() {
                             onClick={() => {
                               setIsPreviewClosing(true);
                               setTimeout(() => {
-                                setShowAvatarWidget(true);
+                                openWidget();
                                 setIsAnyAgentOpen(true);
                                 setIsPreviewClosing(false);
                               }, 500); // Match transition duration
@@ -1152,19 +1153,6 @@ export default function Home() {
 
       {/* --- FOOTER --- */}
       <Footer />
-
-      {/* --- AVATAR WIDGET --- */}
-      {showAvatarWidget && mounted && (
-        <Suspense fallback={<SimpleLoadingSpinner />}>
-          <LiveKitWidget
-            onClose={() => {
-              setShowAvatarWidget(false);
-              setIsAnyAgentOpen(false);
-            }}
-          />
-        </Suspense>
-      )}
     </div>
   );
 }
-

@@ -1,6 +1,14 @@
-import React, { useEffect, useCallback, lazy, Suspense } from "react";
-import { useLocalParticipant } from "@livekit/components-react";
+import React, {
+  useEffect,
+  useCallback,
+  lazy,
+  Suspense,
+  useState,
+  useRef,
+} from "react";
+import { useLocalParticipant, useRoomContext } from "@livekit/components-react";
 import { Mic, MicOff, X } from "lucide-react";
+import { RoomEvent } from "livekit-client";
 
 // Lazy load Avatar3D to avoid SSR issues
 const Avatar3D = lazy(() => import("./Avatar3D"));
@@ -33,6 +41,9 @@ interface AvatarVoiceAgentProps {
  */
 export default function AvatarVoiceAgent({ onClose }: AvatarVoiceAgentProps) {
   const { localParticipant } = useLocalParticipant();
+  const room = useRoomContext();
+  const [hasGreeted, setHasGreeted] = useState(false);
+  const greetingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   // Track microphone state directly from participant
   const isListening = localParticipant?.isMicrophoneEnabled ?? false;
@@ -90,6 +101,63 @@ export default function AvatarVoiceAgent({ onClose }: AvatarVoiceAgentProps) {
       });
     }
   }, [localParticipant]); // Only run when localParticipant becomes available
+
+  /**
+   * Listen for agent speaking events to auto-enable mic after greeting
+   * Uses a simple approach: wait for first audio from agent, then enable mic after a delay
+   */
+  useEffect(() => {
+    if (!room || !localParticipant || hasGreeted) return;
+
+    console.log("[AvatarVoiceAgent] Setting up greeting detection");
+
+    // Listen for when agent starts speaking (track subscribed)
+    const handleTrackSubscribed = (
+      track: any,
+      publication: any,
+      participant: any,
+    ) => {
+      // Check if it's an audio track from a remote participant (the agent)
+      if (
+        track.kind === "audio" &&
+        participant.identity !== localParticipant.identity
+      ) {
+        console.log("[AvatarVoiceAgent] Agent audio track detected");
+
+        // Wait for the greeting to finish (estimate 3-5 seconds)
+        // Clear any existing timeout
+        if (greetingTimeoutRef.current) {
+          clearTimeout(greetingTimeoutRef.current);
+        }
+
+        greetingTimeoutRef.current = setTimeout(async () => {
+          if (!hasGreeted && localParticipant) {
+            console.log(
+              "[AvatarVoiceAgent] Greeting complete, enabling microphone",
+            );
+            try {
+              await localParticipant.setMicrophoneEnabled(true);
+              setHasGreeted(true);
+            } catch (error) {
+              console.error(
+                "[AvatarVoiceAgent] Error enabling microphone:",
+                error,
+              );
+            }
+          }
+        }, 5000); // Wait 5 seconds after agent starts speaking
+      }
+    };
+
+    room.on(RoomEvent.TrackSubscribed, handleTrackSubscribed);
+
+    return () => {
+      room.off(RoomEvent.TrackSubscribed, handleTrackSubscribed);
+      if (greetingTimeoutRef.current) {
+        clearTimeout(greetingTimeoutRef.current);
+      }
+    };
+  }, [room, localParticipant, hasGreeted]);
 
   return (
     <div

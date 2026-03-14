@@ -114,7 +114,7 @@ export default function AvatarVoiceAgent({ onClose }: AvatarVoiceAgentProps) {
     // Listen for when agent starts speaking (track subscribed)
     const handleTrackSubscribed = (
       track: any,
-      publication: any,
+      _publication: any,
       participant: any,
     ) => {
       // Check if it's an audio track from a remote participant (the agent)

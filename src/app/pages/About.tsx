@@ -20,7 +20,7 @@ export default function About() {
             <h1 className="relative text-4xl md:text-6xl font-bold text-gray-900 mb-8 tracking-tight">
               {t("about.title")}{" "}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
-                Afterlife
+                Autonomiq
               </span>
             </h1>
 

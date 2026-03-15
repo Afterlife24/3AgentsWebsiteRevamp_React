@@ -10,14 +10,14 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
         {/* Brand Column */}
         <div className="md:col-span-1">
-          <div className="flex items-center gap-2 mb-6">
+          <div className="flex items-center gap-3 mb-6">
             <img
               src="/assets/logo.jpeg"
               alt="logo"
-              className="w-8 h-8 rounded-lg object-cover"
+              className="w-12 h-12 rounded-lg object-cover"
             />
-            <span className="text-gray-900 font-bold text-xl tracking-tight">
-              Afterlife
+            <span className="text-gray-900 font-bold text-2xl tracking-tight">
+              Autonomiq
             </span>
           </div>
           <p className="text-gray-600 text-sm leading-relaxed mb-6">
@@ -57,14 +57,6 @@ export default function Footer() {
                 className="hover:text-purple-700 transition-colors"
               >
                 {t("footer.company.about")}
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/pricing"
-                className="hover:text-purple-700 transition-colors"
-              >
-                {t("footer.company.pricing")}
               </Link>
             </li>
             <li>
@@ -133,7 +125,7 @@ export default function Footer() {
           <ul className="space-y-4 text-sm text-gray-600">
             <li className="flex items-start gap-3">
               <Mail size={18} className="text-purple-600 shrink-0 mt-0.5" />
-              <span>info@afterlife.ai</span>
+              <span>info@autonomiq.ai</span>
             </li>
             <li className="flex items-start gap-3">
               <Phone size={18} className="text-purple-600 shrink-0 mt-0.5" />
@@ -153,7 +145,7 @@ export default function Footer() {
 
       <div className="max-w-7xl mx-auto px-6 pt-8 border-t border-gray-200/50 flex flex-col md:flex-row justify-between items-center gap-4">
         <p className="text-xs text-gray-500">
-          © {new Date().getFullYear()} Afterlife Inc. {t("footer.rights")}.
+          © {new Date().getFullYear()} Autonomiq Inc. {t("footer.rights")}.
         </p>
         <div className="flex items-center gap-2">
           <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>

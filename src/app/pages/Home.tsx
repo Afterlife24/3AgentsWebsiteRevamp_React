@@ -473,7 +473,7 @@ export default function Home() {
         {/* Scrollable Content */}
         <div className="flex-1 overflow-y-auto z-10 relative scroll-smooth bg-transparent">
           {/* Product Cards Section */}
-          <div className="px-4 pt-13 pb-8 space-y-4">
+          <div className="px-4 pt-20 pb-8 space-y-4">
             {products.map((product) => {
               const isExpanded = expandedCard === product.id;
 
@@ -795,7 +795,7 @@ export default function Home() {
 
       {/* --- HERO SECTION (Full Viewport) --- */}
       <section className="h-screen w-full relative flex flex-col">
-        <main className="flex-1 flex flex-col md:flex-row relative z-10 h-full p-4 md:p-6 gap-4 md:gap-6 pt-24 md:pt-24">
+        <main className="flex-1 flex flex-col md:flex-row relative z-10 h-full p-4 md:p-6 gap-4 md:gap-6 pt-28 md:pt-32">
           {products.map((product) => {
             const isActive = activeId === product.id;
 

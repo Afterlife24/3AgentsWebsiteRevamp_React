@@ -19,7 +19,6 @@ export default function NavBar() {
 
   const NAV_ITEMS = [
     { name: t("nav.home"), path: "/" },
-    { name: t("nav.pricing"), path: "/pricing" },
     { name: t("nav.about"), path: "/about" },
     { name: t("nav.teams"), path: "/ai-assistants" },
   ];
@@ -32,15 +31,15 @@ export default function NavBar() {
       >
         <Link
           to="/"
-          className={`flex items-center gap-2 px-4 py-2 bg-white/20 backdrop-blur-md rounded-full border border-white/30 ${isRTL ? "flex-row-reverse" : ""}`}
+          className={`flex items-center gap-3 px-5 py-2.5 bg-white/20 backdrop-blur-md rounded-full border border-white/30 ${isRTL ? "flex-row-reverse" : ""}`}
         >
           <img
             src="/assets/logo.jpeg"
             alt="logo"
-            className="w-6 h-6 rounded object-cover"
+            className="w-10 h-10 rounded object-cover"
           />
-          <span className="text-gray-800 font-bold tracking-tight">
-            Afterlife
+          <span className="text-gray-800 font-bold tracking-tight text-lg">
+            Autonomiq
           </span>
         </Link>
 
@@ -128,10 +127,10 @@ export default function NavBar() {
           <img
             src="/assets/logo.jpeg"
             alt="logo"
-            className="w-5 h-5 rounded object-cover"
+            className="w-8 h-8 rounded object-cover"
           />
-          <span className="text-gray-800 font-bold tracking-tight text-sm">
-            Afterlife
+          <span className="text-gray-800 font-bold tracking-tight text-base">
+            Autonomiq
           </span>
         </Link>
 

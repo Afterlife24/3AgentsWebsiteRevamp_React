@@ -18,6 +18,7 @@ export default function ServicesSection() {
         t("services.whatsapp.feature2"),
         t("services.whatsapp.feature3"),
         t("services.whatsapp.feature4"),
+        t("services.whatsapp.feature5"),
       ],
     },
     {
@@ -32,6 +33,7 @@ export default function ServicesSection() {
         t("services.voice.feature2"),
         t("services.voice.feature3"),
         t("services.voice.feature4"),
+        t("services.voice.feature5"),
       ],
     },
     {
@@ -46,6 +48,7 @@ export default function ServicesSection() {
         t("services.web.feature2"),
         t("services.web.feature3"),
         t("services.web.feature4"),
+        t("services.web.feature5"),
       ],
     },
   ];

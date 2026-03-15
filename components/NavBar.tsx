@@ -21,6 +21,7 @@ export default function NavBar() {
     { name: t("nav.home"), path: "/" },
     { name: t("nav.pricing"), path: "/pricing" },
     { name: t("nav.about"), path: "/about" },
+    { name: t("nav.teams"), path: "/ai-assistants" },
   ];
 
   return (
@@ -97,15 +98,13 @@ export default function NavBar() {
                       setLanguage(lang.code);
                       setShowLanguageMenu(false);
                     }}
-                    className={`w-full px-4 py-2 rounded-xl transition-colors flex items-center gap-2 ${
-                      lang.code === "ar"
-                        ? "flex-row-reverse text-right"
-                        : "text-left"
-                    } ${
-                      language === lang.code
+                    className={`w-full px-4 py-2 rounded-xl transition-colors flex items-center gap-2 ${lang.code === "ar"
+                      ? "flex-row-reverse text-right"
+                      : "text-left"
+                      } ${language === lang.code
                         ? "bg-black/10 font-bold"
                         : "hover:bg-black/5"
-                    }`}
+                      }`}
                     data-testid={`language-option-${lang.code}`}
                   >
                     <span>{lang.flag}</span>
@@ -161,15 +160,13 @@ export default function NavBar() {
                       setLanguage(lang.code);
                       setShowLanguageMenu(false);
                     }}
-                    className={`w-full px-3 py-2 rounded-xl transition-colors flex items-center gap-2 text-sm ${
-                      lang.code === "ar"
-                        ? "flex-row-reverse text-right"
-                        : "text-left"
-                    } ${
-                      language === lang.code
+                    className={`w-full px-3 py-2 rounded-xl transition-colors flex items-center gap-2 text-sm ${lang.code === "ar"
+                      ? "flex-row-reverse text-right"
+                      : "text-left"
+                      } ${language === lang.code
                         ? "bg-black/10 font-bold"
                         : "hover:bg-black/5"
-                    }`}
+                      }`}
                     data-testid={`language-option-${lang.code}`}
                   >
                     <span>{lang.flag}</span>

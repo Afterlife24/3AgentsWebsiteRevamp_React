@@ -152,8 +152,8 @@ export default function Home() {
 
     const MIN_LENGTH =
       selectedCountry.code === "US" ||
-        selectedCountry.code === "CA" ||
-        selectedCountry.code === "IN"
+      selectedCountry.code === "CA" ||
+      selectedCountry.code === "IN"
         ? 10
         : 8;
     const MAX_LENGTH = 15;
@@ -401,8 +401,9 @@ export default function Home() {
 
       return (
         <div
-          className={`${isMobileView ? "w-full h-32" : "w-full max-w-xs h-48"} bg-white/40 rounded-xl border border-white/50 shadow-sm backdrop-blur-md overflow-hidden flex items-center justify-center transition-all duration-500 ease-out ${isPreviewClosing ? "opacity-0 scale-90" : "opacity-100 scale-100"
-            }`}
+          className={`${isMobileView ? "w-full h-32" : "w-full max-w-xs h-48"} bg-white/40 rounded-xl border border-white/50 shadow-sm backdrop-blur-md overflow-hidden flex items-center justify-center transition-all duration-500 ease-out ${
+            isPreviewClosing ? "opacity-0 scale-90" : "opacity-100 scale-100"
+          }`}
         >
           {mounted && (shouldShowPreview || isPreviewClosing) && (
             <Avatar3DSingleton
@@ -750,10 +751,11 @@ export default function Home() {
                           {/* Status Messages */}
                           {callStatus.type && (
                             <div
-                              className={`p-3 rounded-xl backdrop-blur-md border ${callStatus.type === "success"
-                                ? "bg-green-500/20 border-green-500/30"
-                                : "bg-red-500/20 border-red-500/30"
-                                }`}
+                              className={`p-3 rounded-xl backdrop-blur-md border ${
+                                callStatus.type === "success"
+                                  ? "bg-green-500/20 border-green-500/30"
+                                  : "bg-red-500/20 border-red-500/30"
+                              }`}
                             >
                               <div className="flex items-center gap-2">
                                 <div
@@ -1007,10 +1009,11 @@ export default function Home() {
 
                             {whatsappStatus.type && (
                               <div
-                                className={`px-4 py-2.5 rounded-xl backdrop-blur-md border shadow-sm transition-all duration-300 animate-slide-up ${whatsappStatus.type === "success"
-                                  ? "bg-white/40 border-white/50"
-                                  : "bg-white/40 border-white/50"
-                                  }`}
+                                className={`px-4 py-2.5 rounded-xl backdrop-blur-md border shadow-sm transition-all duration-300 animate-slide-up ${
+                                  whatsappStatus.type === "success"
+                                    ? "bg-white/40 border-white/50"
+                                    : "bg-white/40 border-white/50"
+                                }`}
                               >
                                 <div className="flex items-center gap-2">
                                   {whatsappStatus.type === "success" ? (
@@ -1099,10 +1102,11 @@ export default function Home() {
 
                             {callStatus.type && (
                               <div
-                                className={`px-4 py-2.5 rounded-xl backdrop-blur-md border shadow-sm transition-all duration-300 animate-slide-up ${callStatus.type === "success"
-                                  ? "bg-white/40 border-white/50"
-                                  : "bg-white/40 border-white/50"
-                                  }`}
+                                className={`px-4 py-2.5 rounded-xl backdrop-blur-md border shadow-sm transition-all duration-300 animate-slide-up ${
+                                  callStatus.type === "success"
+                                    ? "bg-white/40 border-white/50"
+                                    : "bg-white/40 border-white/50"
+                                }`}
                               >
                                 <div className="flex items-center gap-2">
                                   {callStatus.type === "success" ? (
@@ -1147,20 +1151,28 @@ export default function Home() {
       <ServicesSection />
 
       {/* --- MEET OUR AI ASSISTANTS CTA --- */}
-      <section className="relative w-full py-16 px-6">
+      <section id="meet-assistants" className="relative w-full py-16 px-6">
         <div className="max-w-6xl mx-auto">
           <div className="relative bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 rounded-3xl overflow-hidden shadow-2xl">
             {/* Animated background elements */}
             <div className="absolute inset-0 opacity-20">
               <div className="absolute top-10 left-10 w-32 h-32 bg-white rounded-full blur-3xl animate-pulse"></div>
-              <div className="absolute bottom-10 right-10 w-40 h-40 bg-white rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
-              <div className="absolute top-1/2 left-1/2 w-36 h-36 bg-white rounded-full blur-3xl animate-pulse" style={{ animationDelay: '0.5s' }}></div>
+              <div
+                className="absolute bottom-10 right-10 w-40 h-40 bg-white rounded-full blur-3xl animate-pulse"
+                style={{ animationDelay: "1s" }}
+              ></div>
+              <div
+                className="absolute top-1/2 left-1/2 w-36 h-36 bg-white rounded-full blur-3xl animate-pulse"
+                style={{ animationDelay: "0.5s" }}
+              ></div>
             </div>
 
             <div className="relative z-10 p-8 md:p-12 lg:p-16 text-center">
               <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full mb-6 border border-white/30">
                 <Users className="w-4 h-4 text-white" />
-                <span className="text-sm font-semibold text-white">{t("aiAssistants.badge")}</span>
+                <span className="text-sm font-semibold text-white">
+                  {t("aiAssistants.badge")}
+                </span>
               </div>
 
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">
@@ -1174,15 +1186,21 @@ export default function Home() {
               <div className="flex flex-wrap gap-4 justify-center mb-8">
                 <div className="flex items-center gap-2 px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full border border-white/30">
                   <Phone className="w-4 h-4 text-white" />
-                  <span className="text-sm font-medium text-white">{t("aiAssistants.receptionist")}</span>
+                  <span className="text-sm font-medium text-white">
+                    {t("aiAssistants.receptionist")}
+                  </span>
                 </div>
                 <div className="flex items-center gap-2 px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full border border-white/30">
                   <Briefcase className="w-4 h-4 text-white" />
-                  <span className="text-sm font-medium text-white">{t("aiAssistants.admin")}</span>
+                  <span className="text-sm font-medium text-white">
+                    {t("aiAssistants.admin")}
+                  </span>
                 </div>
                 <div className="flex items-center gap-2 px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full border border-white/30">
                   <Users className="w-4 h-4 text-white" />
-                  <span className="text-sm font-medium text-white">{t("aiAssistants.sales")}</span>
+                  <span className="text-sm font-medium text-white">
+                    {t("aiAssistants.sales")}
+                  </span>
                 </div>
               </div>
 

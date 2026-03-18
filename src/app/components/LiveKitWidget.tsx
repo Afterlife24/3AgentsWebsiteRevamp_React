@@ -57,7 +57,17 @@ function NavigationHandler() {
             let targetUrl = navigationData.path;
             if (navigationData.section) {
               // Determine action type based on section
-              const scrollSections = ["vision", "services", "testimonials"];
+              const scrollSections = [
+                "vision",
+                "services",
+                "testimonials",
+                "meet-assistants",
+                "demo",
+                "ai-workforce",
+                "whatsapp-agent",
+                "web-agent",
+                "industries",
+              ];
               const action = scrollSections.includes(navigationData.section)
                 ? "scroll"
                 : "expand";

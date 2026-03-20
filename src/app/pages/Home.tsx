@@ -289,13 +289,16 @@ export default function Home() {
     setCallState("connecting");
 
     try {
-      const response = await fetch("https://call.afterlife.org.in/makeCall", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+      const response = await fetch(
+        `${import.meta.env.VITE_CALLING_BACKEND_URL || "https://call.afterlife.org.in"}/makeCall`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ phone_number: fullPhoneNumber }),
         },
-        body: JSON.stringify({ phone_number: fullPhoneNumber }),
-      });
+      );
 
       const data = await response.json();
 

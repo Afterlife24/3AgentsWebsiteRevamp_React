@@ -188,16 +188,16 @@ export default function AIAssistants() {
       {/* Main Content */}
       <div className="flex-1 overflow-y-auto z-10 relative scroll-smooth">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
-          {/* Hero Section - Compact */}
-          <div id="hero" className="text-center mb-12">
-            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-3">
-              {t("aiAssistantsPage.hero.title")}{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
-                {t("aiAssistantsPage.hero.titleHighlight")}
+          {/* Caption */}
+          <div className="text-center mb-16">
+            <h1 className="text-4xl md:text-6xl font-bold mb-4 leading-tight">
+              <span className="text-gray-900">Humans and agents drive </span>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-cyan-600 to-blue-600">
+                customer success together
               </span>
             </h1>
-            <p className="text-base md:text-lg text-gray-600 max-w-3xl mx-auto">
-              {t("aiAssistantsPage.hero.subtitle")}
+            <p className="text-lg md:text-xl text-gray-700 max-w-4xl mx-auto">
+              Agentforce transforms Sales, Service, Commerce, Marketing, IT, and more by uniting humans and AI agents to drive customer success.
             </p>
           </div>
 

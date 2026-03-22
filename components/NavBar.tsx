@@ -31,14 +31,14 @@ export default function NavBar() {
       >
         <Link
           to="/"
-          className={`flex items-center gap-3 px-5 py-2.5 bg-white/20 backdrop-blur-md rounded-full border border-white/30 ${isRTL ? "flex-row-reverse" : ""}`}
+          className={`flex items-center gap-3 ${isRTL ? "flex-row-reverse" : ""}`}
         >
           <img
             src="/assets/logo.jpeg"
             alt="logo"
             className="w-10 h-10 rounded object-cover"
           />
-          <span className="text-gray-800 font-bold tracking-tight text-lg">
+          <span className="text-gray-900 font-bold tracking-tight text-xl">
             Autonomiq
           </span>
         </Link>
@@ -122,14 +122,14 @@ export default function NavBar() {
       >
         <Link
           to="/"
-          className={`flex items-center gap-2 px-4 py-2 bg-white/30 backdrop-blur-md rounded-full border border-white/40 shadow-lg ${isRTL ? "flex-row-reverse" : ""}`}
+          className={`flex items-center gap-2 ${isRTL ? "flex-row-reverse" : ""}`}
         >
           <img
             src="/assets/logo.jpeg"
             alt="logo"
             className="w-8 h-8 rounded object-cover"
           />
-          <span className="text-gray-800 font-bold tracking-tight text-base">
+          <span className="text-gray-900 font-bold tracking-tight text-lg">
             Autonomiq
           </span>
         </Link>

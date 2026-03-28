@@ -819,7 +819,10 @@ export default function Home() {
                     We offer much more! Explore our complete range of AI solutions and services.
                   </p>
                   <button
-                    onClick={() => navigate('/solutions')}
+                    onClick={() => {
+                      navigate('/solutions');
+                      window.scrollTo(0, 0);
+                    }}
                     className="px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl font-bold shadow-md hover:from-blue-700 hover:to-purple-700 transition-all whitespace-nowrap"
                   >
                     Click Here
@@ -1259,7 +1262,10 @@ export default function Home() {
                 We offer much more! Explore our complete range of AI solutions and services.
               </p>
               <button
-                onClick={() => navigate('/solutions')}
+                onClick={() => {
+                  navigate('/solutions');
+                  window.scrollTo(0, 0);
+                }}
                 className="px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-2xl font-bold shadow-lg hover:from-blue-700 hover:to-purple-700 transition-all whitespace-nowrap hover:scale-105 transform"
               >
                 Click Here

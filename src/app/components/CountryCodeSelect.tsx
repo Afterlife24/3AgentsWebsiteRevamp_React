@@ -11,6 +11,17 @@ export interface Country {
 }
 
 const COUNTRIES: Country[] = [
+  // Priority countries at the top
+  {
+    code: "AE",
+    name: "United Arab Emirates",
+    dialCode: "+971",
+    flag: "🇦🇪",
+    maxLength: 9,
+  },
+  { code: "FR", name: "France", dialCode: "+33", flag: "🇫🇷", maxLength: 9 },
+  { code: "IN", name: "India", dialCode: "+91", flag: "🇮🇳", maxLength: 10 },
+  // Other countries
   {
     code: "US",
     name: "United States",
@@ -27,9 +38,7 @@ const COUNTRIES: Country[] = [
   },
   { code: "CA", name: "Canada", dialCode: "+1", flag: "🇨🇦", maxLength: 10 },
   { code: "AU", name: "Australia", dialCode: "+61", flag: "🇦🇺", maxLength: 9 },
-  { code: "IN", name: "India", dialCode: "+91", flag: "🇮🇳", maxLength: 10 },
   { code: "DE", name: "Germany", dialCode: "+49", flag: "🇩🇪", maxLength: 11 },
-  { code: "FR", name: "France", dialCode: "+33", flag: "🇫🇷", maxLength: 9 },
   { code: "ES", name: "Spain", dialCode: "+34", flag: "🇪🇸", maxLength: 9 },
   { code: "IT", name: "Italy", dialCode: "+39", flag: "🇮🇹", maxLength: 10 },
   { code: "BR", name: "Brazil", dialCode: "+55", flag: "🇧🇷", maxLength: 11 },
@@ -44,13 +53,6 @@ const COUNTRIES: Country[] = [
     maxLength: 10,
   },
   { code: "SG", name: "Singapore", dialCode: "+65", flag: "🇸🇬", maxLength: 8 },
-  {
-    code: "AE",
-    name: "United Arab Emirates",
-    dialCode: "+971",
-    flag: "🇦🇪",
-    maxLength: 9,
-  },
   {
     code: "SA",
     name: "Saudi Arabia",
@@ -262,9 +264,8 @@ export default function CountryCodeSelect({
                   <button
                     key={country.code}
                     onClick={() => handleSelect(country)}
-                    className={`w-full flex items-center gap-3 px-4 py-2.5 hover:bg-gray-100 transition-colors text-left ${
-                      value.code === country.code ? "bg-blue-50" : ""
-                    }`}
+                    className={`w-full flex items-center gap-3 px-4 py-2.5 hover:bg-gray-100 transition-colors text-left ${value.code === country.code ? "bg-blue-50" : ""
+                      }`}
                   >
                     <span className="text-xl">{country.flag}</span>
                     <div className="flex-1 min-w-0">
@@ -292,4 +293,4 @@ export default function CountryCodeSelect({
 }
 
 // Export default country for convenience
-export const DEFAULT_COUNTRY: Country = COUNTRIES[0]; // United States
+export const DEFAULT_COUNTRY: Country = COUNTRIES[0]; // United Arab Emirates

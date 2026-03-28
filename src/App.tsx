@@ -5,6 +5,7 @@ import { WidgetProvider, useWidget } from "./app/contexts/WidgetContext";
 import Home from "./app/pages/Home";
 import About from "./app/pages/About";
 import AIAssistants from "./app/pages/AIAssistants";
+import AdditionalServices from "./app/pages/AdditionalServices";
 
 // Lazy load the LiveKitWidget
 const LiveKitWidget = lazy(() => import("./app/components/LiveKitWidget"));
@@ -46,6 +47,7 @@ function AppRoutes() {
       <Route path="/" element={<Home />} />
       <Route path="/about" element={<About />} />
       <Route path="/ai-assistants" element={<AIAssistants />} />
+      <Route path="/solutions" element={<AdditionalServices />} />
     </Routes>
   );
 }

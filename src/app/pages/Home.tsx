@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
   Monitor,
   MessageCircle,
@@ -42,6 +42,7 @@ export default function Home() {
   const { t } = useLanguage();
   const { showWidget, openWidget } = useWidget();
   const location = useLocation();
+  const navigate = useNavigate();
   const [activeId, setActiveId] = useState<string | null>("voice");
   const [isAnyAgentOpen, setIsAnyAgentOpen] = useState(false);
   const [selectedCountry, setSelectedCountry] =
@@ -74,6 +75,44 @@ export default function Home() {
 
   // Animation trigger for avatar "hi" gesture on each hover
   const [animationTrigger, setAnimationTrigger] = useState(0);
+
+  // Terms and Conditions modal state
+  const [showTermsModal, setShowTermsModal] = useState(false);
+  const [termsAccepted, setTermsAccepted] = useState(false);
+  const [pendingAction, setPendingAction] = useState<"web" | "voice" | "whatsapp" | null>(null);
+
+  const handleTryAgent = (agentType: "web" | "voice" | "whatsapp") => {
+    if (!termsAccepted) {
+      setPendingAction(agentType);
+      setShowTermsModal(true);
+    } else {
+      executeAgentAction(agentType);
+    }
+  };
+
+  const executeAgentAction = (agentType: "web" | "voice" | "whatsapp") => {
+    if (agentType === "web") {
+      setIsPreviewClosing(true);
+      setTimeout(() => {
+        openWidget();
+        setIsAnyAgentOpen(true);
+        setIsPreviewClosing(false);
+      }, 500);
+    } else if (agentType === "voice") {
+      handleMakeCall();
+    } else if (agentType === "whatsapp") {
+      handleWhatsappDemo();
+    }
+  };
+
+  const handleAcceptTerms = () => {
+    setTermsAccepted(true);
+    setShowTermsModal(false);
+    if (pendingAction) {
+      executeAgentAction(pendingAction);
+      setPendingAction(null);
+    }
+  };
 
   // Check if mobile on mount and resize
   useEffect(() => {
@@ -152,8 +191,8 @@ export default function Home() {
 
     const MIN_LENGTH =
       selectedCountry.code === "US" ||
-      selectedCountry.code === "CA" ||
-      selectedCountry.code === "IN"
+        selectedCountry.code === "CA" ||
+        selectedCountry.code === "IN"
         ? 10
         : 8;
     const MAX_LENGTH = 15;
@@ -401,9 +440,8 @@ export default function Home() {
 
       return (
         <div
-          className={`${isMobileView ? "w-full h-32" : "w-full max-w-xs h-48"} bg-white/40 rounded-xl border border-white/50 shadow-sm backdrop-blur-md overflow-hidden flex items-center justify-center transition-all duration-500 ease-out ${
-            isPreviewClosing ? "opacity-0 scale-90" : "opacity-100 scale-100"
-          }`}
+          className={`${isMobileView ? "w-full h-32" : "w-full max-w-xs h-48"} bg-white/40 rounded-xl border border-white/50 shadow-sm backdrop-blur-md overflow-hidden flex items-center justify-center transition-all duration-500 ease-out ${isPreviewClosing ? "opacity-0 scale-90" : "opacity-100 scale-100"
+            }`}
         >
           {mounted && (shouldShowPreview || isPreviewClosing) && (
             <Avatar3DSingleton
@@ -567,14 +605,7 @@ export default function Home() {
                     <div className="space-y-3">
                       {product.id === "web" ? (
                         <button
-                          onClick={() => {
-                            setIsPreviewClosing(true);
-                            setTimeout(() => {
-                              openWidget();
-                              setIsAnyAgentOpen(true);
-                              setIsPreviewClosing(false);
-                            }, 500); // Match transition duration
-                          }}
+                          onClick={() => handleTryAgent("web")}
                           className="w-full flex items-center justify-center gap-2 px-6 py-3.5 bg-gradient-to-r from-blue-500 to-cyan-600 text-white rounded-xl font-bold shadow-lg hover:from-blue-600 hover:to-cyan-700 transition-all"
                         >
                           <span>Try Web Agent</span>
@@ -659,7 +690,7 @@ export default function Home() {
                               />
                             </div>
                             <button
-                              onClick={handleWhatsappDemo}
+                              onClick={() => handleTryAgent("whatsapp")}
                               disabled={isWhatsappLoading}
                               className="w-full flex items-center justify-center gap-2 px-6 py-3.5 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-xl font-bold shadow-lg hover:from-green-600 hover:to-emerald-700 transition-all disabled:opacity-50"
                             >
@@ -716,7 +747,7 @@ export default function Home() {
                               />
                             </div>
                             <button
-                              onClick={handleMakeCall}
+                              onClick={() => handleTryAgent("voice")}
                               disabled={
                                 isCallLoading ||
                                 callState === "connecting" ||
@@ -751,11 +782,10 @@ export default function Home() {
                           {/* Status Messages */}
                           {callStatus.type && (
                             <div
-                              className={`p-3 rounded-xl backdrop-blur-md border ${
-                                callStatus.type === "success"
-                                  ? "bg-green-500/20 border-green-500/30"
-                                  : "bg-red-500/20 border-red-500/30"
-                              }`}
+                              className={`p-3 rounded-xl backdrop-blur-md border ${callStatus.type === "success"
+                                ? "bg-green-500/20 border-green-500/30"
+                                : "bg-red-500/20 border-red-500/30"
+                                }`}
                             >
                               <div className="flex items-center gap-2">
                                 <div
@@ -779,9 +809,88 @@ export default function Home() {
           {/* --- NEW SECTIONS FOR MOBILE --- */}
           <VisionSection />
           <ServicesSection />
+
+          {/* --- ADDITIONAL SERVICES CTA --- */}
+          <section className="relative w-full py-8 px-4">
+            <div className="max-w-4xl mx-auto">
+              <div className="bg-white/60 backdrop-blur-xl border border-white/50 rounded-2xl p-6 shadow-lg">
+                <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+                  <p className="text-sm md:text-base text-gray-700 font-medium text-center sm:text-left">
+                    We offer much more! Explore our complete range of AI solutions and services.
+                  </p>
+                  <button
+                    onClick={() => navigate('/solutions')}
+                    className="px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl font-bold shadow-md hover:from-blue-700 hover:to-purple-700 transition-all whitespace-nowrap"
+                  >
+                    Click Here
+                  </button>
+                </div>
+              </div>
+            </div>
+          </section>
+
           <TestimonialsSection />
           <Footer />
         </div>
+
+        {/* Terms and Conditions Modal */}
+        {showTermsModal && (
+          <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/50 backdrop-blur-md">
+            <div className="bg-white/95 backdrop-blur-xl rounded-2xl shadow-xl max-w-md w-full border border-gray-200/50 overflow-hidden">
+              {/* Content */}
+              <div className="p-8">
+                <div className="text-center mb-6">
+                  <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-500 rounded-2xl mx-auto mb-4 flex items-center justify-center">
+                    <Check className="w-8 h-8 text-white" strokeWidth={3} />
+                  </div>
+                  <h2 className="text-2xl font-bold text-gray-900 mb-2">Terms & Conditions</h2>
+                  <p className="text-sm text-gray-600">
+                    By continuing, you agree to our terms of service
+                  </p>
+                </div>
+
+                <div className="bg-gray-50/80 rounded-xl p-4 mb-6 max-h-64 overflow-y-auto">
+                  <div className="space-y-3 text-xs text-gray-600 leading-relaxed">
+                    <p>
+                      • Our AI agents are for demonstration and business use
+                    </p>
+                    <p>
+                      • We collect data to provide and improve services
+                    </p>
+                    <p>
+                      • Standard call/message rates may apply
+                    </p>
+                    <p>
+                      • Services provided "as is" without warranties
+                    </p>
+                    <p>
+                      • We may modify or discontinue services anytime
+                    </p>
+                  </div>
+                </div>
+
+                {/* Buttons */}
+                <div className="flex gap-3">
+                  <button
+                    onClick={() => {
+                      setShowTermsModal(false);
+                      setPendingAction(null);
+                    }}
+                    className="flex-1 px-4 py-3 bg-gray-100 text-gray-700 rounded-xl font-semibold hover:bg-gray-200 transition-all"
+                  >
+                    Decline
+                  </button>
+                  <button
+                    onClick={handleAcceptTerms}
+                    className="flex-1 px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl font-bold shadow-lg hover:shadow-xl hover:scale-105 transition-all"
+                  >
+                    Accept
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     );
   }
@@ -911,14 +1020,7 @@ export default function Home() {
                       <div className="pt-2">
                         {product.id === "web" ? (
                           <button
-                            onClick={() => {
-                              setIsPreviewClosing(true);
-                              setTimeout(() => {
-                                openWidget();
-                                setIsAnyAgentOpen(true);
-                                setIsPreviewClosing(false);
-                              }, 500); // Match transition duration
-                            }}
+                            onClick={() => handleTryAgent("web")}
                             className="flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-blue-500 to-cyan-600 text-white rounded-full font-bold shadow-lg hover:from-blue-600 hover:to-cyan-700 transition-all"
                           >
                             <span>Try Agent</span>
@@ -998,7 +1100,7 @@ export default function Home() {
                                 disabled={isWhatsappLoading}
                               />
                               <button
-                                onClick={handleWhatsappDemo}
+                                onClick={() => handleTryAgent("whatsapp")}
                                 disabled={isWhatsappLoading}
                                 className="flex items-center gap-2 px-6 py-2 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-full font-bold hover:from-green-600 hover:to-emerald-700 transition-all disabled:opacity-50 whitespace-nowrap shrink-0"
                               >
@@ -1009,11 +1111,10 @@ export default function Home() {
 
                             {whatsappStatus.type && (
                               <div
-                                className={`px-4 py-2.5 rounded-xl backdrop-blur-md border shadow-sm transition-all duration-300 animate-slide-up ${
-                                  whatsappStatus.type === "success"
-                                    ? "bg-white/40 border-white/50"
-                                    : "bg-white/40 border-white/50"
-                                }`}
+                                className={`px-4 py-2.5 rounded-xl backdrop-blur-md border shadow-sm transition-all duration-300 animate-slide-up ${whatsappStatus.type === "success"
+                                  ? "bg-white/40 border-white/50"
+                                  : "bg-white/40 border-white/50"
+                                  }`}
                               >
                                 <div className="flex items-center gap-2">
                                   {whatsappStatus.type === "success" ? (
@@ -1070,7 +1171,7 @@ export default function Home() {
                                 className="bg-transparent border-none outline-none text-gray-900 px-3 py-2 flex-1 text-sm font-medium w-0 min-w-0 disabled:opacity-50"
                               />
                               <button
-                                onClick={handleMakeCall}
+                                onClick={() => handleTryAgent("voice")}
                                 disabled={
                                   isCallLoading ||
                                   callState === "connecting" ||
@@ -1102,11 +1203,10 @@ export default function Home() {
 
                             {callStatus.type && (
                               <div
-                                className={`px-4 py-2.5 rounded-xl backdrop-blur-md border shadow-sm transition-all duration-300 animate-slide-up ${
-                                  callStatus.type === "success"
-                                    ? "bg-white/40 border-white/50"
-                                    : "bg-white/40 border-white/50"
-                                }`}
+                                className={`px-4 py-2.5 rounded-xl backdrop-blur-md border shadow-sm transition-all duration-300 animate-slide-up ${callStatus.type === "success"
+                                  ? "bg-white/40 border-white/50"
+                                  : "bg-white/40 border-white/50"
+                                  }`}
                               >
                                 <div className="flex items-center gap-2">
                                   {callStatus.type === "success" ? (
@@ -1149,6 +1249,25 @@ export default function Home() {
 
       {/* --- SERVICES SECTION --- */}
       <ServicesSection />
+
+      {/* --- ADDITIONAL SERVICES CTA --- */}
+      <section className="relative w-full py-12 px-6">
+        <div className="max-w-5xl mx-auto">
+          <div className="bg-white/60 backdrop-blur-xl border border-white/50 rounded-3xl p-8 shadow-lg hover:shadow-xl transition-shadow">
+            <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+              <p className="text-lg text-gray-700 font-medium text-center md:text-left max-w-2xl">
+                We offer much more! Explore our complete range of AI solutions and services.
+              </p>
+              <button
+                onClick={() => navigate('/solutions')}
+                className="px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-2xl font-bold shadow-lg hover:from-blue-700 hover:to-purple-700 transition-all whitespace-nowrap hover:scale-105 transform"
+              >
+                Click Here
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* --- MEET OUR AI ASSISTANTS CTA --- */}
       <section id="meet-assistants" className="relative w-full py-16 px-6">
@@ -1221,6 +1340,65 @@ export default function Home() {
 
       {/* --- FOOTER --- */}
       <Footer />
+
+      {/* Terms and Conditions Modal */}
+      {showTermsModal && (
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/50 backdrop-blur-md">
+          <div className="bg-white/95 backdrop-blur-xl rounded-2xl shadow-xl max-w-md w-full border border-gray-200/50 overflow-hidden">
+            {/* Content */}
+            <div className="p-8">
+              <div className="text-center mb-6">
+                <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-500 rounded-2xl mx-auto mb-4 flex items-center justify-center">
+                  <Check className="w-8 h-8 text-white" strokeWidth={3} />
+                </div>
+                <h2 className="text-2xl font-bold text-gray-900 mb-2">Terms & Conditions</h2>
+                <p className="text-sm text-gray-600">
+                  By continuing, you agree to our terms of service
+                </p>
+              </div>
+
+              <div className="bg-gray-50/80 rounded-xl p-4 mb-6 max-h-64 overflow-y-auto">
+                <div className="space-y-3 text-xs text-gray-600 leading-relaxed">
+                  <p>
+                    • Our AI agents are for demonstration and business use
+                  </p>
+                  <p>
+                    • We collect data to provide and improve services
+                  </p>
+                  <p>
+                    • Standard call/message rates may apply
+                  </p>
+                  <p>
+                    • Services provided "as is" without warranties
+                  </p>
+                  <p>
+                    • We may modify or discontinue services anytime
+                  </p>
+                </div>
+              </div>
+
+              {/* Buttons */}
+              <div className="flex gap-3">
+                <button
+                  onClick={() => {
+                    setShowTermsModal(false);
+                    setPendingAction(null);
+                  }}
+                  className="flex-1 px-4 py-3 bg-gray-100 text-gray-700 rounded-xl font-semibold hover:bg-gray-200 transition-all"
+                >
+                  Decline
+                </button>
+                <button
+                  onClick={handleAcceptTerms}
+                  className="flex-1 px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl font-bold shadow-lg hover:shadow-xl hover:scale-105 transition-all"
+                >
+                  Accept
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -22,104 +22,98 @@ export default function AdditionalServices() {
     const services = [
         {
             id: "website",
-            title: "Website Development",
-            subtitle: "Modern & Responsive",
-            description:
-                "Build stunning, high-performance websites tailored to your business needs. From landing pages to complex web applications.",
+            title: t("solutions.website.title"),
+            subtitle: t("solutions.website.subtitle"),
+            description: t("solutions.website.desc"),
             icon: <Globe className="w-10 h-10" />,
             color: "from-blue-500 to-cyan-500",
             bgColor: "bg-blue-500",
             features: [
-                "Responsive Design",
-                "SEO Optimized",
-                "Fast Loading Speed",
-                "Custom UI/UX",
-                "E-commerce Integration",
+                t("solutions.website.feature1"),
+                t("solutions.website.feature2"),
+                t("solutions.website.feature3"),
+                t("solutions.website.feature4"),
+                t("solutions.website.feature5"),
             ],
         },
         {
             id: "mobile",
-            title: "Mobile App Development",
-            subtitle: "iOS & Android",
-            description:
-                "Create powerful mobile applications for iOS and Android platforms. Native performance with cross-platform efficiency.",
+            title: t("solutions.mobile.title"),
+            subtitle: t("solutions.mobile.subtitle"),
+            description: t("solutions.mobile.desc"),
             icon: <Smartphone className="w-10 h-10" />,
             color: "from-purple-500 to-pink-500",
             bgColor: "bg-purple-500",
             features: [
-                "Cross-Platform Apps",
-                "Native Performance",
-                "Push Notifications",
-                "Offline Functionality",
-                "App Store Deployment",
+                t("solutions.mobile.feature1"),
+                t("solutions.mobile.feature2"),
+                t("solutions.mobile.feature3"),
+                t("solutions.mobile.feature4"),
+                t("solutions.mobile.feature5"),
             ],
         },
         {
             id: "crm",
-            title: "CRM Solutions",
-            subtitle: "Customer Management",
-            description:
-                "Streamline your customer relationships with custom CRM systems. Manage leads, sales, and customer interactions efficiently.",
+            title: t("solutions.crm.title"),
+            subtitle: t("solutions.crm.subtitle"),
+            description: t("solutions.crm.desc"),
             icon: <Database className="w-10 h-10" />,
             color: "from-green-500 to-emerald-500",
             bgColor: "bg-green-500",
             features: [
-                "Lead Management",
-                "Sales Pipeline",
-                "Customer Analytics",
-                "Email Integration",
-                "Custom Workflows",
+                t("solutions.crm.feature1"),
+                t("solutions.crm.feature2"),
+                t("solutions.crm.feature3"),
+                t("solutions.crm.feature4"),
+                t("solutions.crm.feature5"),
             ],
         },
         {
             id: "automation",
-            title: "Business Automation",
-            subtitle: "Workflow Optimization",
-            description:
-                "Automate repetitive tasks and workflows to boost productivity. From data processing to complex business logic.",
+            title: t("solutions.automation.title"),
+            subtitle: t("solutions.automation.subtitle"),
+            description: t("solutions.automation.desc"),
             icon: <Zap className="w-10 h-10" />,
             color: "from-orange-500 to-red-500",
             bgColor: "bg-orange-500",
             features: [
-                "Process Automation",
-                "Data Integration",
-                "Workflow Design",
-                "API Development",
-                "Task Scheduling",
+                t("solutions.automation.feature1"),
+                t("solutions.automation.feature2"),
+                t("solutions.automation.feature3"),
+                t("solutions.automation.feature4"),
+                t("solutions.automation.feature5"),
             ],
         },
         {
             id: "custom",
-            title: "Custom Software",
-            subtitle: "Tailored Solutions",
-            description:
-                "Build bespoke software solutions designed specifically for your unique business requirements and challenges.",
+            title: t("solutions.custom.title"),
+            subtitle: t("solutions.custom.subtitle"),
+            description: t("solutions.custom.desc"),
             icon: <Code className="w-10 h-10" />,
             color: "from-indigo-500 to-blue-500",
             bgColor: "bg-indigo-500",
             features: [
-                "Custom Development",
-                "Scalable Architecture",
-                "Cloud Integration",
-                "Security First",
-                "Ongoing Support",
+                t("solutions.custom.feature1"),
+                t("solutions.custom.feature2"),
+                t("solutions.custom.feature3"),
+                t("solutions.custom.feature4"),
+                t("solutions.custom.feature5"),
             ],
         },
         {
             id: "integration",
-            title: "System Integration",
-            subtitle: "Connect Everything",
-            description:
-                "Integrate your existing systems and tools seamlessly. Connect APIs, databases, and third-party services effortlessly.",
+            title: t("solutions.integration.title"),
+            subtitle: t("solutions.integration.subtitle"),
+            description: t("solutions.integration.desc"),
             icon: <Settings className="w-10 h-10" />,
             color: "from-teal-500 to-cyan-500",
             bgColor: "bg-teal-500",
             features: [
-                "API Integration",
-                "Database Sync",
-                "Third-party Tools",
-                "Real-time Updates",
-                "Data Migration",
+                t("solutions.integration.feature1"),
+                t("solutions.integration.feature2"),
+                t("solutions.integration.feature3"),
+                t("solutions.integration.feature4"),
+                t("solutions.integration.feature5"),
             ],
         },
     ];
@@ -138,16 +132,15 @@ export default function AdditionalServices() {
                     <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/40 backdrop-blur-md rounded-full mb-6 border border-white/50">
                         <Sparkles className="w-4 h-4 text-purple-600" />
                         <span className="text-sm font-semibold text-gray-700">
-                            Complete Solutions
+                            {t("solutions.hero.badge")}
                         </span>
                     </div>
 
                     <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
-                        Our Solutions
+                        {t("solutions.hero.title")}
                     </h1>
                     <p className="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto mb-8">
-                        Beyond AI agents, we offer comprehensive technology solutions to
-                        transform your business
+                        {t("solutions.hero.subtitle")}
                     </p>
                 </div>
             </section>
@@ -208,7 +201,7 @@ export default function AdditionalServices() {
                                 <button
                                     className={`w-full flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r ${service.color} text-white rounded-xl font-bold shadow-md hover:shadow-lg transition-all group-hover:scale-105`}
                                 >
-                                    <span>Get Started</span>
+                                    <span>{t("solutions.getStarted")}</span>
                                     <ArrowRight size={16} />
                                 </button>
 
@@ -238,14 +231,13 @@ export default function AdditionalServices() {
 
                         <div className="relative z-10 p-8 md:p-16 text-center">
                             <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-                                Ready to Transform Your Business?
+                                {t("solutions.cta.title")}
                             </h2>
                             <p className="text-lg text-white/90 mb-8 max-w-2xl mx-auto">
-                                Let's discuss how our solutions can help you achieve your goals.
-                                Get in touch with our team today.
+                                {t("solutions.cta.subtitle")}
                             </p>
                             <button className="inline-flex items-center gap-3 px-8 py-4 bg-white text-purple-600 rounded-2xl font-bold text-lg shadow-2xl hover:shadow-3xl transition-all transform hover:scale-105">
-                                <span>Contact Us</span>
+                                <span>{t("solutions.cta.button")}</span>
                                 <ArrowRight className="w-5 h-5" />
                             </button>
                         </div>

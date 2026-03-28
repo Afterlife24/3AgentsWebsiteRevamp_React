@@ -816,7 +816,7 @@ export default function Home() {
               <div className="bg-white/60 backdrop-blur-xl border border-white/50 rounded-2xl p-6 shadow-lg">
                 <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
                   <p className="text-sm md:text-base text-gray-700 font-medium text-center sm:text-left">
-                    We offer much more! Explore our complete range of AI solutions and services.
+                    {t("additionalServices.text")}
                   </p>
                   <button
                     onClick={() => {
@@ -825,7 +825,7 @@ export default function Home() {
                     }}
                     className="px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl font-bold shadow-md hover:from-blue-700 hover:to-purple-700 transition-all whitespace-nowrap"
                   >
-                    Click Here
+                    {t("additionalServices.button")}
                   </button>
                 </div>
               </div>
@@ -1259,7 +1259,7 @@ export default function Home() {
           <div className="bg-white/60 backdrop-blur-xl border border-white/50 rounded-3xl p-8 shadow-lg hover:shadow-xl transition-shadow">
             <div className="flex flex-col md:flex-row items-center justify-between gap-6">
               <p className="text-lg text-gray-700 font-medium text-center md:text-left max-w-2xl">
-                We offer much more! Explore our complete range of AI solutions and services.
+                {t("additionalServices.text")}
               </p>
               <button
                 onClick={() => {
@@ -1268,7 +1268,7 @@ export default function Home() {
                 }}
                 className="px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-2xl font-bold shadow-lg hover:from-blue-700 hover:to-purple-700 transition-all whitespace-nowrap hover:scale-105 transform"
               >
-                Click Here
+                {t("additionalServices.button")}
               </button>
             </div>
           </div>

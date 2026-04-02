@@ -129,15 +129,11 @@ export default function Footer() {
             </li>
             <li className="flex items-start gap-3">
               <Phone size={18} className="text-purple-600 shrink-0 mt-0.5" />
-              <span>+971 58 132 4928</span>
+              <span>+971 52 493 4182</span>
             </li>
             <li className="flex items-start gap-3">
               <MapPin size={18} className="text-purple-600 shrink-0 mt-0.5" />
-              <span>
-                Business Centre, 3 Floor,
-                <br />
-                Building A3, Business Park, Dubai South
-              </span>
+              <span>Dubai, United Arab Emirates</span>
             </li>
           </ul>
         </div>

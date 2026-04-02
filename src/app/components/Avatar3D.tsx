@@ -321,9 +321,11 @@ export default function Avatar3D({
       }}
       frameloop="always"
     >
-      {/* Lighting setup */}
-      <ambientLight intensity={0.8} />
-      <directionalLight position={[5, 5, 5]} intensity={1} />
+      {/* Lighting setup - Increased brightness */}
+      <ambientLight intensity={1.5} />
+      <directionalLight position={[5, 5, 5]} intensity={2} />
+      <directionalLight position={[-5, 3, -5]} intensity={1.5} />
+      <pointLight position={[0, 5, 0]} intensity={1} />
 
       {/* Environment for realistic reflections */}
       <Environment preset="sunset" />

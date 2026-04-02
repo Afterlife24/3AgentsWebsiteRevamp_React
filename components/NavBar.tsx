@@ -37,7 +37,7 @@ export default function NavBar() {
             alt="logo"
             className="w-10 h-10 rounded object-cover"
           />
-          <span className="text-gray-900 font-bold tracking-tight text-xl">
+          <span className="text-white font-bold tracking-tight text-xl">
             Autonomiq
           </span>
         </Link>
@@ -46,7 +46,7 @@ export default function NavBar() {
           className={`flex gap-4 items-center ${isRTL ? "flex-row-reverse" : ""}`}
         >
           <div
-            className={`flex gap-8 text-sm font-medium text-gray-600 bg-white/20 backdrop-blur-md px-6 py-2 rounded-full border border-white/30 ${isRTL ? "flex-row-reverse" : ""}`}
+            className={`flex gap-8 text-sm font-medium text-gray-300 bg-white/10 backdrop-blur-md px-6 py-2 rounded-full border border-white/20 ${isRTL ? "flex-row-reverse" : ""}`}
           >
             {NAV_ITEMS.map((item) => {
               const isActive = location.pathname === item.path;
@@ -62,7 +62,7 @@ export default function NavBar() {
                     <span className="flex items-center h-[1.2em]">
                       {item.name}
                     </span>
-                    <span className="flex items-center h-[1.2em] text-black font-bold">
+                    <span className="flex items-center h-[1.2em] text-white font-bold">
                       {item.name}
                     </span>
                   </div>
@@ -75,12 +75,12 @@ export default function NavBar() {
           <div className="relative">
             <button
               onClick={() => setShowLanguageMenu(!showLanguageMenu)}
-              className={`flex items-center gap-2 px-4 py-2 bg-white/20 backdrop-blur-md rounded-full border border-white/30 hover:bg-white/30 transition-colors ${isRTL ? "flex-row-reverse" : ""}`}
+              className={`flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-md rounded-full border border-white/20 hover:bg-white/20 transition-colors ${isRTL ? "flex-row-reverse" : ""}`}
               aria-label="Change language"
               data-testid="language-switcher"
             >
-              <Globe className="w-4 h-4 text-gray-700" />
-              <span className="text-sm font-medium text-gray-700">
+              <Globe className="w-4 h-4 text-gray-300" />
+              <span className="text-sm font-medium text-gray-300">
                 {LANGUAGES.find((l) => l.code === language)?.flag}
               </span>
             </button>
@@ -128,7 +128,7 @@ export default function NavBar() {
             alt="logo"
             className="w-8 h-8 rounded object-cover"
           />
-          <span className="text-gray-900 font-bold tracking-tight text-lg">
+          <span className="text-white font-bold tracking-tight text-lg">
             Autonomiq
           </span>
         </Link>
@@ -140,11 +140,11 @@ export default function NavBar() {
           <div className="relative">
             <button
               onClick={() => setShowLanguageMenu(!showLanguageMenu)}
-              className="p-2 bg-white/30 backdrop-blur-md rounded-full border border-white/40 shadow-lg"
+              className="p-2 bg-white/10 backdrop-blur-md rounded-full border border-white/20 shadow-lg"
               aria-label="Change language"
               data-testid="language-switcher-mobile"
             >
-              <Globe className="w-4 h-4 text-gray-800" />
+              <Globe className="w-4 h-4 text-gray-300" />
             </button>
 
             {showLanguageMenu && (
@@ -178,17 +178,17 @@ export default function NavBar() {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setShowMobileMenu(!showMobileMenu)}
-            className="p-2 bg-white/30 backdrop-blur-md rounded-full border border-white/40 shadow-lg"
+            className="p-2 bg-white/10 backdrop-blur-md rounded-full border border-white/20 shadow-lg"
           >
             <div className="w-5 h-5 flex flex-col justify-center gap-1">
               <div
-                className={`w-5 h-0.5 bg-gray-800 transition-transform ${showMobileMenu ? "rotate-45 translate-y-1.5" : ""}`}
+                className={`w-5 h-0.5 bg-white transition-transform ${showMobileMenu ? "rotate-45 translate-y-1.5" : ""}`}
               ></div>
               <div
-                className={`w-5 h-0.5 bg-gray-800 transition-opacity ${showMobileMenu ? "opacity-0" : ""}`}
+                className={`w-5 h-0.5 bg-white transition-opacity ${showMobileMenu ? "opacity-0" : ""}`}
               ></div>
               <div
-                className={`w-5 h-0.5 bg-gray-800 transition-transform ${showMobileMenu ? "-rotate-45 -translate-y-1.5" : ""}`}
+                className={`w-5 h-0.5 bg-white transition-transform ${showMobileMenu ? "-rotate-45 -translate-y-1.5" : ""}`}
               ></div>
             </div>
           </button>

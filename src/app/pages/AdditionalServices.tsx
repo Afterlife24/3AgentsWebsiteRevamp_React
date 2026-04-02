@@ -119,7 +119,7 @@ export default function AdditionalServices() {
     ];
 
     return (
-        <div className="min-h-screen w-full bg-[#F0F4F8] font-sans overflow-y-auto relative flex flex-col">
+        <div className="min-h-screen w-full bg-[#0a0f1a] font-sans overflow-y-auto relative flex flex-col" style={{ backgroundImage: 'url(/assets/bg.png)', backgroundSize: 'cover', backgroundPosition: 'center', backgroundAttachment: 'fixed' }}>
             {/* Background */}
             <AmbientBackground />
 
@@ -129,17 +129,17 @@ export default function AdditionalServices() {
             {/* Hero Section */}
             <section className="relative w-full pt-32 pb-20 px-4 md:px-8">
                 <div className="max-w-7xl mx-auto text-center">
-                    <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/40 backdrop-blur-md rounded-full mb-6 border border-white/50">
-                        <Sparkles className="w-4 h-4 text-purple-600" />
-                        <span className="text-sm font-semibold text-gray-700">
+                    <div className="inline-flex items-center gap-2 px-4 py-2 bg-[#0a2a3a]/80 backdrop-blur-md rounded-full mb-6 border border-cyan-500/30">
+                        <Sparkles className="w-4 h-4 text-cyan-400" />
+                        <span className="text-sm font-semibold text-gray-200">
                             {t("solutions.hero.badge")}
                         </span>
                     </div>
 
-                    <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
+                    <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
                         {t("solutions.hero.title")}
                     </h1>
-                    <p className="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto mb-8">
+                    <p className="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto mb-8">
                         {t("solutions.hero.subtitle")}
                     </p>
                 </div>
@@ -154,7 +154,7 @@ export default function AdditionalServices() {
                                 key={service.id}
                                 onMouseEnter={() => setHoveredService(service.id)}
                                 onMouseLeave={() => setHoveredService(null)}
-                                className="group relative bg-white/50 backdrop-blur-xl border border-white/50 rounded-3xl p-8 hover:bg-white/70 transition-all duration-500 hover:-translate-y-2 shadow-lg hover:shadow-2xl"
+                                className="group relative bg-[#0a2a3a]/80 backdrop-blur-xl border border-cyan-500/20 rounded-3xl p-8 hover:bg-[#0d3a4a]/90 transition-all duration-500 hover:-translate-y-2 shadow-lg hover:shadow-2xl"
                             >
                                 {/* Icon */}
                                 <div
@@ -164,15 +164,15 @@ export default function AdditionalServices() {
                                 </div>
 
                                 {/* Title */}
-                                <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                                <h3 className="text-2xl font-bold text-white mb-2">
                                     {service.title}
                                 </h3>
-                                <p className="text-sm text-gray-500 font-semibold uppercase tracking-wider mb-4">
+                                <p className="text-sm text-gray-400 font-semibold uppercase tracking-wider mb-4">
                                     {service.subtitle}
                                 </p>
 
                                 {/* Description */}
-                                <p className="text-gray-700 mb-6 leading-relaxed">
+                                <p className="text-gray-300 mb-6 leading-relaxed">
                                     {service.description}
                                 </p>
 
@@ -181,7 +181,7 @@ export default function AdditionalServices() {
                                     {service.features.map((feature, idx) => (
                                         <li
                                             key={idx}
-                                            className="flex items-start gap-3 text-sm text-gray-600 font-medium"
+                                            className="flex items-start gap-3 text-sm text-gray-300 font-medium"
                                         >
                                             <div
                                                 className={`mt-0.5 p-0.5 rounded-full bg-gradient-to-r ${service.color} opacity-80`}

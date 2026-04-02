@@ -501,7 +501,16 @@ export default function Home() {
   // Mobile View
   if (isMobile) {
     return (
-      <div className="min-h-screen w-full bg-[#F0F4F8] font-sans overflow-hidden relative flex flex-col">
+      <div className="min-h-screen w-full bg-[#0a0f1a] font-sans overflow-hidden relative flex flex-col">
+        {/* Background Image */}
+        <div className="fixed inset-0 z-0">
+          <img
+            src="/assets/bg.png"
+            alt="background"
+            className="w-full h-full object-cover opacity-100"
+          />
+        </div>
+
         {/* --- BACKGROUND AMBIENT --- */}
         <AmbientBackground />
 
@@ -534,10 +543,13 @@ export default function Home() {
                     <img
                       src={product.backgroundImage}
                       alt=""
-                      className="w-full h-full object-cover opacity-30"
+                      className="w-full h-full object-cover opacity-5"
                     />
                     <div
-                      className={`absolute inset-0 bg-gradient-to-br ${product.mobileGradient}`}
+                      className={`absolute inset-0 bg-gradient-to-br from-[#0a2a3a]/90 via-[#0d3a4a]/80 to-[#0a2a3a]/90 backdrop-blur-md`}
+                    ></div>
+                    <div
+                      className={`absolute inset-0 bg-gradient-to-br ${product.mobileGradient} opacity-20`}
                     ></div>
                   </div>
 
@@ -560,10 +572,10 @@ export default function Home() {
                         {product.icon}
                       </div>
                       <div>
-                        <h3 className="font-bold text-gray-900 text-lg">
+                        <h3 className="font-bold text-white text-lg">
                           {product.title}
                         </h3>
-                        <p className="text-xs text-gray-600 mt-0.5">
+                        <p className="text-xs text-gray-300 mt-0.5">
                           {product.subtitle}
                         </p>
                       </div>
@@ -571,8 +583,8 @@ export default function Home() {
 
                     <div className="flex items-center gap-2">
                       {product.isPopular && !isExpanded && (
-                        <div className="px-2.5 py-1.5 bg-purple-500/20 rounded-full">
-                          <Sparkles size={14} className="text-purple-600" />
+                        <div className="px-2.5 py-1.5 bg-white/20 rounded-full border border-white/30">
+                          <Sparkles size={14} className="text-purple-300" />
                         </div>
                       )}
                       <div
@@ -591,7 +603,7 @@ export default function Home() {
                     `}
                   >
                     {/* Description */}
-                    <p className="text-sm text-gray-700 leading-relaxed mb-4">
+                    <p className="text-sm text-gray-200 leading-relaxed mb-4">
                       {product.description}
                     </p>
 
@@ -790,7 +802,7 @@ export default function Home() {
                                 <div
                                   className={`w-2 h-2 rounded-full ${callStatus.type === "success" ? "bg-green-500" : "bg-red-500"} animate-pulse`}
                                 />
-                                <span className="text-xs font-medium text-gray-800">
+                                <span className="text-xs font-medium text-white">
                                   {callStatus.message}
                                 </span>
                               </div>
@@ -812,9 +824,9 @@ export default function Home() {
           {/* --- ADDITIONAL SERVICES CTA --- */}
           <section className="relative w-full py-8 px-4">
             <div className="max-w-4xl mx-auto">
-              <div className="bg-white/60 backdrop-blur-xl border border-white/50 rounded-2xl p-6 shadow-lg">
+              <div className="bg-[#0a2a3a]/80 backdrop-blur-xl border border-cyan-500/20 rounded-2xl p-6 shadow-lg">
                 <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-                  <p className="text-sm md:text-base text-gray-700 font-medium text-center sm:text-left">
+                  <p className="text-sm md:text-base text-gray-200 font-medium text-center sm:text-left">
                     {t("additionalServices.text")}
                   </p>
                   <button
@@ -898,7 +910,16 @@ export default function Home() {
 
   // Desktop View (Original - with modifications for scrolling)
   return (
-    <div className="min-h-screen w-full bg-[#F0F4F8] font-sans overflow-y-auto relative flex flex-col scroll-smooth">
+    <div className="min-h-screen w-full bg-[#0a0f1a] font-sans overflow-y-auto relative flex flex-col scroll-smooth">
+      {/* Background Image */}
+      <div className="fixed inset-0 z-0">
+        <img
+          src="/assets/bg.png"
+          alt="background"
+          className="w-full h-full object-cover opacity-100"
+        />
+      </div>
+
       {/* --- BACKGROUND AMBIENT --- */}
       <AmbientBackground />
 
@@ -925,7 +946,7 @@ export default function Home() {
                   }
                 }}
                 className={`
-                  relative h-full transition-all duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] rounded-[2rem] overflow-hidden cursor-pointer border border-white/40 shadow-2xl
+                  relative h-full transition-all duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] rounded-[2rem] overflow-hidden cursor-pointer border border-white/10 shadow-2xl bg-white/5 backdrop-blur-xl
                   ${isActive ? "flex-[3] md:flex-[2.5]" : "flex-1"}
                   group
                 `}
@@ -935,16 +956,16 @@ export default function Home() {
                   <img
                     src={product.backgroundImage}
                     alt=""
-                    className={`w-full h-full object-cover transition-all duration-700 ${isActive ? "opacity-20 scale-105" : "opacity-40 grayscale-[20%] scale-100"}`}
+                    className={`w-full h-full object-cover transition-all duration-700 ${isActive ? "opacity-10 scale-105" : "opacity-5 scale-100"}`}
                   />
                   <div
-                    className={`absolute inset-0 bg-gradient-to-b from-white/80 via-white/40 to-white/10 ${isActive ? "backdrop-blur-xl" : "backdrop-blur-sm"}`}
+                    className={`absolute inset-0 bg-gradient-to-b from-[#0a2a3a]/90 via-[#0d3a4a]/80 to-[#0a2a3a]/90 ${isActive ? "backdrop-blur-xl" : "backdrop-blur-md"}`}
                   ></div>
                 </div>
 
                 {/* GLOW LAYER */}
                 <div
-                  className={`absolute inset-0 transition-opacity duration-700 ${isActive ? "opacity-100" : "opacity-0"} bg-gradient-to-b ${product.bgGlow} to-transparent mix-blend-overlay`}
+                  className={`absolute inset-0 transition-opacity duration-700 ${isActive ? "opacity-30" : "opacity-20"} bg-gradient-to-b ${product.bgGlow} to-transparent`}
                 ></div>
 
                 {/* CONTENT CONTAINER */}
@@ -952,13 +973,13 @@ export default function Home() {
                   {/* POPULAR BADGE */}
                   {product.isPopular && (
                     <div
-                      className={`absolute top-12 right-12 z-20 px-3 py-1 bg-black/5 backdrop-blur-md border border-black/5 rounded-full flex items-center gap-1.5 transition-opacity duration-500 ${isActive ? "opacity-100" : "opacity-0"}`}
+                      className={`absolute top-12 right-12 z-20 px-3 py-1 bg-white/20 backdrop-blur-md border border-white/30 rounded-full flex items-center gap-1.5 transition-opacity duration-500 ${isActive ? "opacity-100" : "opacity-0"}`}
                     >
                       <Sparkles
                         size={12}
-                        className="text-purple-600 fill-purple-600"
+                        className="text-purple-300 fill-purple-300"
                       />
-                      <span className="text-[10px] font-bold uppercase tracking-wider text-gray-800">
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-white">
                         Popular
                       </span>
                     </div>
@@ -984,7 +1005,7 @@ export default function Home() {
                   <div className="min-w-[300px]">
                     {/* TITLE */}
                     <h2
-                      className={`font-bold text-gray-900 leading-none whitespace-nowrap transition-all duration-500 ${isActive ? "text-3xl md:text-4xl mb-4 translate-y-0" : "text-2xl md:text-3xl mb-2 translate-y-2"}`}
+                      className={`font-bold text-white leading-none whitespace-nowrap transition-all duration-500 ${isActive ? "text-3xl md:text-4xl mb-4 translate-y-0" : "text-2xl md:text-3xl mb-2 translate-y-2"}`}
                     >
                       {product.title.split(" ")[0]}
                       <br />
@@ -999,7 +1020,7 @@ export default function Home() {
                     <div
                       className={`transition-all duration-500 ${!isActive ? "opacity-100 h-auto" : "opacity-0 h-0 overflow-hidden"}`}
                     >
-                      <p className="text-sm text-gray-700 font-medium leading-relaxed max-w-[200px]">
+                      <p className="text-sm text-gray-300 font-medium leading-relaxed max-w-[200px]">
                         {product.shortHighlight}
                       </p>
                     </div>
@@ -1008,7 +1029,7 @@ export default function Home() {
                     <div
                       className={`transition-all duration-700 ease-out overflow-hidden ${isActive ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"}`}
                     >
-                      <p className="text-base md:text-lg text-gray-700 leading-relaxed mb-6 max-w-md font-medium">
+                      <p className="text-base md:text-lg text-gray-200 leading-relaxed mb-6 max-w-md font-medium">
                         {product.description}
                       </p>
 
@@ -1123,7 +1144,7 @@ export default function Home() {
                                   ) : (
                                     <div className="w-2 h-2 bg-red-500 rounded-full shrink-0" />
                                   )}
-                                  <span className="text-xs font-medium text-gray-800">
+                                  <span className="text-xs font-medium text-white">
                                     {whatsappStatus.message}
                                   </span>
                                 </div>
@@ -1215,7 +1236,7 @@ export default function Home() {
                                   ) : (
                                     <div className="w-2 h-2 bg-red-500 rounded-full shrink-0" />
                                   )}
-                                  <span className="text-xs font-medium text-gray-800">
+                                  <span className="text-xs font-medium text-white">
                                     {callStatus.message}
                                   </span>
                                 </div>
@@ -1227,7 +1248,7 @@ export default function Home() {
                                 <div className="px-4 py-2.5 rounded-xl backdrop-blur-md border bg-white/40 border-white/50 shadow-sm">
                                   <div className="flex items-center gap-2">
                                     <div className="w-2 h-2 bg-orange-500 rounded-full shrink-0" />
-                                    <span className="text-xs font-medium text-gray-800">
+                                    <span className="text-xs font-medium text-white">
                                       Call Disconnected - Ready for next call
                                     </span>
                                   </div>
@@ -1254,9 +1275,9 @@ export default function Home() {
       {/* --- ADDITIONAL SERVICES CTA --- */}
       <section className="relative w-full py-12 px-6">
         <div className="max-w-5xl mx-auto">
-          <div className="bg-white/60 backdrop-blur-xl border border-white/50 rounded-3xl p-8 shadow-lg hover:shadow-xl transition-shadow">
+          <div className="bg-[#0a2a3a]/80 backdrop-blur-xl border border-cyan-500/20 rounded-3xl p-8 shadow-lg hover:shadow-xl transition-shadow">
             <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-              <p className="text-lg text-gray-700 font-medium text-center md:text-left max-w-2xl">
+              <p className="text-lg text-gray-200 font-medium text-center md:text-left max-w-2xl">
                 {t("additionalServices.text")}
               </p>
               <button
@@ -1276,9 +1297,9 @@ export default function Home() {
       {/* --- MEET OUR AI ASSISTANTS CTA --- */}
       <section id="meet-assistants" className="relative w-full py-16 px-6">
         <div className="max-w-6xl mx-auto">
-          <div className="relative bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 rounded-3xl overflow-hidden shadow-2xl">
+          <div className="relative bg-gradient-to-br from-blue-600 via-purple-600 to-pink-600 rounded-3xl overflow-hidden shadow-2xl">
             {/* Animated background elements */}
-            <div className="absolute inset-0 opacity-20">
+            <div className="absolute inset-0 opacity-30">
               <div className="absolute top-10 left-10 w-32 h-32 bg-white rounded-full blur-3xl animate-pulse"></div>
               <div
                 className="absolute bottom-10 right-10 w-40 h-40 bg-white rounded-full blur-3xl animate-pulse"
@@ -1291,35 +1312,35 @@ export default function Home() {
             </div>
 
             <div className="relative z-10 p-8 md:p-12 lg:p-16 text-center">
-              <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full mb-6 border border-white/30">
+              <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/30 backdrop-blur-sm rounded-full mb-6 border border-white/40">
                 <Users className="w-4 h-4 text-white" />
                 <span className="text-sm font-semibold text-white">
                   {t("aiAssistants.badge")}
                 </span>
               </div>
 
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 drop-shadow-lg">
                 {t("aiAssistants.title")}
               </h2>
 
-              <p className="text-lg md:text-xl text-white/90 mb-8 max-w-2xl mx-auto">
+              <p className="text-lg md:text-xl text-white mb-8 max-w-2xl mx-auto drop-shadow-md">
                 {t("aiAssistants.subtitle")}
               </p>
 
               <div className="flex flex-wrap gap-4 justify-center mb-8">
-                <div className="flex items-center gap-2 px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full border border-white/30">
+                <div className="flex items-center gap-2 px-4 py-2 bg-white/30 backdrop-blur-sm rounded-full border border-white/40">
                   <Phone className="w-4 h-4 text-white" />
                   <span className="text-sm font-medium text-white">
                     {t("aiAssistants.receptionist")}
                   </span>
                 </div>
-                <div className="flex items-center gap-2 px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full border border-white/30">
+                <div className="flex items-center gap-2 px-4 py-2 bg-white/30 backdrop-blur-sm rounded-full border border-white/40">
                   <Briefcase className="w-4 h-4 text-white" />
                   <span className="text-sm font-medium text-white">
                     {t("aiAssistants.admin")}
                   </span>
                 </div>
-                <div className="flex items-center gap-2 px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full border border-white/30">
+                <div className="flex items-center gap-2 px-4 py-2 bg-white/30 backdrop-blur-sm rounded-full border border-white/40">
                   <Users className="w-4 h-4 text-white" />
                   <span className="text-sm font-medium text-white">
                     {t("aiAssistants.sales")}
@@ -1329,7 +1350,7 @@ export default function Home() {
 
               <a
                 href="/ai-assistants"
-                className="inline-flex items-center gap-3 px-8 py-4 bg-white text-purple-600 rounded-2xl font-bold text-lg shadow-2xl hover:shadow-3xl transition-all transform hover:scale-105 hover:bg-gray-50"
+                className="inline-flex items-center gap-3 px-8 py-4 bg-white text-purple-700 rounded-2xl font-bold text-lg shadow-2xl hover:shadow-3xl transition-all transform hover:scale-105 hover:bg-gray-50"
               >
                 <span>{t("aiAssistants.cta")}</span>
                 <ArrowRight className="w-5 h-5" />

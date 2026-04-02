@@ -178,7 +178,7 @@ export default function AIAssistants() {
   ];
 
   return (
-    <div className="min-h-screen w-full bg-[#F0F4F8] font-sans overflow-hidden relative flex flex-col">
+    <div className="min-h-screen w-full bg-[#0a0f1a] font-sans overflow-hidden relative flex flex-col" style={{ backgroundImage: 'url(/assets/bg.png)', backgroundSize: 'cover', backgroundPosition: 'center', backgroundAttachment: 'fixed' }}>
       {/* Background */}
       <AmbientBackground />
 
@@ -191,12 +191,12 @@ export default function AIAssistants() {
           {/* Caption */}
           <div className="text-center mb-16">
             <h1 className="text-4xl md:text-6xl font-bold mb-4 leading-tight">
-              <span className="text-gray-900">Humans and agents drive </span>
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-cyan-600 to-blue-600">
+              <span className="text-white">Humans and agents drive </span>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-blue-400 to-cyan-300">
                 customer success together
               </span>
             </h1>
-            <p className="text-lg md:text-xl text-gray-700 max-w-4xl mx-auto">
+            <p className="text-lg md:text-xl text-gray-200 max-w-4xl mx-auto">
               Agentforce transforms Sales, Service, Commerce, Marketing, IT, and more by uniting humans and AI agents to drive customer success.
             </p>
           </div>
@@ -314,7 +314,7 @@ export default function AIAssistants() {
             {aiWorkforce.map((assistant) => (
               <div
                 key={assistant.id}
-                className="group relative rounded-3xl overflow-hidden bg-white/40 backdrop-blur-xl border border-white/50 shadow-xl hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 hover:bg-white/60 flex flex-col"
+                className="group relative rounded-3xl overflow-hidden bg-[#0a2a3a]/80 backdrop-blur-xl border border-cyan-500/20 shadow-xl hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 hover:bg-[#0d3a4a]/90 flex flex-col"
               >
                 {/* Animated gradient glow effect on hover */}
                 <div
@@ -345,25 +345,25 @@ export default function AIAssistants() {
                   </h3>
 
                   {/* Subtitle */}
-                  <p className="text-gray-800 font-semibold text-sm mb-3">
+                  <p className="text-gray-200 font-semibold text-sm mb-3">
                     {assistant.subtitle}
                   </p>
 
                   {/* Description */}
-                  <p className="text-gray-700 text-xs mb-4 leading-relaxed">
+                  <p className="text-gray-300 text-xs mb-4 leading-relaxed">
                     {assistant.description}
                   </p>
 
                   {/* Capabilities */}
                   <div className="mb-4 flex-1">
-                    <h4 className="text-xs font-bold text-gray-900 mb-2">
+                    <h4 className="text-xs font-bold text-white mb-2">
                       {t("aiAssistantsPage.capabilities")}
                     </h4>
                     <ul className="space-y-1.5">
                       {assistant.capabilities.map((capability, idx) => (
                         <li
                           key={idx}
-                          className="flex items-start gap-2 text-xs text-gray-600"
+                          className="flex items-start gap-2 text-xs text-gray-200"
                         >
                           <CheckCircle
                             size={12}
@@ -376,21 +376,21 @@ export default function AIAssistants() {
                   </div>
 
                   {/* Integrations */}
-                  <div className="bg-white/40 backdrop-blur-sm rounded-xl p-2.5 mb-4 border border-white/30">
-                    <h4 className="text-xs font-bold text-gray-900 mb-2">
+                  <div className="bg-[#0d3a4a]/60 backdrop-blur-sm rounded-xl p-2.5 mb-4 border border-cyan-500/30">
+                    <h4 className="text-xs font-bold text-white mb-2">
                       {t("aiAssistantsPage.whatsapp.integrations")}
                     </h4>
                     <div className="flex flex-wrap gap-2">
                       {assistant.integrations.map((integration, idx) => (
                         <div
                           key={idx}
-                          className="flex items-center gap-1.5 px-2.5 py-1.5 bg-white/60 rounded-lg border border-gray-200/50 hover:bg-white/80 transition-colors"
+                          className="flex items-center gap-1.5 px-2.5 py-1.5 bg-[#0a2a3a]/80 rounded-lg border border-cyan-500/20 hover:bg-[#0d3a4a]/90 transition-colors"
                           title={integration.name}
                         >
-                          <div className="text-gray-700">
+                          <div className="text-cyan-400">
                             {integration.icon}
                           </div>
-                          <span className="text-xs font-medium text-gray-700">
+                          <span className="text-xs font-medium text-gray-200">
                             {integration.name}
                           </span>
                         </div>
@@ -452,28 +452,28 @@ export default function AIAssistants() {
 
           {/* WhatsApp Agent Section */}
           <div id="whatsapp-agent" className="mb-24">
-            <div className="bg-white/40 backdrop-blur-xl border border-white/50 rounded-3xl p-8 md:p-12 shadow-xl">
+            <div className="bg-[#0a2a3a]/80 backdrop-blur-xl border border-cyan-500/20 rounded-3xl p-8 md:p-12 shadow-xl">
               <div className="flex items-center gap-3 mb-6">
                 <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center shadow-lg">
                   <MessageSquare className="w-8 h-8 text-white" />
                 </div>
                 <div>
-                  <h2 className="text-4xl font-bold text-gray-900">
+                  <h2 className="text-4xl font-bold text-white">
                     {t("aiAssistantsPage.whatsapp.title")}
                   </h2>
-                  <p className="text-xl text-gray-700">
+                  <p className="text-xl text-gray-200">
                     {t("aiAssistantsPage.whatsapp.subtitle")}
                   </p>
                 </div>
               </div>
 
-              <p className="text-gray-700 text-lg mb-8 leading-relaxed">
+              <p className="text-gray-200 text-lg mb-8 leading-relaxed">
                 {t("aiAssistantsPage.whatsapp.description")}
               </p>
 
               <div className="grid md:grid-cols-2 gap-8 mb-8">
                 <div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-4">
+                  <h3 className="text-xl font-bold text-white mb-4">
                     {t("aiAssistantsPage.whatsapp.whatItCanDo")}
                   </h3>
                   <ul className="space-y-2">
@@ -487,7 +487,7 @@ export default function AIAssistants() {
                     ].map((item, idx) => (
                       <li
                         key={idx}
-                        className="flex items-start gap-2 text-gray-700"
+                        className="flex items-start gap-2 text-gray-200"
                       >
                         <CheckCircle
                           size={18}
@@ -500,7 +500,7 @@ export default function AIAssistants() {
                 </div>
 
                 <div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-4">
+                  <h3 className="text-xl font-bold text-white mb-4">
                     {t("aiAssistantsPage.whatsapp.applications")}
                   </h3>
                   <div className="flex flex-wrap gap-2 mb-6">
@@ -514,44 +514,44 @@ export default function AIAssistants() {
                     ].map((app, idx) => (
                       <span
                         key={idx}
-                        className="px-4 py-2 bg-green-500/20 text-green-800 rounded-full text-sm font-medium"
+                        className="px-4 py-2 bg-green-500/30 text-green-100 rounded-full text-sm font-medium border border-green-500/40"
                       >
                         {app}
                       </span>
                     ))}
                   </div>
 
-                  <h3 className="text-xl font-bold text-gray-900 mb-4">
+                  <h3 className="text-xl font-bold text-white mb-4">
                     {t("aiAssistantsPage.whatsapp.integrations")}
                   </h3>
                   <div className="flex flex-wrap gap-2">
-                    <div className="flex items-center gap-1.5 px-3 py-2 bg-white/60 rounded-lg border border-gray-200/50 hover:bg-white/80 transition-colors">
-                      <SiSalesforce className="w-5 h-5 text-gray-700" />
-                      <span className="text-sm font-medium text-gray-700">
+                    <div className="flex items-center gap-1.5 px-3 py-2 bg-[#0d3a4a]/60 rounded-lg border border-cyan-500/30 hover:bg-[#0d3a4a]/90 transition-colors">
+                      <SiSalesforce className="w-5 h-5 text-cyan-400" />
+                      <span className="text-sm font-medium text-gray-200">
                         Salesforce
                       </span>
                     </div>
-                    <div className="flex items-center gap-1.5 px-3 py-2 bg-white/60 rounded-lg border border-gray-200/50 hover:bg-white/80 transition-colors">
-                      <SiHubspot className="w-5 h-5 text-gray-700" />
-                      <span className="text-sm font-medium text-gray-700">
+                    <div className="flex items-center gap-1.5 px-3 py-2 bg-[#0d3a4a]/60 rounded-lg border border-cyan-500/30 hover:bg-[#0d3a4a]/90 transition-colors">
+                      <SiHubspot className="w-5 h-5 text-cyan-400" />
+                      <span className="text-sm font-medium text-gray-200">
                         HubSpot
                       </span>
                     </div>
-                    <div className="flex items-center gap-1.5 px-3 py-2 bg-white/60 rounded-lg border border-gray-200/50 hover:bg-white/80 transition-colors">
-                      <SiN8N className="w-5 h-5 text-gray-700" />
-                      <span className="text-sm font-medium text-gray-700">
+                    <div className="flex items-center gap-1.5 px-3 py-2 bg-[#0d3a4a]/60 rounded-lg border border-cyan-500/30 hover:bg-[#0d3a4a]/90 transition-colors">
+                      <SiN8N className="w-5 h-5 text-cyan-400" />
+                      <span className="text-sm font-medium text-gray-200">
                         n8n
                       </span>
                     </div>
-                    <div className="flex items-center gap-1.5 px-3 py-2 bg-white/60 rounded-lg border border-gray-200/50 hover:bg-white/80 transition-colors">
-                      <FaCalendarAlt className="w-5 h-5 text-gray-700" />
-                      <span className="text-sm font-medium text-gray-700">
+                    <div className="flex items-center gap-1.5 px-3 py-2 bg-[#0d3a4a]/60 rounded-lg border border-cyan-500/30 hover:bg-[#0d3a4a]/90 transition-colors">
+                      <FaCalendarAlt className="w-5 h-5 text-cyan-400" />
+                      <span className="text-sm font-medium text-gray-200">
                         Calendars
                       </span>
                     </div>
-                    <div className="flex items-center gap-1.5 px-3 py-2 bg-white/60 rounded-lg border border-gray-200/50 hover:bg-white/80 transition-colors">
-                      <MdDashboard className="w-5 h-5 text-gray-700" />
-                      <span className="text-sm font-medium text-gray-700">
+                    <div className="flex items-center gap-1.5 px-3 py-2 bg-[#0d3a4a]/60 rounded-lg border border-cyan-500/30 hover:bg-[#0d3a4a]/90 transition-colors">
+                      <MdDashboard className="w-5 h-5 text-cyan-400" />
+                      <span className="text-sm font-medium text-gray-200">
                         Dashboards
                       </span>
                     </div>
@@ -563,28 +563,28 @@ export default function AIAssistants() {
 
           {/* Web Agent Section */}
           <div id="web-agent" className="mb-24">
-            <div className="bg-white/40 backdrop-blur-xl border border-white/50 rounded-3xl p-8 md:p-12 shadow-xl">
+            <div className="bg-[#0a2a3a]/80 backdrop-blur-xl border border-cyan-500/20 rounded-3xl p-8 md:p-12 shadow-xl">
               <div className="flex items-center gap-3 mb-6">
                 <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500 to-cyan-600 flex items-center justify-center shadow-lg">
                   <MessageSquare className="w-8 h-8 text-white" />
                 </div>
                 <div>
-                  <h2 className="text-4xl font-bold text-gray-900">
+                  <h2 className="text-4xl font-bold text-white">
                     {t("aiAssistantsPage.web.title")}
                   </h2>
-                  <p className="text-xl text-gray-700">
+                  <p className="text-xl text-gray-200">
                     {t("aiAssistantsPage.web.subtitle")}
                   </p>
                 </div>
               </div>
 
-              <p className="text-gray-700 text-lg mb-8 leading-relaxed">
+              <p className="text-gray-200 text-lg mb-8 leading-relaxed">
                 {t("aiAssistantsPage.web.description")}
               </p>
 
               <div className="grid md:grid-cols-2 gap-8 mb-8">
                 <div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-4">
+                  <h3 className="text-xl font-bold text-white mb-4">
                     {t("aiAssistantsPage.web.whatItCanDo")}
                   </h3>
                   <ul className="space-y-2">
@@ -598,7 +598,7 @@ export default function AIAssistants() {
                     ].map((item, idx) => (
                       <li
                         key={idx}
-                        className="flex items-start gap-2 text-gray-700"
+                        className="flex items-start gap-2 text-gray-200"
                       >
                         <CheckCircle
                           size={18}
@@ -611,7 +611,7 @@ export default function AIAssistants() {
                 </div>
 
                 <div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-4">
+                  <h3 className="text-xl font-bold text-white mb-4">
                     {t("aiAssistantsPage.web.applications")}
                   </h3>
                   <div className="flex flex-wrap gap-2 mb-6">
@@ -624,50 +624,50 @@ export default function AIAssistants() {
                     ].map((app, idx) => (
                       <span
                         key={idx}
-                        className="px-4 py-2 bg-blue-500/20 text-blue-800 rounded-full text-sm font-medium"
+                        className="px-4 py-2 bg-blue-500/30 text-blue-100 rounded-full text-sm font-medium border border-blue-500/40"
                       >
                         {app}
                       </span>
                     ))}
                   </div>
 
-                  <h3 className="text-xl font-bold text-gray-900 mb-4">
+                  <h3 className="text-xl font-bold text-white mb-4">
                     {t("aiAssistantsPage.web.integrations")}
                   </h3>
                   <div className="flex flex-wrap gap-2">
-                    <div className="flex items-center gap-1.5 px-3 py-2 bg-white/60 rounded-lg border border-gray-200/50 hover:bg-white/80 transition-colors">
-                      <SiSalesforce className="w-5 h-5 text-gray-700" />
-                      <span className="text-sm font-medium text-gray-700">
+                    <div className="flex items-center gap-1.5 px-3 py-2 bg-[#0d3a4a]/60 rounded-lg border border-cyan-500/30 hover:bg-[#0d3a4a]/90 transition-colors">
+                      <SiSalesforce className="w-5 h-5 text-cyan-400" />
+                      <span className="text-sm font-medium text-gray-200">
                         Salesforce
                       </span>
                     </div>
-                    <div className="flex items-center gap-1.5 px-3 py-2 bg-white/60 rounded-lg border border-gray-200/50 hover:bg-white/80 transition-colors">
-                      <SiHubspot className="w-5 h-5 text-gray-700" />
-                      <span className="text-sm font-medium text-gray-700">
+                    <div className="flex items-center gap-1.5 px-3 py-2 bg-[#0d3a4a]/60 rounded-lg border border-cyan-500/30 hover:bg-[#0d3a4a]/90 transition-colors">
+                      <SiHubspot className="w-5 h-5 text-cyan-400" />
+                      <span className="text-sm font-medium text-gray-200">
                         HubSpot
                       </span>
                     </div>
-                    <div className="flex items-center gap-1.5 px-3 py-2 bg-white/60 rounded-lg border border-gray-200/50 hover:bg-white/80 transition-colors">
-                      <SiN8N className="w-5 h-5 text-gray-700" />
-                      <span className="text-sm font-medium text-gray-700">
+                    <div className="flex items-center gap-1.5 px-3 py-2 bg-[#0d3a4a]/60 rounded-lg border border-cyan-500/30 hover:bg-[#0d3a4a]/90 transition-colors">
+                      <SiN8N className="w-5 h-5 text-cyan-400" />
+                      <span className="text-sm font-medium text-gray-200">
                         n8n
                       </span>
                     </div>
-                    <div className="flex items-center gap-1.5 px-3 py-2 bg-white/60 rounded-lg border border-gray-200/50 hover:bg-white/80 transition-colors">
-                      <SiGooglecalendar className="w-5 h-5 text-gray-700" />
-                      <span className="text-sm font-medium text-gray-700">
+                    <div className="flex items-center gap-1.5 px-3 py-2 bg-[#0d3a4a]/60 rounded-lg border border-cyan-500/30 hover:bg-[#0d3a4a]/90 transition-colors">
+                      <SiGooglecalendar className="w-5 h-5 text-cyan-400" />
+                      <span className="text-sm font-medium text-gray-200">
                         Google Calendar
                       </span>
                     </div>
-                    <div className="flex items-center gap-1.5 px-3 py-2 bg-white/60 rounded-lg border border-gray-200/50 hover:bg-white/80 transition-colors">
-                      <FaMicrosoft className="w-5 h-5 text-gray-700" />
-                      <span className="text-sm font-medium text-gray-700">
+                    <div className="flex items-center gap-1.5 px-3 py-2 bg-[#0d3a4a]/60 rounded-lg border border-cyan-500/30 hover:bg-[#0d3a4a]/90 transition-colors">
+                      <FaMicrosoft className="w-5 h-5 text-cyan-400" />
+                      <span className="text-sm font-medium text-gray-200">
                         Outlook
                       </span>
                     </div>
-                    <div className="flex items-center gap-1.5 px-3 py-2 bg-white/60 rounded-lg border border-gray-200/50 hover:bg-white/80 transition-colors">
-                      <MdDashboard className="w-5 h-5 text-gray-700" />
-                      <span className="text-sm font-medium text-gray-700">
+                    <div className="flex items-center gap-1.5 px-3 py-2 bg-[#0d3a4a]/60 rounded-lg border border-cyan-500/30 hover:bg-[#0d3a4a]/90 transition-colors">
+                      <MdDashboard className="w-5 h-5 text-cyan-400" />
+                      <span className="text-sm font-medium text-gray-200">
                         Dashboards
                       </span>
                     </div>
@@ -679,7 +679,7 @@ export default function AIAssistants() {
 
           {/* Industries Section */}
           <div id="industries" className="text-center mb-12">
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+            <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
               {t("aiAssistantsPage.industries.title")}
             </h2>
           </div>
@@ -688,12 +688,12 @@ export default function AIAssistants() {
             {industries.map((industry, idx) => (
               <div
                 key={idx}
-                className="group relative rounded-2xl overflow-hidden bg-white/40 backdrop-blur-xl border border-white/50 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 hover:bg-white/60 p-6 flex flex-col items-center justify-center text-center"
+                className="group relative rounded-2xl overflow-hidden bg-[#0a2a3a]/80 backdrop-blur-xl border border-cyan-500/20 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 hover:bg-[#0d3a4a]/90 p-6 flex flex-col items-center justify-center text-center"
               >
-                <div className="text-gray-700 group-hover:text-blue-600 transition-colors duration-300 mb-3">
+                <div className="text-cyan-400 group-hover:text-cyan-300 transition-colors duration-300 mb-3">
                   {industry.icon}
                 </div>
-                <h3 className="text-sm font-bold text-gray-900">
+                <h3 className="text-sm font-bold text-white">
                   {industry.name}
                 </h3>
               </div>

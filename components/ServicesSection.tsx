@@ -56,10 +56,10 @@ export default function ServicesSection() {
     <section id="services" className="relative w-full py-20 px-4 md:px-8">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+          <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
             {t("services.title")}
           </h2>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+          <p className="text-xl text-gray-300 max-w-2xl mx-auto">
             {t("services.subtitle")}
           </p>
         </div>
@@ -68,7 +68,7 @@ export default function ServicesSection() {
           {SERVICES.map((service) => (
             <div
               key={service.id}
-              className="group relative bg-white/40 backdrop-blur-xl border border-white/50 rounded-3xl p-8 hover:bg-white/60 transition-all duration-300 hover:-translate-y-2 shadow-lg hover:shadow-2xl"
+              className="group relative bg-[#0a2a3a]/80 backdrop-blur-xl border border-cyan-500/20 rounded-3xl p-8 hover:bg-[#0d3a4a]/90 transition-all duration-300 hover:-translate-y-2 shadow-lg hover:shadow-2xl"
             >
               <div
                 className={`w-16 h-16 rounded-2xl ${service.color} flex items-center justify-center mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300`}
@@ -76,11 +76,11 @@ export default function ServicesSection() {
                 {service.icon}
               </div>
 
-              <h3 className="text-2xl font-bold text-gray-900 mb-3 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-gray-900 group-hover:to-gray-600 transition-colors">
+              <h3 className="text-2xl font-bold text-white mb-3 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-gray-300 transition-colors">
                 {service.title}
               </h3>
 
-              <p className="text-gray-700 mb-8 leading-relaxed">
+              <p className="text-gray-300 mb-8 leading-relaxed">
                 {service.description}
               </p>
 
@@ -88,7 +88,7 @@ export default function ServicesSection() {
                 {service.features.map((feature, idx) => (
                   <li
                     key={idx}
-                    className="flex items-start gap-3 text-sm text-gray-600 font-medium"
+                    className="flex items-start gap-3 text-sm text-gray-300 font-medium"
                   >
                     <div
                       className={`mt-0.5 p-0.5 rounded-full bg-gradient-to-r ${service.gradient} opacity-80`}

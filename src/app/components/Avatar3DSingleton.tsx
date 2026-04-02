@@ -88,13 +88,21 @@ export default function Avatar3DSingleton({
         if (!globalScene) {
           globalScene = new THREE.Scene();
 
-          // Add lights
-          const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
+          // Add lights - Increased brightness
+          const ambientLight = new THREE.AmbientLight(0xffffff, 1.5);
           globalScene.add(ambientLight);
 
-          const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+          const directionalLight = new THREE.DirectionalLight(0xffffff, 2);
           directionalLight.position.set(5, 5, 5);
           globalScene.add(directionalLight);
+
+          const directionalLight2 = new THREE.DirectionalLight(0xffffff, 1.5);
+          directionalLight2.position.set(-5, 3, -5);
+          globalScene.add(directionalLight2);
+
+          const pointLight = new THREE.PointLight(0xffffff, 1);
+          pointLight.position.set(0, 5, 0);
+          globalScene.add(pointLight);
         }
 
         // Create camera only once

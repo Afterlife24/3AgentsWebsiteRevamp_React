@@ -8,7 +8,6 @@ const LANGUAGES = [
   { code: "fr" as const, label: "Français", flag: "🇫🇷" },
   { code: "ar" as const, label: "العربية", flag: "🇸🇦" },
 ];
-
 export default function NavBar() {
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [showLanguageMenu, setShowLanguageMenu] = useState(false);

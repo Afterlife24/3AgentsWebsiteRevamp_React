@@ -125,18 +125,18 @@ export default function Footer() {
           <ul className="space-y-4 text-sm text-gray-600">
             <li className="flex items-start gap-3">
               <Mail size={18} className="text-purple-600 shrink-0 mt-0.5" />
-              <span>info@autonomiq.ai</span>
+              <span>info@autonomiq.ae</span>
             </li>
             <li className="flex items-start gap-3">
               <Phone size={18} className="text-purple-600 shrink-0 mt-0.5" />
-              <span>+1 (555) 123-4567</span>
+              <span>+971 58 132 4928</span>
             </li>
             <li className="flex items-start gap-3">
               <MapPin size={18} className="text-purple-600 shrink-0 mt-0.5" />
               <span>
-                123 Innovation Blvd,
+                Business Centre, 3 Floor,
                 <br />
-                Tech City, TC 90210
+                Building A3, Business Park, Dubai South
               </span>
             </li>
           </ul>

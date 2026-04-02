@@ -33,7 +33,6 @@ import AmbientBackground from "../../../components/AmbientBackground";
 import NavBar from "../../../components/NavBar";
 import VisionSection from "../../../components/VisionSection";
 import ServicesSection from "../../../components/ServicesSection";
-import TestimonialsSection from "../../../components/TestimonialsSection";
 import Footer from "../../../components/Footer";
 import { useLanguage } from "../contexts/LanguageContext";
 import { useWidget } from "../contexts/WidgetContext";
@@ -832,7 +831,6 @@ export default function Home() {
             </div>
           </section>
 
-          <TestimonialsSection />
           <Footer />
         </div>
 
@@ -1340,9 +1338,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
-      {/* --- TESTIMONIALS SECTION --- */}
-      <TestimonialsSection />
 
       {/* --- FOOTER --- */}
       <Footer />

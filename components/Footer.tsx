@@ -84,7 +84,7 @@ export default function Footer() {
           <ul className="space-y-4 text-sm text-gray-300">
             <li>
               <Link
-                to="#"
+                to="/privacy-policy"
                 className="hover:text-cyan-400 transition-colors"
               >
                 {t("footer.legal.privacy")}
@@ -100,7 +100,7 @@ export default function Footer() {
             </li>
             <li>
               <Link
-                to="#"
+                to="/cookie-policy"
                 className="hover:text-cyan-400 transition-colors"
               >
                 {t("footer.legal.cookie")}

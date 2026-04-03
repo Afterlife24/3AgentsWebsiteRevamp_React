@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useLanguage } from "@/app/contexts/LanguageContext";
-import { Globe } from "lucide-react";
+import { useAuth } from "@/app/contexts/AuthContext";
+import { Globe, LogOut, User } from "lucide-react";
 
 const LANGUAGES = [
   { code: "en" as const, label: "English", flag: "🇬🇧" },
@@ -11,8 +12,10 @@ const LANGUAGES = [
 export default function NavBar() {
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [showLanguageMenu, setShowLanguageMenu] = useState(false);
+  const [showUserMenu, setShowUserMenu] = useState(false);
   const location = useLocation();
   const { language, setLanguage, t } = useLanguage();
+  const { user, logout } = useAuth();
 
   const isRTL = language === "ar";
 
@@ -112,6 +115,45 @@ export default function NavBar() {
               </div>
             )}
           </div>
+
+          {/* Auth Buttons */}
+          {user ? (
+            <div className="relative">
+              <button
+                onClick={() => setShowUserMenu(!showUserMenu)}
+                className={`flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-md rounded-full border border-white/20 hover:bg-white/20 transition-colors ${isRTL ? "flex-row-reverse" : ""}`}
+              >
+                <User className="w-4 h-4 text-cyan-400" />
+                <span className="text-sm font-medium text-gray-300 max-w-[100px] truncate">{user.name}</span>
+              </button>
+              {showUserMenu && (
+                <div className={`absolute top-12 bg-white/90 backdrop-blur-xl rounded-2xl border border-white/50 shadow-2xl p-2 w-40 z-50 ${isRTL ? "left-0" : "right-0"}`}>
+                  <button
+                    onClick={() => { logout(); setShowUserMenu(false); }}
+                    className="w-full px-4 py-2 rounded-xl transition-colors flex items-center gap-2 text-left hover:bg-black/5"
+                  >
+                    <LogOut className="w-4 h-4 text-gray-600" />
+                    <span className="text-sm text-gray-700">{t("auth.nav.logout")}</span>
+                  </button>
+                </div>
+              )}
+            </div>
+          ) : (
+            <div className={`flex gap-2 ${isRTL ? "flex-row-reverse" : ""}`}>
+              <Link
+                to="/login"
+                className="px-4 py-2 text-sm font-medium text-gray-300 bg-white/10 backdrop-blur-md rounded-full border border-white/20 hover:bg-white/20 transition-colors"
+              >
+                {t("auth.nav.login")}
+              </Link>
+              <Link
+                to="/signup"
+                className="px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-cyan-500 to-blue-600 rounded-full hover:from-cyan-400 hover:to-blue-500 transition-all"
+              >
+                {t("auth.nav.signup")}
+              </Link>
+            </div>
+          )}
         </div>
       </nav>
 
@@ -209,6 +251,32 @@ export default function NavBar() {
                 {item.name}
               </Link>
             ))}
+            <div className="border-t border-gray-300 my-2" />
+            {user ? (
+              <button
+                onClick={() => { logout(); setShowMobileMenu(false); }}
+                className="block w-full text-left px-4 py-3 text-gray-700 hover:bg-black/5 rounded-xl transition-colors"
+              >
+                {t("auth.nav.logout")}
+              </button>
+            ) : (
+              <>
+                <Link
+                  to="/login"
+                  className="block w-full text-left px-4 py-3 text-gray-700 hover:bg-black/5 rounded-xl transition-colors"
+                  onClick={() => setShowMobileMenu(false)}
+                >
+                  {t("auth.nav.login")}
+                </Link>
+                <Link
+                  to="/signup"
+                  className="block w-full text-left px-4 py-3 text-cyan-600 font-semibold hover:bg-black/5 rounded-xl transition-colors"
+                  onClick={() => setShowMobileMenu(false)}
+                >
+                  {t("auth.nav.signup")}
+                </Link>
+              </>
+            )}
           </div>
         )}
       </nav>

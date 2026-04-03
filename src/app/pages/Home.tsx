@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, Link } from "react-router-dom";
 import {
   Monitor,
   MessageCircle,
@@ -14,6 +14,7 @@ import {
   Check,
   Users,
   Briefcase,
+  LogIn,
 } from "lucide-react";
 import CountryCodeSelect, {
   DEFAULT_COUNTRY,
@@ -36,10 +37,12 @@ import ServicesSection from "../../../components/ServicesSection";
 import Footer from "../../../components/Footer";
 import { useLanguage } from "../contexts/LanguageContext";
 import { useWidget } from "../contexts/WidgetContext";
+import { useAuth } from "../contexts/AuthContext";
 
 export default function Home() {
   const { t } = useLanguage();
   const { showWidget, openWidget } = useWidget();
+  const { user } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
   const [activeId, setActiveId] = useState<string | null>("voice");
@@ -80,7 +83,14 @@ export default function Home() {
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [pendingAction, setPendingAction] = useState<"web" | "voice" | "whatsapp" | null>(null);
 
+  // Auth gate modal state
+  const [showAuthModal, setShowAuthModal] = useState(false);
+
   const handleTryAgent = (agentType: "web" | "voice" | "whatsapp") => {
+    if (!user) {
+      setShowAuthModal(true);
+      return;
+    }
     if (!termsAccepted) {
       setPendingAction(agentType);
       setShowTermsModal(true);
@@ -904,6 +914,45 @@ export default function Home() {
             </div>
           </div>
         )}
+
+        {/* Auth Gate Modal */}
+        {showAuthModal && (
+          <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/50 backdrop-blur-md">
+            <div className="bg-white/95 backdrop-blur-xl rounded-2xl shadow-xl max-w-sm w-full border border-gray-200/50 overflow-hidden">
+              <div className="p-8 text-center">
+                <div className="w-16 h-16 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-2xl mx-auto mb-4 flex items-center justify-center">
+                  <LogIn className="w-8 h-8 text-white" />
+                </div>
+                <h2 className="text-2xl font-bold text-gray-900 mb-2">{t("auth.login.title")}</h2>
+                <p className="text-sm text-gray-600 mb-6">
+                  Please sign in or create an account to try our AI agents.
+                </p>
+                <div className="flex flex-col gap-3">
+                  <Link
+                    to="/login"
+                    className="w-full px-4 py-3 bg-gradient-to-r from-cyan-500 to-blue-600 text-white rounded-xl font-semibold hover:from-cyan-400 hover:to-blue-500 transition-all text-center"
+                    onClick={() => setShowAuthModal(false)}
+                  >
+                    {t("auth.nav.login")}
+                  </Link>
+                  <Link
+                    to="/signup"
+                    className="w-full px-4 py-3 bg-gray-100 text-gray-700 rounded-xl font-semibold hover:bg-gray-200 transition-all text-center"
+                    onClick={() => setShowAuthModal(false)}
+                  >
+                    {t("auth.nav.signup")}
+                  </Link>
+                  <button
+                    onClick={() => setShowAuthModal(false)}
+                    className="text-sm text-gray-400 hover:text-gray-600 transition-colors mt-1"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     );
   }
@@ -1367,7 +1416,6 @@ export default function Home() {
       {showTermsModal && (
         <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/50 backdrop-blur-md">
           <div className="bg-white/95 backdrop-blur-xl rounded-2xl shadow-xl max-w-md w-full border border-gray-200/50 overflow-hidden">
-            {/* Content */}
             <div className="p-8">
               <div className="text-center mb-6">
                 <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-500 rounded-2xl mx-auto mb-4 flex items-center justify-center">
@@ -1415,6 +1463,45 @@ export default function Home() {
                   className="flex-1 px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl font-bold shadow-lg hover:shadow-xl hover:scale-105 transition-all"
                 >
                   Accept
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Auth Gate Modal */}
+      {showAuthModal && (
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/50 backdrop-blur-md">
+          <div className="bg-white/95 backdrop-blur-xl rounded-2xl shadow-xl max-w-sm w-full border border-gray-200/50 overflow-hidden">
+            <div className="p-8 text-center">
+              <div className="w-16 h-16 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-2xl mx-auto mb-4 flex items-center justify-center">
+                <LogIn className="w-8 h-8 text-white" />
+              </div>
+              <h2 className="text-2xl font-bold text-gray-900 mb-2">{t("auth.login.title")}</h2>
+              <p className="text-sm text-gray-600 mb-6">
+                Please sign in or create an account to try our AI agents.
+              </p>
+              <div className="flex flex-col gap-3">
+                <Link
+                  to="/login"
+                  className="w-full px-4 py-3 bg-gradient-to-r from-cyan-500 to-blue-600 text-white rounded-xl font-semibold hover:from-cyan-400 hover:to-blue-500 transition-all text-center"
+                  onClick={() => setShowAuthModal(false)}
+                >
+                  {t("auth.nav.login")}
+                </Link>
+                <Link
+                  to="/signup"
+                  className="w-full px-4 py-3 bg-gray-100 text-gray-700 rounded-xl font-semibold hover:bg-gray-200 transition-all text-center"
+                  onClick={() => setShowAuthModal(false)}
+                >
+                  {t("auth.nav.signup")}
+                </Link>
+                <button
+                  onClick={() => setShowAuthModal(false)}
+                  className="text-sm text-gray-400 hover:text-gray-600 transition-colors mt-1"
+                >
+                  Cancel
                 </button>
               </div>
             </div>

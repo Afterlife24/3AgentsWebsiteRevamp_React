@@ -1,3 +1,4 @@
+import { GoogleOAuthProvider } from "@react-oauth/google";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import { useEffect, lazy, Suspense } from "react";
 import { LanguageProvider } from "./app/contexts/LanguageContext";
@@ -6,6 +7,14 @@ import Home from "./app/pages/Home";
 import About from "./app/pages/About";
 import AIAssistants from "./app/pages/AIAssistants";
 import AdditionalServices from "./app/pages/AdditionalServices";
+import PrivacyPolicy from "./app/pages/PrivacyPolicy";
+import CookiePolicy from "./app/pages/CookiePolicy";
+import Login from "./app/pages/Login";
+import Signup from "./app/pages/Signup";
+import VerifyEmail from "./app/pages/VerifyEmail";
+import ForgotPassword from "./app/pages/ForgotPassword";
+import ResetPassword from "./app/pages/ResetPassword";
+import { AuthProvider } from "./app/contexts/AuthContext";
 
 // Lazy load the LiveKitWidget
 const LiveKitWidget = lazy(() => import("./app/components/LiveKitWidget"));
@@ -48,6 +57,13 @@ function AppRoutes() {
       <Route path="/about" element={<About />} />
       <Route path="/ai-assistants" element={<AIAssistants />} />
       <Route path="/solutions" element={<AdditionalServices />} />
+      <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+      <Route path="/cookie-policy" element={<CookiePolicy />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/signup" element={<Signup />} />
+      <Route path="/verify-email" element={<VerifyEmail />} />
+      <Route path="/forgot-password" element={<ForgotPassword />} />
+      <Route path="/reset-password" element={<ResetPassword />} />
     </Routes>
   );
 }
@@ -70,11 +86,15 @@ function AppContent() {
 
 function App() {
   return (
-    <LanguageProvider>
-      <WidgetProvider>
-        <AppContent />
-      </WidgetProvider>
-    </LanguageProvider>
+    <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID || ""}>
+      <AuthProvider>
+        <LanguageProvider>
+          <WidgetProvider>
+            <AppContent />
+          </WidgetProvider>
+        </LanguageProvider>
+      </AuthProvider>
+    </GoogleOAuthProvider>
   );
 }
 

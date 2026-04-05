@@ -800,6 +800,24 @@ export default function Home() {
                             </button>
                           </div>
 
+                          {/* Incoming Call Number for Testing */}
+                          <a
+                            href="tel:+18137974755"
+                            className="block p-3 rounded-xl bg-purple-500/20 border border-purple-500/30 backdrop-blur-md hover:bg-purple-500/30 transition-all cursor-pointer"
+                          >
+                            <div className="flex items-center justify-between">
+                              <div className="flex flex-col">
+                                <span className="text-[10px] uppercase text-purple-600 font-bold tracking-wider">
+                                  Test Incoming Call
+                                </span>
+                                <span className="text-sm font-mono font-bold text-gray-900">
+                                  +1 813 797 4755
+                                </span>
+                              </div>
+                              <Phone size={16} className="text-purple-600" />
+                            </div>
+                          </a>
+
                           {/* Status Messages */}
                           {callStatus.type && (
                             <div
@@ -1271,6 +1289,24 @@ export default function Home() {
                                 )}
                               </button>
                             </div>
+
+                            {/* Incoming Call Number for Testing */}
+                            <a
+                              href="tel:+18137974755"
+                              className="block px-4 py-2.5 rounded-xl bg-purple-500/20 border border-purple-500/30 backdrop-blur-md shadow-sm hover:bg-purple-500/30 transition-all cursor-pointer"
+                            >
+                              <div className="flex items-center justify-between">
+                                <div className="flex flex-col">
+                                  <span className="text-[10px] uppercase text-purple-600 font-bold tracking-wider">
+                                    Test Incoming Call
+                                  </span>
+                                  <span className="text-sm font-mono font-bold text-gray-900">
+                                    +1 813 797 4755
+                                  </span>
+                                </div>
+                                <Phone size={16} className="text-purple-600" />
+                              </div>
+                            </a>
 
                             {callStatus.type && (
                               <div

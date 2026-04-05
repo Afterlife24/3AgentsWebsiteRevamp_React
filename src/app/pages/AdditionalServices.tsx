@@ -236,10 +236,13 @@ export default function AdditionalServices() {
                             <p className="text-lg text-white/90 mb-8 max-w-2xl mx-auto">
                                 {t("solutions.cta.subtitle")}
                             </p>
-                            <button className="inline-flex items-center gap-3 px-8 py-4 bg-white text-purple-600 rounded-2xl font-bold text-lg shadow-2xl hover:shadow-3xl transition-all transform hover:scale-105">
+                            <a
+                                href="tel:+971524934182"
+                                className="inline-flex items-center gap-3 px-8 py-4 bg-white text-purple-600 rounded-2xl font-bold text-lg shadow-2xl hover:shadow-3xl transition-all transform hover:scale-105 cursor-pointer"
+                            >
                                 <span>{t("solutions.cta.button")}</span>
                                 <ArrowRight className="w-5 h-5" />
-                            </button>
+                            </a>
                         </div>
                     </div>
                 </div>

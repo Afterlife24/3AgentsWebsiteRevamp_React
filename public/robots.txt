@@ -1,0 +1,18 @@
+# robots.txt for Autonomiq website
+# Defines rules for how search engine crawlers access the website.
+
+# Specify which crawler the rule applies to (* means all crawlers)
+User-agent: *
+
+# Define access permissions for the site
+Allow: /
+
+# Prevent crawling of authentication and utility pages
+Disallow: /login
+Disallow: /signup
+Disallow: /verify-email
+Disallow: /forgot-password
+Disallow: /reset-password
+
+# Provide the location of the XML sitemap to help search engines discover all site URLs
+Sitemap: https://autonomiq.ae/sitemap.xml

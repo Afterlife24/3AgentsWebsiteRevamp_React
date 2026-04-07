@@ -1477,13 +1477,13 @@ export default function Home() {
                 </div>
               </div>
 
-              <a
-                href="/ai-assistants"
+              <Link
+                to="/ai-assistants"
                 className="inline-flex items-center gap-3 px-8 py-4 bg-white text-purple-700 rounded-2xl font-bold text-lg shadow-2xl hover:shadow-3xl transition-all transform hover:scale-105 hover:bg-gray-50"
               >
                 <span>{t("aiAssistants.cta")}</span>
                 <ArrowRight className="w-5 h-5" />
-              </a>
+              </Link>
             </div>
           </div>
         </div>

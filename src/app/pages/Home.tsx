@@ -730,10 +730,54 @@ export default function Home() {
                           </div>
                         </div>
                       ) : (
-                        <div className="space-y-2">
-                          {/* Call Form */}
-                          <div className="flex flex-col gap-2 p-2 bg-white/80 backdrop-blur-md rounded-xl border border-white/50">
-                            <div className="flex items-center gap-1">
+                        <div className="space-y-3">
+                          {/* Incoming Calls Card */}
+                          <div className="bg-white/60 backdrop-blur-sm rounded-xl p-3 border border-white/50">
+                            <div className="flex items-center justify-between">
+                              <div
+                                className="flex flex-col cursor-pointer flex-1"
+                                onClick={() => {
+                                  navigator.clipboard.writeText("+18137974755");
+                                  setCopySuccess(true);
+                                  setTimeout(() => setCopySuccess(false), 2000);
+                                }}
+                              >
+                                <span className="text-[10px] uppercase text-gray-500 font-bold tracking-wider flex items-center gap-1">
+                                  {copySuccess ? (
+                                    <Check
+                                      size={12}
+                                      className="text-green-600"
+                                    />
+                                  ) : (
+                                    <Copy size={12} />
+                                  )}
+                                  {copySuccess ? "Copied!" : "Try This Call"}
+                                </span>
+                                <span className="text-xs font-mono font-bold text-gray-800">
+                                  +1 813 797 4755
+                                </span>
+                              </div>
+                              <a
+                                href="tel:+18137974755"
+                                className="p-2.5 bg-purple-500 text-white rounded-xl shadow-md hover:bg-purple-600 transition-colors"
+                              >
+                                <Phone size={16} />
+                              </a>
+                            </div>
+                          </div>
+
+                          {/* OR Divider */}
+                          <div className="flex items-center gap-2 px-2">
+                            <div className="h-px bg-gray-300 flex-1"></div>
+                            <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">
+                              OR
+                            </span>
+                            <div className="h-px bg-gray-300 flex-1"></div>
+                          </div>
+
+                          {/* Outgoing Calls Form */}
+                          <div className="space-y-2">
+                            <div className="flex items-center gap-1 p-1 bg-white/80 backdrop-blur-md rounded-xl border border-white/50">
                               <CountryCodeSelect
                                 value={selectedCountry}
                                 onChange={setSelectedCountry}
@@ -745,8 +789,8 @@ export default function Home() {
                               />
                               <input
                                 type="tel"
-                                placeholder="Phone number"
-                                className="bg-transparent border-none outline-none text-gray-900 px-2 py-2.5 flex-1 text-sm disabled:opacity-50"
+                                placeholder="Your Number"
+                                className="bg-transparent text-black outline-none px-2 py-2.5 flex-1 text-sm"
                                 value={phoneNumber}
                                 onChange={(e) => {
                                   const value = e.target.value.replace(
@@ -798,44 +842,26 @@ export default function Home() {
                                 </>
                               )}
                             </button>
+
+                            {/* Status Messages */}
+                            {callStatus.type && (
+                              <div
+                                className={`p-3 rounded-xl backdrop-blur-md border ${callStatus.type === "success"
+                                  ? "bg-green-500/20 border-green-500/30"
+                                  : "bg-red-500/20 border-red-500/30"
+                                  }`}
+                              >
+                                <div className="flex items-center gap-2">
+                                  <div
+                                    className={`w-2 h-2 rounded-full ${callStatus.type === "success" ? "bg-green-500" : "bg-red-500"} animate-pulse`}
+                                  />
+                                  <span className="text-xs font-medium text-white">
+                                    {callStatus.message}
+                                  </span>
+                                </div>
+                              </div>
+                            )}
                           </div>
-
-                          {/* Incoming Call Number for Testing */}
-                          <a
-                            href="tel:+18137974755"
-                            className="block p-3 rounded-xl bg-purple-500/20 border border-purple-500/30 backdrop-blur-md hover:bg-purple-500/30 transition-all cursor-pointer"
-                          >
-                            <div className="flex items-center justify-between">
-                              <div className="flex flex-col">
-                                <span className="text-[10px] uppercase text-purple-600 font-bold tracking-wider">
-                                  Test Incoming Call
-                                </span>
-                                <span className="text-sm font-mono font-bold text-gray-900">
-                                  +1 813 797 4755
-                                </span>
-                              </div>
-                              <Phone size={16} className="text-purple-600" />
-                            </div>
-                          </a>
-
-                          {/* Status Messages */}
-                          {callStatus.type && (
-                            <div
-                              className={`p-3 rounded-xl backdrop-blur-md border ${callStatus.type === "success"
-                                ? "bg-green-500/20 border-green-500/30"
-                                : "bg-red-500/20 border-red-500/30"
-                                }`}
-                            >
-                              <div className="flex items-center gap-2">
-                                <div
-                                  className={`w-2 h-2 rounded-full ${callStatus.type === "success" ? "bg-green-500" : "bg-red-500"} animate-pulse`}
-                                />
-                                <span className="text-xs font-medium text-white">
-                                  {callStatus.message}
-                                </span>
-                              </div>
-                            </div>
-                          )}
                         </div>
                       )}
                     </div>
@@ -1220,7 +1246,43 @@ export default function Home() {
                           </div>
                         ) : (
                           <div className="flex flex-col gap-3 w-full max-w-sm">
-                            <div className="flex items-center gap-1 p-1.5 bg-white/40 border border-white/50 backdrop-blur-md rounded-full shadow-sm focus-within:ring-2 focus-within:ring-gray-900/20">
+                            {/* Incoming Calls Card */}
+                            <div className="flex items-center justify-between bg-white/40 border border-white/50 backdrop-blur-md rounded-xl p-2 px-3 shadow-sm">
+                              <div
+                                className="flex flex-col cursor-pointer"
+                                onClick={() => {
+                                  navigator.clipboard.writeText("+18137974755");
+                                  setCopySuccess(true);
+                                  setTimeout(() => setCopySuccess(false), 2000);
+                                }}
+                                title="Click to copy"
+                              >
+                                <span className="text-[10px] uppercase text-gray-500 font-bold tracking-wider">
+                                  {copySuccess ? "Copied!" : "Try This Call"}
+                                </span>
+                                <span className="text-sm font-mono font-bold text-gray-800 hover:text-purple-600 transition-colors">
+                                  +1 813 797 4755
+                                </span>
+                              </div>
+                              <a
+                                href="tel:+18137974755"
+                                className="p-2 bg-purple-500 text-white rounded-full shadow-md hover:bg-purple-600 transition-colors"
+                                title="Call this number"
+                              >
+                                <Phone size={16} />
+                              </a>
+                            </div>
+
+                            <div className="flex items-center gap-2 px-2">
+                              <div className="h-px bg-gray-300 flex-1"></div>
+                              <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">
+                                OR
+                              </span>
+                              <div className="h-px bg-gray-300 flex-1"></div>
+                            </div>
+
+                            {/* Outgoing Calls Form */}
+                            <div className="flex items-center gap-1 p-1.5 bg-white/60 border border-white/50 backdrop-blur-md rounded-full shadow-sm">
                               <CountryCodeSelect
                                 value={selectedCountry}
                                 onChange={setSelectedCountry}
@@ -1233,7 +1295,7 @@ export default function Home() {
                               <div className="w-px h-6 bg-gray-300/50"></div>
                               <input
                                 type="tel"
-                                placeholder="555 000 0000"
+                                placeholder="Your Number"
                                 value={phoneNumber}
                                 onChange={(e) => {
                                   const value = e.target.value.replace(
@@ -1266,7 +1328,7 @@ export default function Home() {
                                   callState === "connecting" ||
                                   callState === "connected"
                                 }
-                                className="flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-purple-500 to-pink-600 text-white rounded-full font-bold shadow-md hover:from-purple-600 hover:to-pink-700 transition-all text-sm disabled:opacity-50 disabled:cursor-not-allowed shrink-0 whitespace-nowrap"
+                                className="flex items-center gap-2 px-6 py-2 bg-gradient-to-r from-purple-500 to-pink-600 text-white rounded-full font-bold hover:from-purple-600 hover:to-pink-700 transition-all disabled:opacity-50 whitespace-nowrap shrink-0"
                               >
                                 {callState === "connecting" ? (
                                   <>
@@ -1289,24 +1351,6 @@ export default function Home() {
                                 )}
                               </button>
                             </div>
-
-                            {/* Incoming Call Number for Testing */}
-                            <a
-                              href="tel:+18137974755"
-                              className="block px-4 py-2.5 rounded-xl bg-purple-500/20 border border-purple-500/30 backdrop-blur-md shadow-sm hover:bg-purple-500/30 transition-all cursor-pointer"
-                            >
-                              <div className="flex items-center justify-between">
-                                <div className="flex flex-col">
-                                  <span className="text-[10px] uppercase text-purple-600 font-bold tracking-wider">
-                                    Test Incoming Call
-                                  </span>
-                                  <span className="text-sm font-mono font-bold text-gray-900">
-                                    +1 813 797 4755
-                                  </span>
-                                </div>
-                                <Phone size={16} className="text-purple-600" />
-                              </div>
-                            </a>
 
                             {callStatus.type && (
                               <div

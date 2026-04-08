@@ -92,7 +92,7 @@ export default function Footer() {
             </li>
             <li>
               <Link
-                to="#"
+                to="/terms-of-service"
                 className="hover:text-cyan-400 transition-colors"
               >
                 {t("footer.legal.terms")}

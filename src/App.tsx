@@ -9,6 +9,7 @@ import AIAssistants from "./app/pages/AIAssistants";
 import AdditionalServices from "./app/pages/AdditionalServices";
 import PrivacyPolicy from "./app/pages/PrivacyPolicy";
 import CookiePolicy from "./app/pages/CookiePolicy";
+import TermsOfService from "./app/pages/TermsOfService";
 import Login from "./app/pages/Login";
 import Signup from "./app/pages/Signup";
 import VerifyEmail from "./app/pages/VerifyEmail";
@@ -59,6 +60,7 @@ function AppRoutes() {
       <Route path="/solutions" element={<AdditionalServices />} />
       <Route path="/privacy-policy" element={<PrivacyPolicy />} />
       <Route path="/cookie-policy" element={<CookiePolicy />} />
+      <Route path="/terms-of-service" element={<TermsOfService />} />
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
       <Route path="/verify-email" element={<VerifyEmail />} />

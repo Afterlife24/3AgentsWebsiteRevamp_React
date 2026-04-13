@@ -5,9 +5,9 @@ import { useAuth } from "@/app/contexts/AuthContext";
 import { Globe, LogOut, User } from "lucide-react";
 
 const LANGUAGES = [
-  { code: "en" as const, label: "English", flag: "🇬🇧" },
-  { code: "fr" as const, label: "Français", flag: "🇫🇷" },
-  { code: "ar" as const, label: "العربية", flag: "🇸🇦" },
+  { code: "en" as const, label: "English" },
+  { code: "fr" as const, label: "Français" },
+  { code: "ar" as const, label: "العربية" },
 ];
 export default function NavBar() {
   const [showMobileMenu, setShowMobileMenu] = useState(false);
@@ -84,7 +84,7 @@ export default function NavBar() {
             >
               <Globe className="w-4 h-4 text-gray-300" />
               <span className="text-sm font-medium text-gray-300">
-                {LANGUAGES.find((l) => l.code === language)?.flag}
+                {LANGUAGES.find((l) => l.code === language)?.label}
               </span>
             </button>
 
@@ -99,8 +99,8 @@ export default function NavBar() {
                       setLanguage(lang.code);
                       setShowLanguageMenu(false);
                     }}
-                    className={`w-full px-4 py-2 rounded-xl transition-colors flex items-center gap-2 ${lang.code === "ar"
-                      ? "flex-row-reverse text-right"
+                    className={`w-full px-4 py-2 rounded-xl transition-colors ${lang.code === "ar"
+                      ? "text-right"
                       : "text-left"
                       } ${language === lang.code
                         ? "bg-black/10 font-bold"
@@ -108,7 +108,6 @@ export default function NavBar() {
                       }`}
                     data-testid={`language-option-${lang.code}`}
                   >
-                    <span>{lang.flag}</span>
                     <span className="text-sm text-gray-700">{lang.label}</span>
                   </button>
                 ))}
@@ -200,8 +199,8 @@ export default function NavBar() {
                       setLanguage(lang.code);
                       setShowLanguageMenu(false);
                     }}
-                    className={`w-full px-3 py-2 rounded-xl transition-colors flex items-center gap-2 text-sm ${lang.code === "ar"
-                      ? "flex-row-reverse text-right"
+                    className={`w-full px-3 py-2 rounded-xl transition-colors text-sm ${lang.code === "ar"
+                      ? "text-right"
                       : "text-left"
                       } ${language === lang.code
                         ? "bg-black/10 font-bold"
@@ -209,7 +208,6 @@ export default function NavBar() {
                       }`}
                     data-testid={`language-option-${lang.code}`}
                   >
-                    <span>{lang.flag}</span>
                     <span className="text-gray-700">{lang.label}</span>
                   </button>
                 ))}

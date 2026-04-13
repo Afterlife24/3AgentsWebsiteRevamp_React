@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Mail, MapPin, Phone, Github, Twitter, Linkedin } from "lucide-react";
+import { Mail, MapPin, Phone } from "lucide-react";
+import { FaInstagram, FaTiktok, FaFacebook } from "react-icons/fa";
 import { useLanguage } from "@/app/contexts/LanguageContext";
 
 export default function Footer() {
@@ -25,22 +26,31 @@ export default function Footer() {
           </p>
           <div className="flex gap-4">
             <a
-              href="#"
-              className="p-2 bg-white/10 rounded-full text-gray-300 hover:text-white hover:bg-white/20 transition-all shadow-sm"
+              href="https://www.instagram.com/auto.nomiqai?igsh=bzF0ZHB3dHFmc2Yy&utm_source=qr"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="p-2 bg-white/10 rounded-full text-gray-300 hover:text-white hover:bg-gradient-to-br hover:from-purple-500 hover:to-pink-500 transition-all shadow-sm"
+              aria-label="Instagram"
             >
-              <Twitter size={18} />
+              <FaInstagram size={18} />
             </a>
             <a
-              href="#"
-              className="p-2 bg-white/10 rounded-full text-gray-300 hover:text-white hover:bg-white/20 transition-all shadow-sm"
+              href="https://www.tiktok.com/@autonomiq.ai5?_r=1&_t=ZN-95DGLJnusP0"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="p-2 bg-white/10 rounded-full text-gray-300 hover:text-white hover:bg-black transition-all shadow-sm"
+              aria-label="TikTok"
             >
-              <Linkedin size={18} />
+              <FaTiktok size={18} />
             </a>
             <a
-              href="#"
-              className="p-2 bg-white/10 rounded-full text-gray-300 hover:text-white hover:bg-white/20 transition-all shadow-sm"
+              href="https://www.facebook.com/share/1Nt27vS99s/?mibextid=wwXIfr"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="p-2 bg-white/10 rounded-full text-gray-300 hover:text-white hover:bg-blue-600 transition-all shadow-sm"
+              aria-label="Facebook"
             >
-              <Github size={18} />
+              <FaFacebook size={18} />
             </a>
           </div>
         </div>

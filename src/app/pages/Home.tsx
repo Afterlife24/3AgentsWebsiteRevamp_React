@@ -640,7 +640,7 @@ export default function Home() {
                               <div
                                 className="flex flex-col cursor-pointer flex-1"
                                 onClick={() => {
-                                  navigator.clipboard.writeText("+17178976546");
+                                  navigator.clipboard.writeText("+971524934182");
                                   setCopySuccess(true);
                                   setTimeout(() => setCopySuccess(false), 2000);
                                 }}
@@ -657,13 +657,13 @@ export default function Home() {
                                   {copySuccess ? "Copied!" : "Message Us"}
                                 </span>
                                 <span className="text-xs font-mono font-bold text-gray-800">
-                                  +17178976546
+                                    +971524934182
                                 </span>
                               </div>
                               <button
                                 onClick={() =>
                                   window.open(
-                                    "https://wa.me/17178976546?text=Hello",
+                                    "https://wa.me/971524934182?text=Hello",
                                     "_blank",
                                   )
                                 }
@@ -1160,13 +1160,13 @@ export default function Home() {
                                   {copySuccess ? "Copied!" : "Message Us"}
                                 </span>
                                 <span className="text-sm font-mono font-bold text-gray-800 hover:text-green-600 transition-colors">
-                                  +17178976546
+                                    +971524934182
                                 </span>
                               </div>
                               <button
                                 onClick={() =>
                                   window.open(
-                                    "https://wa.me/17178976546?text=Hello",
+                                    "https://wa.me/971524934182?text=Hello",
                                     "_blank",
                                   )
                                 }

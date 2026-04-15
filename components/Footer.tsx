@@ -71,7 +71,7 @@ export default function Footer() {
             </li>
             <li>
               <Link
-                to="#"
+                to="/careers"
                 className="hover:text-cyan-400 transition-colors"
               >
                 {t("footer.company.careers")}
@@ -79,7 +79,7 @@ export default function Footer() {
             </li>
             <li>
               <Link
-                to="#"
+                to="/blog"
                 className="hover:text-cyan-400 transition-colors"
               >
                 {t("footer.company.blog")}
@@ -116,14 +116,7 @@ export default function Footer() {
                 {t("footer.legal.cookie")}
               </Link>
             </li>
-            <li>
-              <Link
-                to="#"
-                className="hover:text-cyan-400 transition-colors"
-              >
-                {t("footer.legal.security")}
-              </Link>
-            </li>
+
           </ul>
         </div>
 

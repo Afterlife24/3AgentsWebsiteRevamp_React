@@ -657,7 +657,7 @@ export default function Home() {
                                   {copySuccess ? "Copied!" : "Message Us"}
                                 </span>
                                 <span className="text-xs font-mono font-bold text-gray-800">
-                                    +971524934182
+                                  +971524934182
                                 </span>
                               </div>
                               <button
@@ -874,6 +874,72 @@ export default function Home() {
           {/* --- NEW SECTIONS FOR MOBILE --- */}
           <VisionSection />
           <ServicesSection />
+
+          {/* --- MEET OUR AI ASSISTANTS CTA (MOBILE) --- */}
+          <section id="meet-assistants" className="relative w-full py-8 px-4">
+            <div className="max-w-4xl mx-auto">
+              <div className="relative bg-gradient-to-br from-blue-600 via-purple-600 to-pink-600 rounded-2xl overflow-hidden shadow-xl">
+                {/* Animated background elements */}
+                <div className="absolute inset-0 opacity-30">
+                  <div className="absolute top-5 left-5 w-20 h-20 bg-white rounded-full blur-2xl animate-pulse"></div>
+                  <div
+                    className="absolute bottom-5 right-5 w-24 h-24 bg-white rounded-full blur-2xl animate-pulse"
+                    style={{ animationDelay: "1s" }}
+                  ></div>
+                  <div
+                    className="absolute top-1/2 left-1/2 w-20 h-20 bg-white rounded-full blur-2xl animate-pulse"
+                    style={{ animationDelay: "0.5s" }}
+                  ></div>
+                </div>
+
+                <div className="relative z-10 p-6 text-center">
+                  <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-white/30 backdrop-blur-sm rounded-full mb-4 border border-white/40">
+                    <Users className="w-3 h-3 text-white" />
+                    <span className="text-xs font-semibold text-white">
+                      {t("aiAssistants.badge")}
+                    </span>
+                  </div>
+
+                  <h2 className="text-2xl font-bold text-white mb-3 drop-shadow-lg">
+                    {t("aiAssistants.title")}
+                  </h2>
+
+                  <p className="text-sm text-white mb-6 max-w-md mx-auto drop-shadow-md">
+                    {t("aiAssistants.subtitle")}
+                  </p>
+
+                  <div className="flex flex-wrap gap-2 justify-center mb-6">
+                    <div className="flex items-center gap-1.5 px-3 py-1.5 bg-white/30 backdrop-blur-sm rounded-full border border-white/40">
+                      <Phone className="w-3 h-3 text-white" />
+                      <span className="text-xs font-medium text-white">
+                        {t("aiAssistants.receptionist")}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-1.5 px-3 py-1.5 bg-white/30 backdrop-blur-sm rounded-full border border-white/40">
+                      <Briefcase className="w-3 h-3 text-white" />
+                      <span className="text-xs font-medium text-white">
+                        {t("aiAssistants.admin")}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-1.5 px-3 py-1.5 bg-white/30 backdrop-blur-sm rounded-full border border-white/40">
+                      <Users className="w-3 h-3 text-white" />
+                      <span className="text-xs font-medium text-white">
+                        {t("aiAssistants.sales")}
+                      </span>
+                    </div>
+                  </div>
+
+                  <Link
+                    to="/ai-assistants"
+                    className="inline-flex items-center gap-2 px-6 py-3 bg-white text-purple-700 rounded-xl font-bold text-base shadow-xl hover:shadow-2xl transition-all transform hover:scale-105 hover:bg-gray-50"
+                  >
+                    <span>{t("aiAssistants.cta")}</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </section>
 
           {/* --- ADDITIONAL SERVICES CTA --- */}
           <section className="relative w-full py-8 px-4">
@@ -1160,7 +1226,7 @@ export default function Home() {
                                   {copySuccess ? "Copied!" : "Message Us"}
                                 </span>
                                 <span className="text-sm font-mono font-bold text-gray-800 hover:text-green-600 transition-colors">
-                                    +971524934182
+                                  +971524934182
                                 </span>
                               </div>
                               <button

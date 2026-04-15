@@ -1,5 +1,5 @@
 import { GoogleOAuthProvider } from "@react-oauth/google";
-import { Routes, Route, useNavigate } from "react-router-dom";
+import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import { useEffect, lazy, Suspense } from "react";
 import { LanguageProvider } from "./app/contexts/LanguageContext";
 import { WidgetProvider, useWidget } from "./app/contexts/WidgetContext";
@@ -15,6 +15,8 @@ import Signup from "./app/pages/Signup";
 import VerifyEmail from "./app/pages/VerifyEmail";
 import ForgotPassword from "./app/pages/ForgotPassword";
 import ResetPassword from "./app/pages/ResetPassword";
+import Careers from "./app/pages/Careers";
+import Blog from "./app/pages/Blog";
 import { AuthProvider } from "./app/contexts/AuthContext";
 
 // Lazy load the LiveKitWidget
@@ -29,6 +31,12 @@ const SimpleLoadingSpinner = () => (
 
 function AppRoutes() {
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // Scroll to top on route change
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location.pathname]);
 
   useEffect(() => {
     // Listen for agent navigation events
@@ -66,6 +74,8 @@ function AppRoutes() {
       <Route path="/verify-email" element={<VerifyEmail />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route path="/reset-password" element={<ResetPassword />} />
+      <Route path="/careers" element={<Careers />} />
+      <Route path="/blog" element={<Blog />} />
     </Routes>
   );
 }

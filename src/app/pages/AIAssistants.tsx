@@ -702,10 +702,13 @@ export default function AIAssistants() {
 
           {/* CTA Button */}
           <div className="flex justify-center">
-            <button className="px-12 py-5 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-2xl font-bold text-xl shadow-2xl transition-all transform hover:scale-105 flex items-center gap-3">
+            <a
+              href="tel:+971524934182"
+              className="px-12 py-5 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-2xl font-bold text-xl shadow-2xl transition-all transform hover:scale-105 flex items-center gap-3"
+            >
               <span>{t("aiAssistantsPage.cta")}</span>
               <ArrowRight size={24} />
-            </button>
+            </a>
           </div>
         </div>
       </div>

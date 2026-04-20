@@ -99,13 +99,13 @@ export default function NavBar() {
                       setLanguage(lang.code);
                       setShowLanguageMenu(false);
                     }}
-                    className={`w-full px-4 py-2 rounded-xl transition-colors ${lang.code === "ar"
-                      ? "text-right"
-                      : "text-left"
-                      } ${language === lang.code
+                    className={`w-full px-4 py-2 rounded-xl transition-colors ${
+                      lang.code === "ar" ? "text-right" : "text-left"
+                    } ${
+                      language === lang.code
                         ? "bg-black/10 font-bold"
                         : "hover:bg-black/5"
-                      }`}
+                    }`}
                     data-testid={`language-option-${lang.code}`}
                   >
                     <span className="text-sm text-gray-700">{lang.label}</span>
@@ -123,16 +123,25 @@ export default function NavBar() {
                 className={`flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-md rounded-full border border-white/20 hover:bg-white/20 transition-colors ${isRTL ? "flex-row-reverse" : ""}`}
               >
                 <User className="w-4 h-4 text-cyan-400" />
-                <span className="text-sm font-medium text-gray-300 max-w-[100px] truncate">{user.name}</span>
+                <span className="text-sm font-medium text-gray-300 max-w-[100px] truncate">
+                  {user.name}
+                </span>
               </button>
               {showUserMenu && (
-                <div className={`absolute top-12 bg-white/90 backdrop-blur-xl rounded-2xl border border-white/50 shadow-2xl p-2 w-40 z-50 ${isRTL ? "left-0" : "right-0"}`}>
+                <div
+                  className={`absolute top-12 bg-white/90 backdrop-blur-xl rounded-2xl border border-white/50 shadow-2xl p-2 w-40 z-50 ${isRTL ? "left-0" : "right-0"}`}
+                >
                   <button
-                    onClick={() => { logout(); setShowUserMenu(false); }}
+                    onClick={() => {
+                      logout();
+                      setShowUserMenu(false);
+                    }}
                     className="w-full px-4 py-2 rounded-xl transition-colors flex items-center gap-2 text-left hover:bg-black/5"
                   >
                     <LogOut className="w-4 h-4 text-gray-600" />
-                    <span className="text-sm text-gray-700">{t("auth.nav.logout")}</span>
+                    <span className="text-sm text-gray-700">
+                      {t("auth.nav.logout")}
+                    </span>
                   </button>
                 </div>
               )}
@@ -199,13 +208,13 @@ export default function NavBar() {
                       setLanguage(lang.code);
                       setShowLanguageMenu(false);
                     }}
-                    className={`w-full px-3 py-2 rounded-xl transition-colors text-sm ${lang.code === "ar"
-                      ? "text-right"
-                      : "text-left"
-                      } ${language === lang.code
+                    className={`w-full px-3 py-2 rounded-xl transition-colors text-sm ${
+                      lang.code === "ar" ? "text-right" : "text-left"
+                    } ${
+                      language === lang.code
                         ? "bg-black/10 font-bold"
                         : "hover:bg-black/5"
-                      }`}
+                    }`}
                     data-testid={`language-option-${lang.code}`}
                   >
                     <span className="text-gray-700">{lang.label}</span>
@@ -252,7 +261,10 @@ export default function NavBar() {
             <div className="border-t border-gray-300 my-2" />
             {user ? (
               <button
-                onClick={() => { logout(); setShowMobileMenu(false); }}
+                onClick={() => {
+                  logout();
+                  setShowMobileMenu(false);
+                }}
                 className="block w-full text-left px-4 py-3 text-gray-700 hover:bg-black/5 rounded-xl transition-colors"
               >
                 {t("auth.nav.logout")}

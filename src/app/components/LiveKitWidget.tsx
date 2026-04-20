@@ -3,8 +3,11 @@ import {
   LiveKitRoom,
   RoomAudioRenderer,
   useRoomContext,
+  useTranscriptions,
 } from "@livekit/components-react";
+import { RoomEvent, ConnectionQuality, ConnectionState } from "livekit-client";
 import AvatarVoiceAgent from "./AvatarVoiceAgent";
+import { useLanguage } from "@/app/contexts/LanguageContext";
 
 /**
  * Props interface for LiveKitWidget component
@@ -115,6 +118,96 @@ function NavigationHandler() {
 }
 
 /**
+ * 5.7 — ConnectionMonitor: handles reconnection events and connection quality changes.
+ * Shows console warnings and could drive a UI indicator in the future.
+ */
+function ConnectionMonitor() {
+  const room = useRoomContext();
+
+  useEffect(() => {
+    if (!room) return;
+
+    const onReconnecting = () => {
+      console.warn("[LiveKit] Connection lost, attempting to reconnect...");
+    };
+    const onReconnected = () => {
+      console.log("[LiveKit] Reconnected successfully");
+    };
+    const onQualityChanged = (
+      quality: ConnectionQuality,
+      participant: { isLocal?: boolean },
+    ) => {
+      if (participant?.isLocal && quality === ConnectionQuality.Poor) {
+        console.warn("[LiveKit] Poor connection quality detected");
+      }
+    };
+    const onStateChanged = (state: ConnectionState) => {
+      if (state === ConnectionState.Disconnected) {
+        console.error("[LiveKit] Disconnected from room");
+      }
+    };
+
+    room.on(RoomEvent.Reconnecting, onReconnecting);
+    room.on(RoomEvent.Reconnected, onReconnected);
+    room.on(RoomEvent.ConnectionQualityChanged, onQualityChanged);
+    room.on(RoomEvent.ConnectionStateChanged, onStateChanged);
+
+    return () => {
+      room.off(RoomEvent.Reconnecting, onReconnecting);
+      room.off(RoomEvent.Reconnected, onReconnected);
+      room.off(RoomEvent.ConnectionQualityChanged, onQualityChanged);
+      room.off(RoomEvent.ConnectionStateChanged, onStateChanged);
+    };
+  }, [room]);
+
+  return null;
+}
+
+/**
+ * Strip leaked LLM function-call syntax from transcript text.
+ * Matches patterns like <function=name>{...}</function> and <|...|>
+ */
+const FUNC_CALL_RE = /<function=\w+.*?<\/function>|<\|.*?\|>/gs;
+function cleanTranscript(text: string): string {
+  return text.replace(FUNC_CALL_RE, "").trim();
+}
+
+/**
+ * 5.8 — TranscriptOverlay: displays live transcription from the agent session.
+ * Uses the useTranscriptions hook which subscribes to the lk.transcription topic.
+ * Renders as a compact floating bubble near the widget with glassmorphism styling.
+ */
+function TranscriptOverlay() {
+  const transcriptions = useTranscriptions();
+  const recent = transcriptions
+    .slice(-3)
+    .map((entry) => ({ ...entry, text: cleanTranscript(entry.text) }))
+    .filter((entry) => entry.text.length > 0);
+
+  if (recent.length === 0) return null;
+
+  return (
+    <div
+      className="fixed bottom-64 right-4 md:bottom-88 md:right-4 w-48 md:w-72 z-50
+                 bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl
+                 px-3 py-2.5 shadow-lg pointer-events-none
+                 max-h-28 overflow-y-auto"
+      aria-live="polite"
+      aria-label="Live transcription"
+    >
+      {recent.map((entry, i) => (
+        <p
+          key={entry.streamInfo?.id ?? i}
+          className="text-[11px] md:text-xs leading-relaxed text-white/85 truncate"
+        >
+          {entry.text}
+        </p>
+      ))}
+    </div>
+  );
+}
+
+/**
  * LiveKitWidget component - Manages LiveKit room connection and audio setup
  *
  * Features:
@@ -130,9 +223,11 @@ function NavigationHandler() {
  */
 export default function LiveKitWidget({ onClose }: LiveKitWidgetProps) {
   const [token, setToken] = useState<string>("");
+  const { language } = useLanguage();
 
   /**
    * Fetch LiveKit authentication token from backend API
+   * Passes current language so the agent can adapt STT/TTS
    * Closes widget on error to prevent connection attempts without valid token
    */
   const getToken = useCallback(async () => {
@@ -144,7 +239,9 @@ export default function LiveKitWidget({ onClose }: LiveKitWidgetProps) {
         throw new Error("Backend URL is not configured");
       }
 
-      const response = await fetch(`${backendUrl}/getToken?name=admin`);
+      const response = await fetch(
+        `${backendUrl}/getToken?name=admin&language=${language}`,
+      );
 
       if (!response.ok) {
         throw new Error(`Token fetch failed: ${response.status}`);
@@ -157,7 +254,7 @@ export default function LiveKitWidget({ onClose }: LiveKitWidgetProps) {
       // Close widget on token fetch failure
       onClose();
     }
-  }, [onClose]);
+  }, [onClose, language]);
 
   // Fetch token on component mount
   useEffect(() => {
@@ -168,7 +265,8 @@ export default function LiveKitWidget({ onClose }: LiveKitWidgetProps) {
    * LiveKit server URL - hardcoded for production deployment
    */
   const liveKitUrl =
-    import.meta.env.VITE_LIVEKIT_URL || "wss://webagent-n2z20mdr.livekit.cloud";
+    import.meta.env.VITE_LIVEKIT_URL ||
+    "wss://webagent-revamp-brx4ajqj.livekit.cloud";
 
   /**
    * Audio capture configuration for high-quality voice input
@@ -236,8 +334,13 @@ export default function LiveKitWidget({ onClose }: LiveKitWidgetProps) {
       {/* NavigationHandler registers RPC method for navigation commands from agent */}
       <NavigationHandler />
 
+      {/* 5.7 — Monitor connection quality and reconnection */}
+      <ConnectionMonitor />
+
       {/* AvatarVoiceAgent with voice controls and 3D avatar */}
-      <AvatarVoiceAgent onClose={onClose} />
+      <div className="relative">
+        <AvatarVoiceAgent onClose={onClose} />
+      </div>
     </LiveKitRoom>
   );
 }

@@ -81,7 +81,9 @@ export default function Home() {
   // Terms and Conditions modal state
   const [showTermsModal, setShowTermsModal] = useState(false);
   const [termsAccepted, setTermsAccepted] = useState(false);
-  const [pendingAction, setPendingAction] = useState<"web" | "voice" | "whatsapp" | null>(null);
+  const [pendingAction, setPendingAction] = useState<
+    "web" | "voice" | "whatsapp" | null
+  >(null);
 
   // Auth gate modal state
   const [showAuthModal, setShowAuthModal] = useState(false);
@@ -200,8 +202,8 @@ export default function Home() {
 
     const MIN_LENGTH =
       selectedCountry.code === "US" ||
-        selectedCountry.code === "CA" ||
-        selectedCountry.code === "IN"
+      selectedCountry.code === "CA" ||
+      selectedCountry.code === "IN"
         ? 10
         : 8;
     const MAX_LENGTH = 15;
@@ -225,11 +227,14 @@ export default function Home() {
     const fullNumber = `${selectedCountry.dialCode}${cleanedNumber}`;
 
     try {
-      const response = await fetch("https://wa.afterlife.org.in/whatsappDemo", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ phone_number: fullNumber }),
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_WHATSAPP_BACKEND_URL || "https://wa.afterlife.org.in"}/whatsappDemo`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ phone_number: fullNumber }),
+        },
+      );
 
       const data = await response.json();
       if (data.success) {
@@ -345,8 +350,24 @@ export default function Home() {
     const pollInterval = setInterval(async () => {
       try {
         const response = await fetch(
-          `https://call.afterlife.org.in/callStatus/${callId}`,
+          `${import.meta.env.VITE_CALLING_BACKEND_URL || "https://call.afterlife.org.in"}/callStatus/${callId}`,
         );
+
+        // Handle non-OK responses (404 = call not found = ended)
+        if (!response.ok) {
+          setCallState("disconnected");
+          setCallStatus({
+            type: "error",
+            message: wasConnected ? "Call ended" : "Call not found",
+          });
+          clearInterval(pollInterval);
+          setIsAnyAgentOpen(false);
+          setTimeout(() => {
+            setCallStatus({ type: null, message: "" });
+          }, 3000);
+          return;
+        }
+
         const data = await response.json();
 
         if (data.status === "connected") {
@@ -377,22 +398,31 @@ export default function Home() {
         }
       } catch (error) {
         console.error("Error polling call status:", error);
+        // Network error likely means server is down or call ended
+        setCallState("disconnected");
+        clearInterval(pollInterval);
+        setIsAnyAgentOpen(false);
       }
     }, 2000);
 
+    // Safety timeout — use ref-like tracking instead of stale closure
     setTimeout(() => {
       clearInterval(pollInterval);
-      if (callState === "connecting") {
-        setCallState("disconnected");
-        setCallStatus({
-          type: "error",
-          message: "No answer",
-        });
-        setIsAnyAgentOpen(false);
-        setTimeout(() => {
-          setCallStatus({ type: null, message: "" });
-        }, 3000);
-      }
+      // Force reset if still not idle after 2 minutes
+      setCallState((prev) => {
+        if (prev === "connecting" || prev === "connected") {
+          setIsAnyAgentOpen(false);
+          setCallStatus({
+            type: "error",
+            message: "Call timed out",
+          });
+          setTimeout(() => {
+            setCallStatus({ type: null, message: "" });
+          }, 3000);
+          return "disconnected";
+        }
+        return prev;
+      });
     }, 120000);
   };
 
@@ -452,8 +482,9 @@ export default function Home() {
 
       return (
         <div
-          className={`${isMobileView ? "w-full h-32" : "w-full max-w-xs h-48"} bg-white/40 rounded-xl border border-white/50 shadow-sm backdrop-blur-md overflow-hidden flex items-center justify-center transition-all duration-500 ease-out ${isPreviewClosing ? "opacity-0 scale-90" : "opacity-100 scale-100"
-            }`}
+          className={`${isMobileView ? "w-full h-32" : "w-full max-w-xs h-48"} bg-white/40 rounded-xl border border-white/50 shadow-sm backdrop-blur-md overflow-hidden flex items-center justify-center transition-all duration-500 ease-out ${
+            isPreviewClosing ? "opacity-0 scale-90" : "opacity-100 scale-100"
+          }`}
         >
           {mounted && (shouldShowPreview || isPreviewClosing) && (
             <Avatar3DSingleton
@@ -849,10 +880,11 @@ export default function Home() {
                             {/* Status Messages */}
                             {callStatus.type && (
                               <div
-                                className={`p-3 rounded-xl backdrop-blur-md border ${callStatus.type === "success"
-                                  ? "bg-green-500/20 border-green-500/30"
-                                  : "bg-red-500/20 border-red-500/30"
-                                  }`}
+                                className={`p-3 rounded-xl backdrop-blur-md border ${
+                                  callStatus.type === "success"
+                                    ? "bg-green-500/20 border-green-500/30"
+                                    : "bg-red-500/20 border-red-500/30"
+                                }`}
                               >
                                 <div className="flex items-center gap-2">
                                   <div
@@ -954,7 +986,7 @@ export default function Home() {
                   </p>
                   <button
                     onClick={() => {
-                      navigate('/solutions');
+                      navigate("/solutions");
                       window.scrollTo(0, 0);
                     }}
                     className="px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl font-bold shadow-md hover:from-blue-700 hover:to-purple-700 transition-all whitespace-nowrap"
@@ -979,7 +1011,9 @@ export default function Home() {
                   <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-500 rounded-2xl mx-auto mb-4 flex items-center justify-center">
                     <Check className="w-8 h-8 text-white" strokeWidth={3} />
                   </div>
-                  <h2 className="text-2xl font-bold text-gray-900 mb-2">Terms & Conditions</h2>
+                  <h2 className="text-2xl font-bold text-gray-900 mb-2">
+                    Terms & Conditions
+                  </h2>
                   <p className="text-sm text-gray-600">
                     By continuing, you agree to our terms of service
                   </p>
@@ -990,18 +1024,10 @@ export default function Home() {
                     <p>
                       • Our AI agents are for demonstration and business use
                     </p>
-                    <p>
-                      • We collect data to provide and improve services
-                    </p>
-                    <p>
-                      • Standard call/message rates may apply
-                    </p>
-                    <p>
-                      • Services provided "as is" without warranties
-                    </p>
-                    <p>
-                      • We may modify or discontinue services anytime
-                    </p>
+                    <p>• We collect data to provide and improve services</p>
+                    <p>• Standard call/message rates may apply</p>
+                    <p>• Services provided "as is" without warranties</p>
+                    <p>• We may modify or discontinue services anytime</p>
                   </div>
                 </div>
 
@@ -1036,7 +1062,9 @@ export default function Home() {
                 <div className="w-16 h-16 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-2xl mx-auto mb-4 flex items-center justify-center">
                   <LogIn className="w-8 h-8 text-white" />
                 </div>
-                <h2 className="text-2xl font-bold text-gray-900 mb-2">{t("auth.login.title")}</h2>
+                <h2 className="text-2xl font-bold text-gray-900 mb-2">
+                  {t("auth.login.title")}
+                </h2>
                 <p className="text-sm text-gray-600 mb-6">
                   Please sign in or create an account to try our AI agents.
                 </p>
@@ -1295,10 +1323,11 @@ export default function Home() {
 
                             {whatsappStatus.type && (
                               <div
-                                className={`px-4 py-2.5 rounded-xl backdrop-blur-md border shadow-sm transition-all duration-300 animate-slide-up ${whatsappStatus.type === "success"
-                                  ? "bg-white/40 border-white/50"
-                                  : "bg-white/40 border-white/50"
-                                  }`}
+                                className={`px-4 py-2.5 rounded-xl backdrop-blur-md border shadow-sm transition-all duration-300 animate-slide-up ${
+                                  whatsappStatus.type === "success"
+                                    ? "bg-white/40 border-white/50"
+                                    : "bg-white/40 border-white/50"
+                                }`}
                               >
                                 <div className="flex items-center gap-2">
                                   {whatsappStatus.type === "success" ? (
@@ -1423,10 +1452,11 @@ export default function Home() {
 
                             {callStatus.type && (
                               <div
-                                className={`px-4 py-2.5 rounded-xl backdrop-blur-md border shadow-sm transition-all duration-300 animate-slide-up ${callStatus.type === "success"
-                                  ? "bg-white/40 border-white/50"
-                                  : "bg-white/40 border-white/50"
-                                  }`}
+                                className={`px-4 py-2.5 rounded-xl backdrop-blur-md border shadow-sm transition-all duration-300 animate-slide-up ${
+                                  callStatus.type === "success"
+                                    ? "bg-white/40 border-white/50"
+                                    : "bg-white/40 border-white/50"
+                                }`}
                               >
                                 <div className="flex items-center gap-2">
                                   {callStatus.type === "success" ? (
@@ -1480,7 +1510,7 @@ export default function Home() {
               </p>
               <button
                 onClick={() => {
-                  navigate('/solutions');
+                  navigate("/solutions");
                   window.scrollTo(0, 0);
                 }}
                 className="px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-2xl font-bold shadow-lg hover:from-blue-700 hover:to-purple-700 transition-all whitespace-nowrap hover:scale-105 transform"
@@ -1570,7 +1600,9 @@ export default function Home() {
                 <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-500 rounded-2xl mx-auto mb-4 flex items-center justify-center">
                   <Check className="w-8 h-8 text-white" strokeWidth={3} />
                 </div>
-                <h2 className="text-2xl font-bold text-gray-900 mb-2">Terms & Conditions</h2>
+                <h2 className="text-2xl font-bold text-gray-900 mb-2">
+                  Terms & Conditions
+                </h2>
                 <p className="text-sm text-gray-600">
                   By continuing, you agree to our terms of service
                 </p>
@@ -1578,21 +1610,11 @@ export default function Home() {
 
               <div className="bg-gray-50/80 rounded-xl p-4 mb-6 max-h-64 overflow-y-auto">
                 <div className="space-y-3 text-xs text-gray-600 leading-relaxed">
-                  <p>
-                    • Our AI agents are for demonstration and business use
-                  </p>
-                  <p>
-                    • We collect data to provide and improve services
-                  </p>
-                  <p>
-                    • Standard call/message rates may apply
-                  </p>
-                  <p>
-                    • Services provided "as is" without warranties
-                  </p>
-                  <p>
-                    • We may modify or discontinue services anytime
-                  </p>
+                  <p>• Our AI agents are for demonstration and business use</p>
+                  <p>• We collect data to provide and improve services</p>
+                  <p>• Standard call/message rates may apply</p>
+                  <p>• Services provided "as is" without warranties</p>
+                  <p>• We may modify or discontinue services anytime</p>
                 </div>
               </div>
 
@@ -1627,7 +1649,9 @@ export default function Home() {
               <div className="w-16 h-16 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-2xl mx-auto mb-4 flex items-center justify-center">
                 <LogIn className="w-8 h-8 text-white" />
               </div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">{t("auth.login.title")}</h2>
+              <h2 className="text-2xl font-bold text-gray-900 mb-2">
+                {t("auth.login.title")}
+              </h2>
               <p className="text-sm text-gray-600 mb-6">
                 Please sign in or create an account to try our AI agents.
               </p>

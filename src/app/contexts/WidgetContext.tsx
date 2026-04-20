@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, ReactNode } from "react";
+import { useAuth } from "./AuthContext";
 
 interface WidgetContextType {
   showWidget: boolean;
@@ -8,12 +9,33 @@ interface WidgetContextType {
 
 const WidgetContext = createContext<WidgetContextType | undefined>(undefined);
 
+const AUTH_API =
+  import.meta.env.VITE_AUTH_API?.replace(/\/auth$/, "") ||
+  "http://localhost:5000/api";
+
 export function WidgetProvider({ children }: { children: ReactNode }) {
   const [showWidget, setShowWidget] = useState(false);
+  const { user } = useAuth();
+
+  const logAgentUsage = (agentType: string) => {
+    if (!user?.email) return;
+    fetch(`${AUTH_API}/agent-usage/log`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        userEmail: user.email,
+        userName: user.name,
+        agentType,
+      }),
+    }).catch((err: unknown) => {
+      console.warn("[WidgetContext] Failed to log agent usage:", err);
+    });
+  };
 
   const openWidget = () => {
     console.log("[WidgetContext] Opening widget");
     setShowWidget(true);
+    logAgentUsage("web");
   };
 
   const closeWidget = () => {

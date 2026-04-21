@@ -45,7 +45,7 @@ export default function Home() {
   const { user } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
-  const [activeId, setActiveId] = useState<string | null>("voice");
+  const [activeId, setActiveId] = useState<string | null>("web");
   const [isAnyAgentOpen, setIsAnyAgentOpen] = useState(false);
   const [selectedCountry, setSelectedCountry] =
     useState<Country>(DEFAULT_COUNTRY);
@@ -69,7 +69,7 @@ export default function Home() {
 
   // Mobile state
   const [isMobile, setIsMobile] = useState(false);
-  const [expandedCard, setExpandedCard] = useState<string | null>("voice");
+  const [expandedCard, setExpandedCard] = useState<string | null>("web");
   const [mounted, setMounted] = useState(false);
 
   // Preview closing animation state

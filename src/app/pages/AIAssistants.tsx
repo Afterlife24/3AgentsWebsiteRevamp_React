@@ -32,11 +32,13 @@ import { useLanguage } from "../contexts/LanguageContext";
 import AmbientBackground from "../../../components/AmbientBackground";
 import NavBar from "../../../components/NavBar";
 import Footer from "../../../components/Footer";
+import WaitlistModal from "../components/WaitlistModal";
 
 export default function AIAssistants() {
   const { t } = useLanguage();
   const location = useLocation();
   const [mounted, setMounted] = useState(false);
+  const [showWaitlistModal, setShowWaitlistModal] = useState(false);
 
   // Track mount state
   useEffect(() => {
@@ -63,6 +65,7 @@ export default function AIAssistants() {
   const aiWorkforce = [
     {
       id: "receptionist",
+      firstName: "Sara",
       name: t("aiAssistantsPage.receptionist.name"),
       subtitle: t("aiAssistantsPage.receptionist.subtitle"),
       description: t("aiAssistantsPage.receptionist.description"),
@@ -86,6 +89,7 @@ export default function AIAssistants() {
     },
     {
       id: "admin",
+      firstName: "Emma",
       name: t("aiAssistantsPage.admin.name"),
       subtitle: t("aiAssistantsPage.admin.subtitle"),
       description: t("aiAssistantsPage.admin.description"),
@@ -113,6 +117,7 @@ export default function AIAssistants() {
     },
     {
       id: "sales",
+      firstName: "Adam",
       name: t("aiAssistantsPage.sales.name"),
       subtitle: t("aiAssistantsPage.sales.subtitle"),
       description: t("aiAssistantsPage.sales.description"),
@@ -288,7 +293,10 @@ export default function AIAssistants() {
                     {t("aiAssistantsPage.demo.description")}
                   </p>
 
-                  <button className="inline-flex items-center gap-3 px-8 py-4 bg-yellow-600/90 hover:bg-yellow-700 text-white rounded-2xl font-bold text-lg shadow-2xl transition-all transform hover:scale-105 border-2 border-yellow-500/50">
+                  <button
+                    onClick={() => setShowWaitlistModal(true)}
+                    className="inline-flex items-center gap-3 px-8 py-4 bg-yellow-600/90 hover:bg-yellow-700 text-white rounded-2xl font-bold text-lg shadow-2xl transition-all transform hover:scale-105 border-2 border-yellow-500/50"
+                  >
                     <span>{t("aiAssistantsPage.demo.cta")}</span>
                     <ArrowRight size={20} />
                   </button>
@@ -331,42 +339,42 @@ export default function AIAssistants() {
                     <div className="relative rounded-2xl overflow-hidden shadow-2xl transform group-hover:scale-105 transition-transform duration-500">
                       <img
                         src={assistant.image}
-                        alt={assistant.name}
+                        alt={assistant.firstName}
                         className="w-full aspect-square object-cover"
                       />
+                      {/* Name Overlay */}
+                      <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/60 to-transparent p-4 pt-8">
+                        <h4 className="text-white text-3xl font-bold drop-shadow-lg mb-1">
+                          {assistant.firstName}
+                        </h4>
+                        <p className="text-white/95 text-base font-semibold drop-shadow-md">
+                          {assistant.name}
+                        </p>
+                        <p className="text-white/80 text-xs font-medium drop-shadow-md mt-0.5">
+                          {assistant.subtitle}
+                        </p>
+                      </div>
                     </div>
                   </div>
 
-                  {/* Name */}
-                  <h3
-                    className={`text-2xl font-bold mb-2 bg-gradient-to-r ${assistant.buttonGradient} bg-clip-text text-transparent`}
-                  >
-                    {assistant.name}
-                  </h3>
-
-                  {/* Subtitle */}
-                  <p className="text-gray-200 font-semibold text-sm mb-3">
-                    {assistant.subtitle}
-                  </p>
-
                   {/* Description */}
-                  <p className="text-gray-300 text-xs mb-4 leading-relaxed">
+                  <p className="text-gray-300 text-sm mb-4 leading-relaxed">
                     {assistant.description}
                   </p>
 
                   {/* Capabilities */}
                   <div className="mb-4 flex-1">
-                    <h4 className="text-xs font-bold text-white mb-2">
+                    <h4 className="text-sm font-bold text-white mb-2">
                       {t("aiAssistantsPage.capabilities")}
                     </h4>
                     <ul className="space-y-1.5">
                       {assistant.capabilities.map((capability, idx) => (
                         <li
                           key={idx}
-                          className="flex items-start gap-2 text-xs text-gray-200"
+                          className="flex items-start gap-2 text-sm text-gray-200"
                         >
                           <CheckCircle
-                            size={12}
+                            size={14}
                             className="mt-0.5 flex-shrink-0 text-blue-500"
                           />
                           <span>{capability}</span>
@@ -377,7 +385,7 @@ export default function AIAssistants() {
 
                   {/* Integrations */}
                   <div className="bg-[#0d3a4a]/60 backdrop-blur-sm rounded-xl p-2.5 mb-4 border border-cyan-500/30">
-                    <h4 className="text-xs font-bold text-white mb-2">
+                    <h4 className="text-sm font-bold text-white mb-2">
                       {t("aiAssistantsPage.whatsapp.integrations")}
                     </h4>
                     <div className="flex flex-wrap gap-2">
@@ -390,7 +398,7 @@ export default function AIAssistants() {
                           <div className="text-cyan-400">
                             {integration.icon}
                           </div>
-                          <span className="text-xs font-medium text-gray-200">
+                          <span className="text-sm font-medium text-gray-200">
                             {integration.name}
                           </span>
                         </div>
@@ -398,48 +406,7 @@ export default function AIAssistants() {
                     </div>
                   </div>
 
-                  {/* Audio Player Button */}
-                  <button
-                    className={`w-full flex items-center gap-3 px-4 py-3 bg-gradient-to-r ${assistant.buttonGradient} ${assistant.buttonHover} text-white rounded-xl font-bold shadow-lg transition-all hover:shadow-2xl group/btn overflow-hidden`}
-                  >
-                    {/* Play Icon Circle */}
-                    <div className="w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center flex-shrink-0 group-hover/btn:bg-white/30 transition-all">
-                      <svg
-                        className="w-4 h-4 ml-0.5"
-                        fill="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path d="M8 5v14l11-7z" />
-                      </svg>
-                    </div>
 
-                    {/* Waveform Visualization */}
-                    <div className="flex items-center justify-center gap-0.5 flex-1 h-10">
-                      <div className="w-0.5 h-2 bg-white/60 rounded-full"></div>
-                      <div className="w-0.5 h-4 bg-white/70 rounded-full"></div>
-                      <div className="w-0.5 h-3 bg-white/60 rounded-full"></div>
-                      <div className="w-0.5 h-6 bg-white/80 rounded-full"></div>
-                      <div className="w-0.5 h-4 bg-white/70 rounded-full"></div>
-                      <div className="w-0.5 h-5 bg-white/75 rounded-full"></div>
-                      <div className="w-0.5 h-3 bg-white/60 rounded-full"></div>
-                      <div className="w-0.5 h-7 bg-white/85 rounded-full"></div>
-                      <div className="w-0.5 h-2 bg-white/60 rounded-full"></div>
-                      <div className="w-0.5 h-5 bg-white/70 rounded-full"></div>
-                      <div className="w-0.5 h-4 bg-white/65 rounded-full"></div>
-                      <div className="w-0.5 h-6 bg-white/80 rounded-full"></div>
-                      <div className="w-0.5 h-3 bg-white/60 rounded-full"></div>
-                      <div className="w-0.5 h-5 bg-white/75 rounded-full"></div>
-                      <div className="w-0.5 h-4 bg-white/70 rounded-full"></div>
-                      <div className="w-0.5 h-6 bg-white/80 rounded-full"></div>
-                      <div className="w-0.5 h-2 bg-white/60 rounded-full"></div>
-                      <div className="w-0.5 h-7 bg-white/85 rounded-full"></div>
-                    </div>
-
-                    {/* Play Text */}
-                    <span className="text-sm font-bold flex-shrink-0">
-                      {t("aiAssistantsPage.play")}
-                    </span>
-                  </button>
                 </div>
 
                 {/* Decorative corner accent */}
@@ -703,7 +670,9 @@ export default function AIAssistants() {
           {/* CTA Button */}
           <div className="flex justify-center">
             <a
-              href="tel:+971524934182"
+              href="https://wa.me/971581324928"
+              target="_blank"
+              rel="noopener noreferrer"
               className="px-12 py-5 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-2xl font-bold text-xl shadow-2xl transition-all transform hover:scale-105 flex items-center gap-3"
             >
               <span>{t("aiAssistantsPage.cta")}</span>
@@ -712,6 +681,12 @@ export default function AIAssistants() {
           </div>
         </div>
       </div>
+
+      {/* Waitlist Modal */}
+      <WaitlistModal
+        isOpen={showWaitlistModal}
+        onClose={() => setShowWaitlistModal(false)}
+      />
 
       {/* Footer */}
       <Footer />

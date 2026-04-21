@@ -202,8 +202,8 @@ export default function Home() {
 
     const MIN_LENGTH =
       selectedCountry.code === "US" ||
-      selectedCountry.code === "CA" ||
-      selectedCountry.code === "IN"
+        selectedCountry.code === "CA" ||
+        selectedCountry.code === "IN"
         ? 10
         : 8;
     const MAX_LENGTH = 15;
@@ -434,6 +434,7 @@ export default function Home() {
       description: t("agent.whatsapp.desc"),
       shortHighlight: t("agent.whatsapp.shortHighlight"),
       backgroundImage: "/assets/whatsapp-agent-bg.png",
+      cardImage: "/assets/whatsapp-card-new.jpg",
       icon: <MessageCircle className="w-8 h-8" />,
       color: "from-green-400 to-emerald-300",
       bgGlow: "bg-green-400/20",
@@ -447,6 +448,7 @@ export default function Home() {
       description: t("agent.voice.desc"),
       shortHighlight: t("agent.voice.shortHighlight"),
       backgroundImage: "/assets/voice-agent-bg.png",
+      cardImage: "/assets/voice-card-new.jpg",
       icon: <Mic className="w-8 h-8" />,
       color: "from-purple-400 to-pink-300",
       bgGlow: "bg-purple-400/20",
@@ -459,6 +461,7 @@ export default function Home() {
       description: t("agent.web.desc"),
       shortHighlight: t("agent.web.shortHighlight"),
       backgroundImage: "/assets/web-agent-bg.png",
+      cardImage: "/assets/web-card-new.jpg",
       icon: <Monitor className="w-8 h-8" />,
       color: "from-blue-400 to-cyan-300",
       bgGlow: "bg-cyan-400/20",
@@ -482,9 +485,8 @@ export default function Home() {
 
       return (
         <div
-          className={`${isMobileView ? "w-full h-32" : "w-full max-w-xs h-48"} bg-white/40 rounded-xl border border-white/50 shadow-sm backdrop-blur-md overflow-hidden flex items-center justify-center transition-all duration-500 ease-out ${
-            isPreviewClosing ? "opacity-0 scale-90" : "opacity-100 scale-100"
-          }`}
+          className={`${isMobileView ? "w-full h-32" : "w-full max-w-xs h-48"} bg-white/40 rounded-xl border border-white/50 shadow-sm backdrop-blur-md overflow-hidden flex items-center justify-center transition-all duration-500 ease-out ${isPreviewClosing ? "opacity-0 scale-90" : "opacity-100 scale-100"
+            }`}
         >
           {mounted && (shouldShowPreview || isPreviewClosing) && (
             <Avatar3DSingleton
@@ -880,11 +882,10 @@ export default function Home() {
                             {/* Status Messages */}
                             {callStatus.type && (
                               <div
-                                className={`p-3 rounded-xl backdrop-blur-md border ${
-                                  callStatus.type === "success"
-                                    ? "bg-green-500/20 border-green-500/30"
-                                    : "bg-red-500/20 border-red-500/30"
-                                }`}
+                                className={`p-3 rounded-xl backdrop-blur-md border ${callStatus.type === "success"
+                                  ? "bg-green-500/20 border-green-500/30"
+                                  : "bg-red-500/20 border-red-500/30"
+                                  }`}
                               >
                                 <div className="flex items-center gap-2">
                                   <div
@@ -1210,6 +1211,22 @@ export default function Home() {
                     <div
                       className={`transition-all duration-500 ${!isActive ? "opacity-100 h-auto" : "opacity-0 h-0 overflow-hidden"}`}
                     >
+                      {/* CARD IMAGE - Centered with glow effect */}
+                      <div className="mb-8 mt-4">
+                        <div className="relative w-fit">
+                          {/* Glow effect behind image */}
+                          <div className="absolute inset-0 bg-gradient-to-r from-purple-500/30 via-blue-500/30 to-cyan-500/30 blur-2xl rounded-xl"></div>
+
+                          {/* Image */}
+                          <img
+                            src={product.cardImage}
+                            alt={product.title}
+                            className="relative block max-w-[120px] md:max-w-[140px] lg:max-w-[160px] xl:max-w-[180px] h-auto min-h-[140px] md:min-h-[160px] lg:min-h-[180px] xl:min-h-[200px] object-contain brightness-150 contrast-125 saturate-125 transition-all duration-300 hover:scale-105 drop-shadow-2xl rounded-3xl"
+                            loading="eager"
+                          />
+                        </div>
+                      </div>
+
                       <p className="text-sm text-gray-300 font-medium leading-relaxed max-w-[200px]">
                         {product.shortHighlight}
                       </p>
@@ -1323,11 +1340,10 @@ export default function Home() {
 
                             {whatsappStatus.type && (
                               <div
-                                className={`px-4 py-2.5 rounded-xl backdrop-blur-md border shadow-sm transition-all duration-300 animate-slide-up ${
-                                  whatsappStatus.type === "success"
-                                    ? "bg-white/40 border-white/50"
-                                    : "bg-white/40 border-white/50"
-                                }`}
+                                className={`px-4 py-2.5 rounded-xl backdrop-blur-md border shadow-sm transition-all duration-300 animate-slide-up ${whatsappStatus.type === "success"
+                                  ? "bg-white/40 border-white/50"
+                                  : "bg-white/40 border-white/50"
+                                  }`}
                               >
                                 <div className="flex items-center gap-2">
                                   {whatsappStatus.type === "success" ? (
@@ -1452,11 +1468,10 @@ export default function Home() {
 
                             {callStatus.type && (
                               <div
-                                className={`px-4 py-2.5 rounded-xl backdrop-blur-md border shadow-sm transition-all duration-300 animate-slide-up ${
-                                  callStatus.type === "success"
-                                    ? "bg-white/40 border-white/50"
-                                    : "bg-white/40 border-white/50"
-                                }`}
+                                className={`px-4 py-2.5 rounded-xl backdrop-blur-md border shadow-sm transition-all duration-300 animate-slide-up ${callStatus.type === "success"
+                                  ? "bg-white/40 border-white/50"
+                                  : "bg-white/40 border-white/50"
+                                  }`}
                               >
                                 <div className="flex items-center gap-2">
                                   {callStatus.type === "success" ? (

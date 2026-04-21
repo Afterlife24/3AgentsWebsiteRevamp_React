@@ -13,6 +13,8 @@ export default function ServicesSection() {
       icon: <MessageCircle className="w-8 h-8 text-white" />,
       color: "bg-green-500",
       gradient: "from-green-400 to-emerald-600",
+      image: "/assets/whatsapp-agent-bg.png",
+      cardImage: "/assets/whatsapp-card-new.jpg",
       features: [
         t("services.whatsapp.feature1"),
         t("services.whatsapp.feature2"),
@@ -28,6 +30,8 @@ export default function ServicesSection() {
       icon: <Mic className="w-8 h-8 text-white" />,
       color: "bg-purple-500",
       gradient: "from-purple-400 to-pink-600",
+      image: "/assets/voice-agent-bg.png",
+      cardImage: "/assets/voice-card-new.jpg",
       features: [
         t("services.voice.feature1"),
         t("services.voice.feature2"),
@@ -43,6 +47,8 @@ export default function ServicesSection() {
       icon: <Monitor className="w-8 h-8 text-white" />,
       color: "bg-blue-500",
       gradient: "from-blue-400 to-cyan-600",
+      image: "/assets/web-agent-bg.png",
+      cardImage: "/assets/web-card-new.jpg",
       features: [
         t("services.web.feature1"),
         t("services.web.feature2"),
@@ -68,23 +74,23 @@ export default function ServicesSection() {
           {SERVICES.map((service) => (
             <div
               key={service.id}
-              className="group relative bg-[#0a2a3a]/80 backdrop-blur-xl border border-cyan-500/20 rounded-3xl p-8 hover:bg-[#0d3a4a]/90 transition-all duration-300 hover:-translate-y-2 shadow-lg hover:shadow-2xl"
+              className="group relative bg-[#0a2a3a]/80 backdrop-blur-xl border border-cyan-500/20 rounded-3xl p-8 hover:bg-[#0d3a4a]/90 transition-all duration-300 hover:-translate-y-2 shadow-lg hover:shadow-2xl overflow-hidden"
             >
               <div
-                className={`w-16 h-16 rounded-2xl ${service.color} flex items-center justify-center mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300`}
+                className={`w-16 h-16 rounded-2xl ${service.color} flex items-center justify-center mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300 relative z-10`}
               >
                 {service.icon}
               </div>
 
-              <h3 className="text-2xl font-bold text-white mb-3 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-gray-300 transition-colors">
+              <h3 className="text-2xl font-bold text-white mb-3 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-gray-300 transition-colors relative z-10">
                 {service.title}
               </h3>
 
-              <p className="text-gray-300 mb-8 leading-relaxed">
+              <p className="text-gray-300 mb-8 leading-relaxed relative z-10">
                 {service.description}
               </p>
 
-              <ul className="space-y-3 mb-8">
+              <ul className="space-y-3 mb-8 relative z-10">
                 {service.features.map((feature, idx) => (
                   <li
                     key={idx}
@@ -101,7 +107,7 @@ export default function ServicesSection() {
               </ul>
 
               <div
-                className={`h-1 w-0 group-hover:w-full bg-gradient-to-r ${service.gradient} transition-all duration-500 rounded-full`}
+                className={`h-1 w-0 group-hover:w-full bg-gradient-to-r ${service.gradient} transition-all duration-500 rounded-full relative z-10`}
               ></div>
             </div>
           ))}

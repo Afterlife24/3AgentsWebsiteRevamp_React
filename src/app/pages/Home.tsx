@@ -23,8 +23,8 @@ import CountryCodeSelect, {
 
 // Simple loading component without complex animations
 const SimpleLoadingSpinner = () => (
-  <div className="w-full h-full flex items-center justify-center bg-white/20 backdrop-blur-sm rounded-xl">
-    <div className="text-blue-500 text-sm">Loading 3D...</div>
+  <div className="w-full h-full flex items-center justify-center bg-white/10 backdrop-blur-sm rounded-xl">
+    <div className="animate-spin rounded-full h-6 w-6 border-2 border-blue-200/30 border-t-blue-400"></div>
   </div>
 );
 
@@ -129,7 +129,7 @@ export default function Home() {
   useEffect(() => {
     setMounted(true);
     const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
+      setIsMobile(window.innerWidth <= 1024);
     };
     checkMobile();
     window.addEventListener("resize", checkMobile);
@@ -439,6 +439,7 @@ export default function Home() {
       color: "from-green-400 to-emerald-300",
       bgGlow: "bg-green-400/20",
       mobileGradient: "from-green-500/20 to-emerald-500/20",
+      emojis: ["💬", "📱", "🤖", "✅", "🔗", "📩", "🟢", "💡", "🚀", "📊"],
     },
     {
       id: "web",
@@ -452,6 +453,7 @@ export default function Home() {
       color: "from-blue-400 to-cyan-300",
       bgGlow: "bg-cyan-400/20",
       mobileGradient: "from-blue-500/20 to-cyan-500/20",
+      emojis: ["🌐", "💻", "🗣️", "👋", "🔵", "⚡", "🎯", "🖥️", "✨", "🤝"],
     },
     {
       id: "voice",
@@ -466,6 +468,7 @@ export default function Home() {
       color: "from-purple-400 to-pink-300",
       bgGlow: "bg-purple-400/20",
       mobileGradient: "from-purple-500/20 to-pink-500/20",
+      emojis: ["📞", "🎙️", "🔊", "📲", "🟣", "🎧", "📡", "💜", "🗓️", "🤙"],
     },
   ];
 
@@ -485,16 +488,15 @@ export default function Home() {
 
       return (
         <div
-          className={`${isMobileView ? "w-full h-32" : "w-full max-w-xs h-48"} bg-white/40 rounded-xl border border-white/50 shadow-sm backdrop-blur-md overflow-hidden flex items-center justify-center transition-all duration-500 ease-out ${isPreviewClosing ? "opacity-0 scale-90" : "opacity-100 scale-100"
+          className={`${isMobileView ? "w-full h-32" : "w-full max-w-[220px] h-28 lg:h-36"} bg-white/40 rounded-xl border border-white/50 shadow-sm backdrop-blur-md overflow-hidden flex items-center justify-center transition-all duration-500 ease-out ${isPreviewClosing ? "opacity-0 scale-90" : "opacity-100 scale-100"
             }`}
         >
           {mounted && (shouldShowPreview || isPreviewClosing) && (
             <Avatar3DSingleton
-              key={animationTrigger} // Key changes on each hover to replay animation
               scale={isMobileView ? 0.8 : 1.2}
               position={[0, -1.15, 0]}
               playAnimation={true}
-              animationSpeed={0.7} // Slower, more graceful animation (70% of normal speed)
+              animationSpeed={0.7}
             />
           )}
         </div>
@@ -504,21 +506,21 @@ export default function Home() {
     if (productId === "voice") {
       return (
         <div
-          className={`${isMobileView ? "w-full" : "w-full max-w-xs"} flex items-center justify-center gap-4`}
+          className={`${isMobileView ? "w-full" : "w-full max-w-[220px]"} flex items-center justify-center gap-3`}
         >
           <div
-            className={`${isMobileView ? "w-10 h-10" : "w-12 h-12"} rounded-full bg-white/60 flex items-center justify-center shadow-lg animate-pulse`}
+            className={`${isMobileView ? "w-10 h-10" : "w-10 h-10"} rounded-full bg-white/60 flex items-center justify-center shadow-lg animate-pulse`}
           >
             <div
-              className={`${isMobileView ? "w-2 h-2" : "w-3 h-3"} bg-purple-600 rounded-full`}
+              className={`${isMobileView ? "w-2 h-2" : "w-2.5 h-2.5"} bg-purple-600 rounded-full`}
             ></div>
           </div>
           <div className="flex flex-col gap-1">
             <div
-              className={`${isMobileView ? "w-20" : "w-24"} h-2 bg-gray-800/10 rounded-full`}
+              className={`${isMobileView ? "w-20" : "w-20"} h-1.5 bg-gray-800/10 rounded-full`}
             ></div>
             <div
-              className={`${isMobileView ? "w-12" : "w-16"} h-2 bg-gray-800/10 rounded-full`}
+              className={`${isMobileView ? "w-12" : "w-14"} h-1.5 bg-gray-800/10 rounded-full`}
             ></div>
           </div>
         </div>
@@ -528,7 +530,7 @@ export default function Home() {
     if (productId === "whatsapp") {
       return (
         <div
-          className={`${isMobileView ? "w-full" : "w-full max-w-xs"} bg-[#E5DDD5]/80 rounded-xl p-2 border border-white/50 shadow-sm backdrop-blur-sm relative overflow-hidden`}
+          className={`${isMobileView ? "w-full" : "w-full max-w-[220px]"} bg-[#E5DDD5]/80 rounded-xl p-2 border border-white/50 shadow-sm backdrop-blur-sm relative overflow-hidden`}
         >
           <div className="absolute inset-0 opacity-10 bg-black"></div>
           <div className="relative z-10 bg-white p-2 rounded-lg shadow-sm text-xs mb-2 w-3/4 ml-auto rounded-tr-none text-gray-900 font-medium">
@@ -566,7 +568,7 @@ export default function Home() {
         {/* Scrollable Content */}
         <div className="flex-1 overflow-y-auto z-10 relative scroll-smooth bg-transparent">
           {/* Product Cards Section */}
-          <div className="px-4 pt-20 pb-8 space-y-4">
+          <div className="px-4 pt-20 pb-6 space-y-3">
             {products.map((product) => {
               const isExpanded = expandedCard === product.id;
 
@@ -577,11 +579,11 @@ export default function Home() {
                   onClick={() => !isExpanded && setExpandedCard(product.id)}
                   className={`
                     relative rounded-3xl overflow-hidden transition-all duration-500 ease-out
-                    ${isExpanded ? "bg-white/95 backdrop-blur-xl shadow-2xl scale-[1.02]" : "bg-white/50 backdrop-blur-md shadow-lg"}
+                    ${isExpanded ? "bg-white/95 backdrop-blur-xl shadow-2xl" : "bg-white/50 backdrop-blur-md shadow-lg"}
                     border border-white/50
                   `}
                   style={{
-                    minHeight: isExpanded ? "auto" : "110px",
+                    minHeight: isExpanded ? "auto" : "100px",
                   }}
                 >
                   {/* Background Image */}
@@ -601,7 +603,7 @@ export default function Home() {
 
                   {/* Card Header - Always Visible */}
                   <div
-                    className="relative p-5 flex items-center justify-between cursor-pointer"
+                    className="relative p-4 flex items-center justify-between cursor-pointer"
                     onClick={(e) => {
                       e.stopPropagation();
                       setExpandedCard(isExpanded ? null : product.id);
@@ -618,7 +620,7 @@ export default function Home() {
                         {product.icon}
                       </div>
                       <div>
-                        <h3 className="font-bold text-white text-lg">
+                        <h3 className="font-bold text-white text-lg whitespace-nowrap">
                           {product.title}
                         </h3>
                         <p className="text-xs text-gray-300 mt-0.5">
@@ -644,17 +646,17 @@ export default function Home() {
                   {/* Expanded Content */}
                   <div
                     className={`
-                      relative px-4 pb-4 transition-all duration-500 ease-out
-                      ${isExpanded ? "opacity-100 max-h-[800px]" : "opacity-0 max-h-0 overflow-hidden"}
+                      relative px-4 transition-all duration-500 ease-out
+                      ${isExpanded ? "opacity-100 max-h-[800px] pb-4" : "opacity-0 max-h-0 overflow-hidden pb-0"}
                     `}
                   >
                     {/* Description */}
-                    <p className="text-sm text-gray-200 leading-relaxed mb-4">
+                    <p className="text-sm text-gray-200 leading-relaxed mb-3">
                       {product.description}
                     </p>
 
                     {/* Mockup */}
-                    <div className="mb-4">
+                    <div className="mb-3">
                       {renderMockup(product.id, true, true)}
                     </div>
 
@@ -1119,7 +1121,8 @@ export default function Home() {
 
       {/* --- HERO SECTION (Full Viewport) --- */}
       <section className="h-screen w-full relative flex flex-col">
-        <main className="flex-1 flex flex-col md:flex-row relative z-10 h-full p-4 md:p-6 gap-4 md:gap-6 pt-28 md:pt-32">
+        <main className="flex-1 flex items-center justify-center relative z-10 h-full pt-[88px] px-4 sm:px-6 lg:px-10">
+          <div className="w-full max-w-[1400px] h-full flex flex-col lg:flex-row gap-3 lg:gap-4 py-3 sm:py-4 lg:py-5">
           {products.map((product) => {
             const isActive = activeId === product.id;
 
@@ -1138,7 +1141,7 @@ export default function Home() {
                 }}
                 className={`
                   relative h-full transition-all duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] rounded-[2rem] overflow-hidden cursor-pointer border border-white/10 shadow-2xl bg-white/5 backdrop-blur-xl
-                  ${isActive ? "flex-[3] md:flex-[2.5]" : "flex-1"}
+                  ${isActive ? "flex-[3]" : "flex-[1.2]"}
                   group
                 `}
               >
@@ -1159,49 +1162,59 @@ export default function Home() {
                   className={`absolute inset-0 transition-opacity duration-700 ${isActive ? "opacity-30" : "opacity-20"} bg-gradient-to-b ${product.bgGlow} to-transparent`}
                 ></div>
 
-                {/* CONTENT CONTAINER */}
-                <div className="relative h-full flex flex-col justify-end p-8 md:p-12 z-10 pb-20">
-                  {/* POPULAR BADGE */}
-                  {product.isPopular && (
-                    <div
-                      className={`absolute top-12 right-12 z-20 px-3 py-1 bg-white/20 backdrop-blur-md border border-white/30 rounded-full flex items-center gap-1.5 transition-opacity duration-500 ${isActive ? "opacity-100" : "opacity-0"}`}
-                    >
-                      <Sparkles
-                        size={12}
-                        className="text-purple-300 fill-purple-300"
-                      />
-                      <span className="text-[10px] font-bold uppercase tracking-wider text-white">
-                        Popular
+                {/* EMOJI BACKGROUND PATTERN */}
+                <div className={`absolute inset-0 overflow-hidden pointer-events-none transition-opacity duration-700 ${isActive ? "opacity-[0.04]" : "opacity-[0.06]"}`}>
+                  <div className="absolute inset-0 grid grid-cols-5 gap-6 p-4 rotate-[-8deg] scale-110">
+                    {Array.from({ length: 40 }).map((_, i) => (
+                      <span key={i} className="text-2xl lg:text-3xl select-none" style={{ transform: `rotate(${(i * 17) % 360}deg)` }}>
+                        {product.emojis[i % product.emojis.length]}
                       </span>
-                    </div>
-                  )}
+                    ))}
+                  </div>
+                </div>
 
-                  {/* ICON & ARROW */}
-                  <div
-                    className={`absolute top-8 left-8 md:top-12 md:left-12 flex items-center justify-between w-[calc(100%-4rem)] transition-all duration-500`}
-                  >
+                {/* CONTENT CONTAINER */}
+                <div className="relative h-full flex flex-col p-4 lg:p-6 z-10">
+                  {/* TOP ROW: ICON & ARROW */}
+                  <div className="flex items-center justify-between w-full shrink-0">
                     <div
-                      className={`p-4 rounded-2xl bg-white/50 shadow-sm text-gray-800 transition-transform duration-500 ${isActive ? "scale-0" : "scale-90 origin-top-left"}`}
+                      className={`p-2.5 rounded-xl bg-white/50 shadow-sm text-gray-800 transition-all duration-500 ${isActive ? "scale-0 w-0 opacity-0" : "scale-90 opacity-100"}`}
                     >
                       {product.icon}
                     </div>
+
+                    {/* POPULAR BADGE */}
+                    {product.isPopular && (
+                      <div
+                        className={`px-3 py-1 bg-white/20 backdrop-blur-md border border-white/30 rounded-full flex items-center gap-1.5 transition-opacity duration-500 ${isActive ? "opacity-100" : "opacity-0"}`}
+                      >
+                        <Sparkles
+                          size={12}
+                          className="text-purple-300 fill-purple-300"
+                        />
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-white">
+                          Popular
+                        </span>
+                      </div>
+                    )}
+
                     <div
-                      className={`w-10 h-10 rounded-full border border-gray-800/10 flex items-center justify-center transition-all duration-500 ${isActive ? "rotate-90 bg-gray-900 text-white" : "rotate-0 bg-white/50 text-gray-600"}`}
+                      className={`w-8 h-8 rounded-full border border-gray-800/10 flex items-center justify-center transition-all duration-500 ${isActive ? "rotate-90 bg-gray-900 text-white" : "rotate-0 bg-white/50 text-gray-600"}`}
                     >
-                      <ChevronRight size={20} />
+                      <ChevronRight size={16} />
                     </div>
                   </div>
 
-                  {/* TEXT CONTENT BLOCK */}
-                  <div className="min-w-[300px]">
+                  {/* MAIN CONTENT — fills remaining space, centered */}
+                  <div className={`flex-1 flex flex-col items-center justify-center min-w-0 text-center ${isActive ? "overflow-y-auto" : "overflow-hidden"}`}>
                     {/* TITLE */}
                     <h2
-                      className={`font-bold text-white leading-none whitespace-nowrap transition-all duration-500 ${isActive ? "text-3xl md:text-4xl mb-4 translate-y-0" : "text-2xl md:text-3xl mb-2 translate-y-2"}`}
+                      className="font-bold text-white leading-tight transition-all duration-500 mb-1 shrink-0"
+                      style={{ fontSize: 'clamp(1.25rem, 1.5vw + 0.5rem, 1.875rem)' }}
                     >
-                      {product.title.split(" ")[0]}
-                      <br />
+                      {product.title.split(" ")[0]}{" "}
                       <span
-                        className={`text-transparent bg-clip-text bg-gradient-to-r ${product.color} pb-1`}
+                        className={`text-transparent bg-clip-text bg-gradient-to-r ${product.color}`}
                       >
                         {product.title.split(" ")[1]}
                       </span>
@@ -1209,11 +1222,12 @@ export default function Home() {
 
                     {/* SHORT HIGHLIGHT (Inactive State) */}
                     <div
-                      className={`transition-all duration-500 ${!isActive ? "opacity-100 h-auto" : "opacity-0 h-0 overflow-hidden"}`}
+                      className={`transition-all duration-500 overflow-hidden shrink-0 ${!isActive ? "opacity-100" : "opacity-0 max-h-0"}`}
+                      style={!isActive ? { height: 'clamp(150px, 28vh, 240px)' } : undefined}
                     >
                       {/* CARD IMAGE - Centered with glow effect */}
-                      <div className="mb-8 mt-4">
-                        <div className="relative w-fit">
+                      <div className="mb-2 mt-1 flex justify-center">
+                        <div className="relative">
                           {/* Glow effect behind image */}
                           <div className="absolute inset-0 bg-gradient-to-r from-purple-500/30 via-blue-500/30 to-cyan-500/30 blur-2xl rounded-xl"></div>
 
@@ -1221,43 +1235,44 @@ export default function Home() {
                           <img
                             src={product.cardImage}
                             alt={product.title}
-                            className="relative block max-w-[120px] md:max-w-[140px] lg:max-w-[160px] xl:max-w-[180px] h-auto min-h-[140px] md:min-h-[160px] lg:min-h-[180px] xl:min-h-[200px] object-contain brightness-150 contrast-125 saturate-125 transition-all duration-300 hover:scale-105 drop-shadow-2xl rounded-3xl"
+                            className="relative block object-cover brightness-150 contrast-125 saturate-125 transition-all duration-300 hover:scale-105 drop-shadow-2xl rounded-2xl"
+                            style={{ width: 'clamp(80px, 10vw, 120px)', height: 'clamp(100px, 14vh, 155px)' }}
                             loading="eager"
                           />
                         </div>
                       </div>
 
-                      <p className="text-sm text-gray-300 font-medium leading-relaxed max-w-[200px]">
+                      <p className="text-xs lg:text-sm text-gray-300 font-medium leading-relaxed max-w-[200px] mx-auto">
                         {product.shortHighlight}
                       </p>
                     </div>
 
                     {/* FULL DESCRIPTION (Active State) */}
                     <div
-                      className={`transition-all duration-700 ease-out overflow-hidden ${isActive ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"}`}
+                      className={`transition-all duration-700 ease-out overflow-hidden shrink-0 ${isActive ? "opacity-100" : "opacity-0 max-h-0"}`}
                     >
-                      <p className="text-base md:text-lg text-gray-200 leading-relaxed mb-6 max-w-md font-medium">
+                      <p className="text-xs lg:text-sm text-gray-200 leading-relaxed mb-1 max-w-md font-medium mx-auto">
                         {product.description}
                       </p>
 
                       {/* MOCKUP CONTAINER */}
-                      <div className="mb-6">
+                      <div className="mb-1 flex justify-center">
                         {renderMockup(product.id, isActive, false)}
                       </div>
 
                       {/* CTA BUTTONS */}
-                      <div className="pt-2">
+                      <div className="flex justify-center">
                         {product.id === "web" ? (
                           <button
                             onClick={() => handleTryAgent("web")}
-                            className="flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-blue-500 to-cyan-600 text-white rounded-full font-bold shadow-lg hover:from-blue-600 hover:to-cyan-700 transition-all"
+                            className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-500 to-cyan-600 text-white rounded-full font-bold text-sm shadow-lg hover:from-blue-600 hover:to-cyan-700 transition-all"
                           >
                             <span>Try Agent</span>
-                            <ArrowRight size={18} />
+                            <ArrowRight size={16} />
                           </button>
                         ) : product.id === "whatsapp" ? (
                           <div
-                            className="flex flex-col gap-3 w-full max-w-sm"
+                            className="flex flex-col gap-1.5 w-full max-w-sm mx-auto"
                             onClick={(e) => e.stopPropagation()}
                           >
                             <div className="flex items-center justify-between bg-white/40 border border-white/50 backdrop-blur-md rounded-xl p-2 px-3 shadow-sm">
@@ -1359,7 +1374,7 @@ export default function Home() {
                             )}
                           </div>
                         ) : (
-                          <div className="flex flex-col gap-3 w-full max-w-sm">
+                          <div className="flex flex-col gap-1.5 w-full max-w-sm mx-auto">
                             {/* Incoming Calls Card */}
                             <div className="flex items-center justify-between bg-white/40 border border-white/50 backdrop-blur-md rounded-xl p-2 px-3 shadow-sm">
                               <div
@@ -1506,6 +1521,7 @@ export default function Home() {
               </div>
             );
           })}
+          </div>
         </main>
       </section>
 

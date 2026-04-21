@@ -29,7 +29,7 @@ export default function NavBar() {
     <>
       {/* Desktop Nav */}
       <nav
-        className={`hidden md:flex absolute top-0 w-full z-50 p-6 justify-between items-center ${isRTL ? "right-0" : "left-0"}`}
+        className={`hidden min-[1025px]:flex absolute top-0 w-full z-50 p-6 justify-between items-center ${isRTL ? "right-0" : "left-0"}`}
       >
         <Link
           to="/"
@@ -167,7 +167,7 @@ export default function NavBar() {
 
       {/* Mobile Nav */}
       <nav
-        className={`md:hidden relative z-50 p-4 flex justify-between items-center ${isRTL ? "flex-row-reverse" : ""}`}
+        className={`min-[1025px]:hidden relative z-50 p-4 flex justify-between items-center ${isRTL ? "flex-row-reverse" : ""}`}
       >
         <Link
           to="/"

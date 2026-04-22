@@ -426,6 +426,29 @@ export default function Home() {
     }, 120000);
   };
 
+  // Emoji SVG backgrounds — built once, pure CSS, zero DOM nodes
+  const emojiSvgBg = (emojis: string[]) => {
+    const rows = 6;
+    const cols = 6;
+    const cellW = 80;
+    const cellH = 70;
+    const w = cols * cellW;
+    const h = rows * cellH;
+    const texts = Array.from({ length: rows * cols }, (_, i) => {
+      const col = i % cols;
+      const row = Math.floor(i / cols);
+      const x = col * cellW + cellW / 2;
+      const y = row * cellH + cellH / 2 + 8;
+      const rot = (i * 23) % 360;
+      return `<text x="${x}" y="${y}" font-size="22" text-anchor="middle" transform="rotate(${rot},${x},${y})">${emojis[i % emojis.length]}</text>`;
+    }).join('');
+    return `url("data:image/svg+xml,${encodeURIComponent(`<svg xmlns='http://www.w3.org/2000/svg' width='${w}' height='${h}'>${texts}</svg>`)}")`;
+  };
+
+  const whatsappEmojiBg = emojiSvgBg(["💬", "📱", "🤖", "✅", "🔗", "📩", "🟢", "💡"]);
+  const webEmojiBg = emojiSvgBg(["🌐", "💻", "🗣️", "👋", "🔵", "⚡", "🎯", "✨"]);
+  const voiceEmojiBg = emojiSvgBg(["📞", "🎙️", "🔊", "📲", "🟣", "🎧", "📡", "💜"]);
+
   const products = [
     {
       id: "whatsapp",
@@ -434,12 +457,12 @@ export default function Home() {
       description: t("agent.whatsapp.desc"),
       shortHighlight: t("agent.whatsapp.shortHighlight"),
       backgroundImage: "/assets/whatsapp-agent-bg.png",
-      cardImage: "/assets/whatsapp-card-new.jpg",
+      cardImage: "/assets/whatsapp-card-v2.png",
       icon: <MessageCircle className="w-8 h-8" />,
       color: "from-green-400 to-emerald-300",
       bgGlow: "bg-green-400/20",
       mobileGradient: "from-green-500/20 to-emerald-500/20",
-      emojis: ["💬", "📱", "🤖", "✅", "🔗", "📩", "🟢", "💡", "🚀", "📊"],
+      emojiBg: whatsappEmojiBg,
     },
     {
       id: "web",
@@ -448,12 +471,12 @@ export default function Home() {
       description: t("agent.web.desc"),
       shortHighlight: t("agent.web.shortHighlight"),
       backgroundImage: "/assets/web-agent-bg.png",
-      cardImage: "/assets/web-card-new.jpg",
+      cardImage: "/assets/web-card-v2.png",
       icon: <Monitor className="w-8 h-8" />,
       color: "from-blue-400 to-cyan-300",
       bgGlow: "bg-cyan-400/20",
       mobileGradient: "from-blue-500/20 to-cyan-500/20",
-      emojis: ["🌐", "💻", "🗣️", "👋", "🔵", "⚡", "🎯", "🖥️", "✨", "🤝"],
+      emojiBg: webEmojiBg,
     },
     {
       id: "voice",
@@ -463,12 +486,12 @@ export default function Home() {
       description: t("agent.voice.desc"),
       shortHighlight: t("agent.voice.shortHighlight"),
       backgroundImage: "/assets/voice-agent-bg.png",
-      cardImage: "/assets/voice-card-new.jpg",
+      cardImage: "/assets/voice-card-v2.png",
       icon: <Mic className="w-8 h-8" />,
       color: "from-purple-400 to-pink-300",
       bgGlow: "bg-purple-400/20",
       mobileGradient: "from-purple-500/20 to-pink-500/20",
-      emojis: ["📞", "🎙️", "🔊", "📲", "🟣", "🎧", "📡", "💜", "🗓️", "🤙"],
+      emojiBg: voiceEmojiBg,
     },
   ];
 
@@ -1140,7 +1163,8 @@ export default function Home() {
                   }
                 }}
                 className={`
-                  relative h-full transition-all duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] rounded-[2rem] overflow-hidden cursor-pointer border border-white/10 shadow-2xl bg-white/5 backdrop-blur-xl
+                  relative h-full rounded-[2rem] overflow-hidden cursor-pointer border border-white/10 shadow-2xl bg-white/5 will-change-[flex]
+                  transition-[flex,opacity] duration-700 ease-[cubic-bezier(0.25,1,0.5,1)]
                   ${isActive ? "flex-[3]" : "flex-[1.2]"}
                   group
                 `}
@@ -1153,7 +1177,7 @@ export default function Home() {
                     className={`w-full h-full object-cover transition-all duration-700 ${isActive ? "opacity-10 scale-105" : "opacity-5 scale-100"}`}
                   />
                   <div
-                    className={`absolute inset-0 bg-gradient-to-b from-[#0a2a3a]/90 via-[#0d3a4a]/80 to-[#0a2a3a]/90 ${isActive ? "backdrop-blur-xl" : "backdrop-blur-md"}`}
+                    className="absolute inset-0 bg-gradient-to-b from-[#0a2a3a]/90 via-[#0d3a4a]/80 to-[#0a2a3a]/90 backdrop-blur-md"
                   ></div>
                 </div>
 
@@ -1162,23 +1186,18 @@ export default function Home() {
                   className={`absolute inset-0 transition-opacity duration-700 ${isActive ? "opacity-30" : "opacity-20"} bg-gradient-to-b ${product.bgGlow} to-transparent`}
                 ></div>
 
-                {/* EMOJI BACKGROUND PATTERN */}
-                <div className={`absolute inset-0 overflow-hidden pointer-events-none transition-opacity duration-700 ${isActive ? "opacity-[0.04]" : "opacity-[0.06]"}`}>
-                  <div className="absolute inset-0 grid grid-cols-5 gap-6 p-4 rotate-[-8deg] scale-110">
-                    {Array.from({ length: 40 }).map((_, i) => (
-                      <span key={i} className="text-2xl lg:text-3xl select-none" style={{ transform: `rotate(${(i * 17) % 360}deg)` }}>
-                        {product.emojis[i % product.emojis.length]}
-                      </span>
-                    ))}
-                  </div>
-                </div>
+                {/* EMOJI BACKGROUND — pure CSS, zero DOM nodes */}
+                <div
+                  className="absolute inset-0 pointer-events-none will-change-[opacity] transition-opacity duration-700"
+                  style={{ backgroundImage: product.emojiBg, opacity: isActive ? 0.04 : 0.07 }}
+                />
 
                 {/* CONTENT CONTAINER */}
                 <div className="relative h-full flex flex-col p-4 lg:p-6 z-10">
                   {/* TOP ROW: ICON & ARROW */}
                   <div className="flex items-center justify-between w-full shrink-0">
                     <div
-                      className={`p-2.5 rounded-xl bg-white/50 shadow-sm text-gray-800 transition-all duration-500 ${isActive ? "scale-0 w-0 opacity-0" : "scale-90 opacity-100"}`}
+                      className={`p-2.5 rounded-xl bg-white/50 shadow-sm text-gray-800 transition-[transform,opacity] duration-500 ${isActive ? "scale-0 w-0 opacity-0" : "scale-90 opacity-100"}`}
                     >
                       {product.icon}
                     </div>
@@ -1199,14 +1218,14 @@ export default function Home() {
                     )}
 
                     <div
-                      className={`w-8 h-8 rounded-full border border-gray-800/10 flex items-center justify-center transition-all duration-500 ${isActive ? "rotate-90 bg-gray-900 text-white" : "rotate-0 bg-white/50 text-gray-600"}`}
+                      className={`w-8 h-8 rounded-full border border-gray-800/10 flex items-center justify-center transition-[transform,background-color,color] duration-500 ${isActive ? "rotate-90 bg-gray-900 text-white" : "rotate-0 bg-white/50 text-gray-600"}`}
                     >
                       <ChevronRight size={16} />
                     </div>
                   </div>
 
                   {/* MAIN CONTENT — fills remaining space, centered */}
-                  <div className={`flex-1 flex flex-col items-center justify-center min-w-0 text-center ${isActive ? "overflow-y-auto" : "overflow-hidden"}`}>
+                  <div className="flex-1 flex flex-col items-center justify-center min-w-0 text-center overflow-hidden">
                     {/* TITLE */}
                     <h2
                       className="font-bold text-white leading-tight transition-all duration-500 mb-1 shrink-0"
@@ -1222,7 +1241,7 @@ export default function Home() {
 
                     {/* SHORT HIGHLIGHT (Inactive State) */}
                     <div
-                      className={`transition-all duration-500 overflow-hidden shrink-0 ${!isActive ? "opacity-100" : "opacity-0 max-h-0"}`}
+                      className={`transition-[opacity,max-height,height] duration-500 overflow-hidden shrink-0 ${!isActive ? "opacity-100" : "opacity-0 max-h-0"}`}
                       style={!isActive ? { height: 'clamp(150px, 28vh, 240px)' } : undefined}
                     >
                       {/* CARD IMAGE - Centered with glow effect */}
@@ -1235,8 +1254,8 @@ export default function Home() {
                           <img
                             src={product.cardImage}
                             alt={product.title}
-                            className="relative block object-cover brightness-150 contrast-125 saturate-125 transition-all duration-300 hover:scale-105 drop-shadow-2xl rounded-2xl"
-                            style={{ width: 'clamp(80px, 10vw, 120px)', height: 'clamp(100px, 14vh, 155px)' }}
+                            className="relative block object-cover transition-all duration-300 hover:scale-105 drop-shadow-2xl rounded-2xl"
+                            style={{ width: 'clamp(90px, 12vw, 140px)', height: 'clamp(110px, 16vh, 180px)' }}
                             loading="eager"
                           />
                         </div>
@@ -1249,7 +1268,7 @@ export default function Home() {
 
                     {/* FULL DESCRIPTION (Active State) */}
                     <div
-                      className={`transition-all duration-700 ease-out overflow-hidden shrink-0 ${isActive ? "opacity-100" : "opacity-0 max-h-0"}`}
+                      className={`transition-[opacity,max-height] duration-700 ease-out overflow-hidden shrink-0 ${isActive ? "opacity-100" : "opacity-0 max-h-0"}`}
                     >
                       <p className="text-xs lg:text-sm text-gray-200 leading-relaxed mb-1 max-w-md font-medium mx-auto">
                         {product.description}

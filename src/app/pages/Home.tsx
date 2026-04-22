@@ -426,29 +426,6 @@ export default function Home() {
     }, 120000);
   };
 
-  // Emoji SVG backgrounds — built once, pure CSS, zero DOM nodes
-  const emojiSvgBg = (emojis: string[]) => {
-    const rows = 6;
-    const cols = 6;
-    const cellW = 80;
-    const cellH = 70;
-    const w = cols * cellW;
-    const h = rows * cellH;
-    const texts = Array.from({ length: rows * cols }, (_, i) => {
-      const col = i % cols;
-      const row = Math.floor(i / cols);
-      const x = col * cellW + cellW / 2;
-      const y = row * cellH + cellH / 2 + 8;
-      const rot = (i * 23) % 360;
-      return `<text x="${x}" y="${y}" font-size="22" text-anchor="middle" transform="rotate(${rot},${x},${y})">${emojis[i % emojis.length]}</text>`;
-    }).join('');
-    return `url("data:image/svg+xml,${encodeURIComponent(`<svg xmlns='http://www.w3.org/2000/svg' width='${w}' height='${h}'>${texts}</svg>`)}")`;
-  };
-
-  const whatsappEmojiBg = emojiSvgBg(["💬", "📱", "🤖", "✅", "🔗", "📩", "🟢", "💡"]);
-  const webEmojiBg = emojiSvgBg(["🌐", "💻", "🗣️", "👋", "🔵", "⚡", "🎯", "✨"]);
-  const voiceEmojiBg = emojiSvgBg(["📞", "🎙️", "🔊", "📲", "🟣", "🎧", "📡", "💜"]);
-
   const products = [
     {
       id: "whatsapp",
@@ -462,7 +439,6 @@ export default function Home() {
       color: "from-green-400 to-emerald-300",
       bgGlow: "bg-green-400/20",
       mobileGradient: "from-green-500/20 to-emerald-500/20",
-      emojiBg: whatsappEmojiBg,
     },
     {
       id: "web",
@@ -476,7 +452,6 @@ export default function Home() {
       color: "from-blue-400 to-cyan-300",
       bgGlow: "bg-cyan-400/20",
       mobileGradient: "from-blue-500/20 to-cyan-500/20",
-      emojiBg: webEmojiBg,
     },
     {
       id: "voice",
@@ -491,7 +466,6 @@ export default function Home() {
       color: "from-purple-400 to-pink-300",
       bgGlow: "bg-purple-400/20",
       mobileGradient: "from-purple-500/20 to-pink-500/20",
-      emojiBg: voiceEmojiBg,
     },
   ];
 
@@ -1185,12 +1159,6 @@ export default function Home() {
                 <div
                   className={`absolute inset-0 transition-opacity duration-700 ${isActive ? "opacity-30" : "opacity-20"} bg-gradient-to-b ${product.bgGlow} to-transparent`}
                 ></div>
-
-                {/* EMOJI BACKGROUND — pure CSS, zero DOM nodes */}
-                <div
-                  className="absolute inset-0 pointer-events-none will-change-[opacity] transition-opacity duration-700"
-                  style={{ backgroundImage: product.emojiBg, opacity: isActive ? 0.04 : 0.07 }}
-                />
 
                 {/* CONTENT CONTAINER */}
                 <div className="relative h-full flex flex-col p-4 lg:p-6 z-10">

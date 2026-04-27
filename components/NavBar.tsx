@@ -23,6 +23,7 @@ export default function NavBar() {
     { name: t("nav.home"), path: "/" },
     { name: t("nav.about"), path: "/about" },
     { name: t("nav.teams"), path: "/ai-assistants" },
+    { name: "Get Started", path: "/company-details" },
   ];
 
   return (
@@ -99,13 +100,11 @@ export default function NavBar() {
                       setLanguage(lang.code);
                       setShowLanguageMenu(false);
                     }}
-                    className={`w-full px-4 py-2 rounded-xl transition-colors ${
-                      lang.code === "ar" ? "text-right" : "text-left"
-                    } ${
-                      language === lang.code
+                    className={`w-full px-4 py-2 rounded-xl transition-colors ${lang.code === "ar" ? "text-right" : "text-left"
+                      } ${language === lang.code
                         ? "bg-black/10 font-bold"
                         : "hover:bg-black/5"
-                    }`}
+                      }`}
                     data-testid={`language-option-${lang.code}`}
                   >
                     <span className="text-sm text-gray-700">{lang.label}</span>
@@ -208,13 +207,11 @@ export default function NavBar() {
                       setLanguage(lang.code);
                       setShowLanguageMenu(false);
                     }}
-                    className={`w-full px-3 py-2 rounded-xl transition-colors text-sm ${
-                      lang.code === "ar" ? "text-right" : "text-left"
-                    } ${
-                      language === lang.code
+                    className={`w-full px-3 py-2 rounded-xl transition-colors text-sm ${lang.code === "ar" ? "text-right" : "text-left"
+                      } ${language === lang.code
                         ? "bg-black/10 font-bold"
                         : "hover:bg-black/5"
-                    }`}
+                      }`}
                     data-testid={`language-option-${lang.code}`}
                   >
                     <span className="text-gray-700">{lang.label}</span>

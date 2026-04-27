@@ -17,6 +17,7 @@ import ForgotPassword from "./app/pages/ForgotPassword";
 import ResetPassword from "./app/pages/ResetPassword";
 import Careers from "./app/pages/Careers";
 import Blog from "./app/pages/Blog";
+import CompanyDetails from "./app/pages/CompanyDetails";
 import { AuthProvider } from "./app/contexts/AuthContext";
 
 // Lazy load the LiveKitWidget
@@ -76,6 +77,7 @@ function AppRoutes() {
       <Route path="/reset-password" element={<ResetPassword />} />
       <Route path="/careers" element={<Careers />} />
       <Route path="/blog" element={<Blog />} />
+      <Route path="/company-details" element={<CompanyDetails />} />
     </Routes>
   );
 }

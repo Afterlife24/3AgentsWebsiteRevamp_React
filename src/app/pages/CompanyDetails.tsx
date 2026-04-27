@@ -99,8 +99,9 @@ export default function CompanyDetails() {
             console.log("Parsed data:", data);
 
             if (!response.ok) {
-                const errorMsg = data.error || data.message || `Server error: ${response.status}`;
+                const errorMsg = data.error || data.message || `Server error: ${response.status} - ${JSON.stringify(data)}`;
                 console.error("Request failed:", errorMsg);
+                console.error("Full response data:", data);
                 throw new Error(errorMsg);
             }
 

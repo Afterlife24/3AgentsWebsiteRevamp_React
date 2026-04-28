@@ -10,7 +10,6 @@ import {
   ChevronDown,
   Phone,
   Send,
-  Copy,
   Check,
   Users,
   Briefcase,
@@ -61,7 +60,7 @@ export default function Home() {
     "idle" | "connecting" | "connected" | "disconnected"
   >("idle");
   const [currentCallId, setCurrentCallId] = useState<string | null>(null);
-  const [copySuccess, setCopySuccess] = useState(false);
+
   const [whatsappStatus, setWhatsappStatus] = useState<{
     type: "success" | "error" | null;
     message: string;
@@ -87,6 +86,23 @@ export default function Home() {
 
   // Auth gate modal state
   const [showAuthModal, setShowAuthModal] = useState(false);
+
+  // Helper function to log agent usage
+  const logAgentUsage = (agentType: "web" | "calling" | "whatsapp") => {
+    if (!user?.email) return;
+    const AUTH_API = import.meta.env.VITE_AUTH_API?.replace(/\/auth$/, "") || "http://localhost:5000/api";
+    fetch(`${AUTH_API}/agent-usage/log`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        userEmail: user.email,
+        userName: user.name,
+        agentType,
+      }),
+    }).catch((err) => {
+      console.warn("[Home] Failed to log agent usage:", err);
+    });
+  };
 
   const handleTryAgent = (agentType: "web" | "voice" | "whatsapp") => {
     if (!user) {
@@ -238,6 +254,9 @@ export default function Home() {
 
       const data = await response.json();
       if (data.success) {
+        // Log WhatsApp agent usage
+        logAgentUsage("whatsapp");
+
         setWhatsappStatus({
           type: "success",
           message: `Template sent to ${fullNumber}!`,
@@ -308,6 +327,9 @@ export default function Home() {
       const data = await response.json();
 
       if (response.ok && data.success) {
+        // Log calling agent usage
+        logAgentUsage("calling");
+
         setCallStatus({
           type: "success",
           message: `Call connecting to ${fullPhoneNumber}...`,
@@ -672,37 +694,29 @@ export default function Home() {
                           {/* Message Us Card */}
                           <div className="bg-white/60 backdrop-blur-sm rounded-xl p-3 border border-white/50">
                             <div className="flex items-center justify-between">
-                              <div
-                                className="flex flex-col cursor-pointer flex-1"
-                                onClick={() => {
-                                  navigator.clipboard.writeText("+971524934182");
-                                  setCopySuccess(true);
-                                  setTimeout(() => setCopySuccess(false), 2000);
-                                }}
-                              >
-                                <span className="text-[10px] uppercase text-gray-500 font-bold tracking-wider flex items-center gap-1">
-                                  {copySuccess ? (
-                                    <Check
-                                      size={12}
-                                      className="text-green-600"
-                                    />
-                                  ) : (
-                                    <Copy size={12} />
-                                  )}
-                                  {copySuccess ? "Copied!" : "Message Us"}
+                              <div className="flex flex-col flex-1 pointer-events-none">
+                                <span className="text-[10px] uppercase text-gray-500 font-bold tracking-wider">
+                                  {user ? "Click button to message →" : "Login to Message"}
                                 </span>
                                 <span className="text-xs font-mono font-bold text-gray-800">
-                                  +971524934182
+                                  {user ? "+971524934182" : "+971 *** *** ****"}
                                 </span>
                               </div>
                               <button
-                                onClick={() =>
+                                onClick={() => {
+                                  if (!user) {
+                                    setShowAuthModal(true);
+                                    return;
+                                  }
+                                  logAgentUsage("whatsapp");
                                   window.open(
                                     "https://wa.me/971524934182?text=Hello",
                                     "_blank",
-                                  )
-                                }
-                                className="p-2.5 bg-[#25D366] text-white rounded-xl shadow-md hover:bg-[#128C7E] transition-colors"
+                                  );
+                                }}
+                                disabled={!user}
+                                className={`p-2.5 bg-[#25D366] text-white rounded-xl shadow-md transition-colors ${user ? 'hover:bg-[#128C7E] cursor-pointer' : 'opacity-50 cursor-not-allowed'
+                                  }`}
                               >
                                 <Send size={16} />
                               </button>
@@ -769,32 +783,26 @@ export default function Home() {
                           {/* Incoming Calls Card */}
                           <div className="bg-white/60 backdrop-blur-sm rounded-xl p-3 border border-white/50">
                             <div className="flex items-center justify-between">
-                              <div
-                                className="flex flex-col cursor-pointer flex-1"
-                                onClick={() => {
-                                  navigator.clipboard.writeText("+18137974755");
-                                  setCopySuccess(true);
-                                  setTimeout(() => setCopySuccess(false), 2000);
-                                }}
-                              >
-                                <span className="text-[10px] uppercase text-gray-500 font-bold tracking-wider flex items-center gap-1">
-                                  {copySuccess ? (
-                                    <Check
-                                      size={12}
-                                      className="text-green-600"
-                                    />
-                                  ) : (
-                                    <Copy size={12} />
-                                  )}
-                                  {copySuccess ? "Copied!" : "Try This Call"}
+                              <div className="flex flex-col flex-1 pointer-events-none">
+                                <span className="text-[10px] uppercase text-gray-500 font-bold tracking-wider">
+                                  {user ? "Click button to call →" : "Login to Call"}
                                 </span>
                                 <span className="text-xs font-mono font-bold text-gray-800">
-                                  +1 813 797 4755
+                                  {user ? "+1 813 797 4755" : "+1 813 *** ****"}
                                 </span>
                               </div>
                               <a
-                                href="tel:+18137974755"
-                                className="p-2.5 bg-purple-500 text-white rounded-xl shadow-md hover:bg-purple-600 transition-colors"
+                                href={user ? "tel:+18137974755" : "#"}
+                                onClick={(e) => {
+                                  if (!user) {
+                                    e.preventDefault();
+                                    setShowAuthModal(true);
+                                  } else {
+                                    logAgentUsage("calling");
+                                  }
+                                }}
+                                className={`p-2.5 bg-purple-500 text-white rounded-xl shadow-md transition-colors ${user ? 'hover:bg-purple-600 cursor-pointer' : 'opacity-50 cursor-not-allowed'
+                                  }`}
                               >
                                 <Phone size={16} />
                               </a>
@@ -1120,394 +1128,394 @@ export default function Home() {
       <section className="h-screen w-full relative flex flex-col">
         <main className="flex-1 flex items-center justify-center relative z-10 h-full pt-[88px] px-4 sm:px-6 lg:px-10">
           <div className="w-full max-w-[1400px] h-full flex flex-col lg:flex-row gap-3 lg:gap-4 py-3 sm:py-4 lg:py-5">
-          {products.map((product) => {
-            const isActive = activeId === product.id;
+            {products.map((product) => {
+              const isActive = activeId === product.id;
 
-            return (
-              <div
-                key={product.id}
-                id={`product-${product.id}`}
-                onMouseEnter={() => {
-                  if (!isAnyAgentOpen) {
-                    setActiveId(product.id);
-                    // Trigger animation replay for web agent on each hover
-                    if (product.id === "web") {
-                      setAnimationTrigger((prev) => prev + 1);
+              return (
+                <div
+                  key={product.id}
+                  id={`product-${product.id}`}
+                  onMouseEnter={() => {
+                    if (!isAnyAgentOpen) {
+                      setActiveId(product.id);
+                      // Trigger animation replay for web agent on each hover
+                      if (product.id === "web") {
+                        setAnimationTrigger((prev) => prev + 1);
+                      }
                     }
-                  }
-                }}
-                className={`
+                  }}
+                  className={`
                   relative h-full rounded-[2rem] overflow-hidden cursor-pointer border border-white/10 shadow-2xl bg-white/5 will-change-[flex]
                   transition-[flex,opacity] duration-700 ease-[cubic-bezier(0.25,1,0.5,1)]
                   ${isActive ? "flex-[3]" : "flex-[1.2]"}
                   group
                 `}
-              >
-                {/* IMAGE LAYER */}
-                <div className="absolute inset-0 overflow-hidden">
-                  <img
-                    src={product.backgroundImage}
-                    alt=""
-                    className={`w-full h-full object-cover transition-all duration-700 ${isActive ? "opacity-10 scale-105" : "opacity-5 scale-100"}`}
-                  />
-                  <div
-                    className="absolute inset-0 bg-gradient-to-b from-[#0a2a3a]/90 via-[#0d3a4a]/80 to-[#0a2a3a]/90 backdrop-blur-md"
-                  ></div>
-                </div>
-
-                {/* GLOW LAYER */}
-                <div
-                  className={`absolute inset-0 transition-opacity duration-700 ${isActive ? "opacity-30" : "opacity-20"} bg-gradient-to-b ${product.bgGlow} to-transparent`}
-                ></div>
-
-                {/* CONTENT CONTAINER */}
-                <div className="relative h-full flex flex-col p-4 lg:p-6 z-10">
-                  {/* TOP ROW: ICON & ARROW */}
-                  <div className="flex items-center justify-between w-full shrink-0">
+                >
+                  {/* IMAGE LAYER */}
+                  <div className="absolute inset-0 overflow-hidden">
+                    <img
+                      src={product.backgroundImage}
+                      alt=""
+                      className={`w-full h-full object-cover transition-all duration-700 ${isActive ? "opacity-10 scale-105" : "opacity-5 scale-100"}`}
+                    />
                     <div
-                      className={`p-2.5 rounded-xl bg-white/50 shadow-sm text-gray-800 transition-[transform,opacity] duration-500 ${isActive ? "scale-0 w-0 opacity-0" : "scale-90 opacity-100"}`}
-                    >
-                      {product.icon}
-                    </div>
-
-                    {/* POPULAR BADGE */}
-                    {product.isPopular && (
-                      <div
-                        className={`px-3 py-1 bg-white/20 backdrop-blur-md border border-white/30 rounded-full flex items-center gap-1.5 transition-opacity duration-500 ${isActive ? "opacity-100" : "opacity-0"}`}
-                      >
-                        <Sparkles
-                          size={12}
-                          className="text-purple-300 fill-purple-300"
-                        />
-                        <span className="text-[10px] font-bold uppercase tracking-wider text-white">
-                          Popular
-                        </span>
-                      </div>
-                    )}
-
-                    <div
-                      className={`w-8 h-8 rounded-full border border-gray-800/10 flex items-center justify-center transition-[transform,background-color,color] duration-500 ${isActive ? "rotate-90 bg-gray-900 text-white" : "rotate-0 bg-white/50 text-gray-600"}`}
-                    >
-                      <ChevronRight size={16} />
-                    </div>
+                      className="absolute inset-0 bg-gradient-to-b from-[#0a2a3a]/90 via-[#0d3a4a]/80 to-[#0a2a3a]/90 backdrop-blur-md"
+                    ></div>
                   </div>
 
-                  {/* MAIN CONTENT — fills remaining space, centered */}
-                  <div className="flex-1 flex flex-col items-center justify-center min-w-0 text-center overflow-hidden">
-                    {/* TITLE */}
-                    <h2
-                      className="font-bold text-white leading-tight transition-all duration-500 mb-1 shrink-0"
-                      style={{ fontSize: 'clamp(1.25rem, 1.5vw + 0.5rem, 1.875rem)' }}
-                    >
-                      {product.title.split(" ")[0]}{" "}
-                      <span
-                        className={`text-transparent bg-clip-text bg-gradient-to-r ${product.color}`}
+                  {/* GLOW LAYER */}
+                  <div
+                    className={`absolute inset-0 transition-opacity duration-700 ${isActive ? "opacity-30" : "opacity-20"} bg-gradient-to-b ${product.bgGlow} to-transparent`}
+                  ></div>
+
+                  {/* CONTENT CONTAINER */}
+                  <div className="relative h-full flex flex-col p-4 lg:p-6 z-10">
+                    {/* TOP ROW: ICON & ARROW */}
+                    <div className="flex items-center justify-between w-full shrink-0">
+                      <div
+                        className={`p-2.5 rounded-xl bg-white/50 shadow-sm text-gray-800 transition-[transform,opacity] duration-500 ${isActive ? "scale-0 w-0 opacity-0" : "scale-90 opacity-100"}`}
                       >
-                        {product.title.split(" ")[1]}
-                      </span>
-                    </h2>
-
-                    {/* SHORT HIGHLIGHT (Inactive State) */}
-                    <div
-                      className={`transition-[opacity,max-height,height] duration-500 overflow-hidden shrink-0 ${!isActive ? "opacity-100" : "opacity-0 max-h-0"}`}
-                      style={!isActive ? { height: 'clamp(150px, 28vh, 240px)' } : undefined}
-                    >
-                      {/* CARD IMAGE - Centered with glow effect */}
-                      <div className="mb-2 mt-1 flex justify-center">
-                        <div className="relative">
-                          {/* Glow effect behind image */}
-                          <div className="absolute inset-0 bg-gradient-to-r from-purple-500/30 via-blue-500/30 to-cyan-500/30 blur-2xl rounded-xl"></div>
-
-                          {/* Image */}
-                          <img
-                            src={product.cardImage}
-                            alt={product.title}
-                            className="relative block object-cover transition-all duration-300 hover:scale-105 drop-shadow-2xl rounded-2xl"
-                            style={{ width: 'clamp(90px, 12vw, 140px)', height: 'clamp(110px, 16vh, 180px)' }}
-                            loading="eager"
-                          />
-                        </div>
+                        {product.icon}
                       </div>
 
-                      <p className="text-xs lg:text-sm text-gray-300 font-medium leading-relaxed max-w-[200px] mx-auto">
-                        {product.shortHighlight}
-                      </p>
+                      {/* POPULAR BADGE */}
+                      {product.isPopular && (
+                        <div
+                          className={`px-3 py-1 bg-white/20 backdrop-blur-md border border-white/30 rounded-full flex items-center gap-1.5 transition-opacity duration-500 ${isActive ? "opacity-100" : "opacity-0"}`}
+                        >
+                          <Sparkles
+                            size={12}
+                            className="text-purple-300 fill-purple-300"
+                          />
+                          <span className="text-[10px] font-bold uppercase tracking-wider text-white">
+                            Popular
+                          </span>
+                        </div>
+                      )}
+
+                      <div
+                        className={`w-8 h-8 rounded-full border border-gray-800/10 flex items-center justify-center transition-[transform,background-color,color] duration-500 ${isActive ? "rotate-90 bg-gray-900 text-white" : "rotate-0 bg-white/50 text-gray-600"}`}
+                      >
+                        <ChevronRight size={16} />
+                      </div>
                     </div>
 
-                    {/* FULL DESCRIPTION (Active State) */}
-                    <div
-                      className={`transition-[opacity,max-height] duration-700 ease-out overflow-hidden shrink-0 ${isActive ? "opacity-100" : "opacity-0 max-h-0"}`}
-                    >
-                      <p className="text-xs lg:text-sm text-gray-200 leading-relaxed mb-1 max-w-md font-medium mx-auto">
-                        {product.description}
-                      </p>
+                    {/* MAIN CONTENT — fills remaining space, centered */}
+                    <div className="flex-1 flex flex-col items-center justify-center min-w-0 text-center overflow-hidden">
+                      {/* TITLE */}
+                      <h2
+                        className="font-bold text-white leading-tight transition-all duration-500 mb-1 shrink-0"
+                        style={{ fontSize: 'clamp(1.25rem, 1.5vw + 0.5rem, 1.875rem)' }}
+                      >
+                        {product.title.split(" ")[0]}{" "}
+                        <span
+                          className={`text-transparent bg-clip-text bg-gradient-to-r ${product.color}`}
+                        >
+                          {product.title.split(" ")[1]}
+                        </span>
+                      </h2>
 
-                      {/* MOCKUP CONTAINER */}
-                      <div className="mb-1 flex justify-center">
-                        {renderMockup(product.id, isActive, false)}
+                      {/* SHORT HIGHLIGHT (Inactive State) */}
+                      <div
+                        className={`transition-[opacity,max-height,height] duration-500 overflow-hidden shrink-0 ${!isActive ? "opacity-100" : "opacity-0 max-h-0"}`}
+                        style={!isActive ? { height: 'clamp(150px, 28vh, 240px)' } : undefined}
+                      >
+                        {/* CARD IMAGE - Centered with glow effect */}
+                        <div className="mb-2 mt-1 flex justify-center">
+                          <div className="relative">
+                            {/* Glow effect behind image */}
+                            <div className="absolute inset-0 bg-gradient-to-r from-purple-500/30 via-blue-500/30 to-cyan-500/30 blur-2xl rounded-xl"></div>
+
+                            {/* Image */}
+                            <img
+                              src={product.cardImage}
+                              alt={product.title}
+                              className="relative block object-cover transition-all duration-300 hover:scale-105 drop-shadow-2xl rounded-2xl"
+                              style={{ width: 'clamp(90px, 12vw, 140px)', height: 'clamp(110px, 16vh, 180px)' }}
+                              loading="eager"
+                            />
+                          </div>
+                        </div>
+
+                        <p className="text-xs lg:text-sm text-gray-300 font-medium leading-relaxed max-w-[200px] mx-auto">
+                          {product.shortHighlight}
+                        </p>
                       </div>
 
-                      {/* CTA BUTTONS */}
-                      <div className="flex justify-center">
-                        {product.id === "web" ? (
-                          <button
-                            onClick={() => handleTryAgent("web")}
-                            className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-500 to-cyan-600 text-white rounded-full font-bold text-sm shadow-lg hover:from-blue-600 hover:to-cyan-700 transition-all"
-                          >
-                            <span>Try Agent</span>
-                            <ArrowRight size={16} />
-                          </button>
-                        ) : product.id === "whatsapp" ? (
-                          <div
-                            className="flex flex-col gap-1.5 w-full max-w-sm mx-auto"
-                            onClick={(e) => e.stopPropagation()}
-                          >
-                            <div className="flex items-center justify-between bg-white/40 border border-white/50 backdrop-blur-md rounded-xl p-2 px-3 shadow-sm">
-                              <div
-                                className="flex flex-col cursor-pointer"
-                                onClick={() => {
-                                  navigator.clipboard.writeText("+17178976546");
-                                  setCopySuccess(true);
-                                  setTimeout(() => setCopySuccess(false), 2000);
-                                }}
-                                title="Click to copy"
-                              >
-                                <span className="text-[10px] uppercase text-gray-500 font-bold tracking-wider">
-                                  {copySuccess ? "Copied!" : "Message Us"}
-                                </span>
-                                <span className="text-sm font-mono font-bold text-gray-800 hover:text-green-600 transition-colors">
-                                  +971524934182
-                                </span>
-                              </div>
-                              <button
-                                onClick={() =>
-                                  window.open(
-                                    "https://wa.me/971524934182?text=Hello",
-                                    "_blank",
-                                  )
-                                }
-                                className="p-2 bg-[#25D366] text-white rounded-full shadow-md hover:bg-[#128C7E] transition-colors"
-                                title="Chat on WhatsApp"
-                              >
-                                <MessageCircle size={16} />
-                              </button>
-                            </div>
+                      {/* FULL DESCRIPTION (Active State) */}
+                      <div
+                        className={`transition-[opacity,max-height] duration-700 ease-out overflow-hidden shrink-0 ${isActive ? "opacity-100" : "opacity-0 max-h-0"}`}
+                      >
+                        <p className="text-xs lg:text-sm text-gray-200 leading-relaxed mb-1 max-w-md font-medium mx-auto">
+                          {product.description}
+                        </p>
 
-                            <div className="flex items-center gap-2 px-2">
-                              <div className="h-px bg-gray-300 flex-1"></div>
-                              <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">
-                                OR
-                              </span>
-                              <div className="h-px bg-gray-300 flex-1"></div>
-                            </div>
+                        {/* MOCKUP CONTAINER */}
+                        <div className="mb-1 flex justify-center">
+                          {renderMockup(product.id, isActive, false)}
+                        </div>
 
-                            <div className="flex items-center gap-1 p-1.5 bg-white/60 border border-white/50 backdrop-blur-md rounded-full shadow-sm">
-                              <CountryCodeSelect
-                                value={selectedCountry}
-                                onChange={setSelectedCountry}
-                              />
-                              <input
-                                type="tel"
-                                placeholder="Your Number"
-                                className="bg-transparent text-black outline-none px-3 py-2 flex-1 text-sm font-medium w-0 min-w-0"
-                                value={whatsappNumber}
-                                onChange={(e) => {
-                                  const value = e.target.value.replace(
-                                    /\D/g,
-                                    "",
-                                  ); // Only digits
-                                  if (
-                                    value.length <= selectedCountry.maxLength
-                                  ) {
-                                    setWhatsappNumber(value);
-                                  }
-                                }}
-                                maxLength={selectedCountry.maxLength}
-                                onKeyDown={(e) => {
-                                  if (e.key === "Enter" && !isWhatsappLoading) {
-                                    handleWhatsappDemo();
-                                  }
-                                }}
-                                disabled={isWhatsappLoading}
-                              />
-                              <button
-                                onClick={() => handleTryAgent("whatsapp")}
-                                disabled={isWhatsappLoading}
-                                className="flex items-center gap-2 px-6 py-2 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-full font-bold hover:from-green-600 hover:to-emerald-700 transition-all disabled:opacity-50 whitespace-nowrap shrink-0"
-                              >
-                                {isWhatsappLoading ? "Sending..." : "Get Demo"}
-                                <ArrowRight size={16} />
-                              </button>
-                            </div>
-
-                            {whatsappStatus.type && (
-                              <div
-                                className={`px-4 py-2.5 rounded-xl backdrop-blur-md border shadow-sm transition-all duration-300 animate-slide-up ${whatsappStatus.type === "success"
-                                  ? "bg-white/40 border-white/50"
-                                  : "bg-white/40 border-white/50"
-                                  }`}
-                              >
-                                <div className="flex items-center gap-2">
-                                  {whatsappStatus.type === "success" ? (
-                                    <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse shrink-0" />
-                                  ) : (
-                                    <div className="w-2 h-2 bg-red-500 rounded-full shrink-0" />
-                                  )}
-                                  <span className="text-xs font-medium text-white">
-                                    {whatsappStatus.message}
+                        {/* CTA BUTTONS */}
+                        <div className="flex justify-center">
+                          {product.id === "web" ? (
+                            <button
+                              onClick={() => handleTryAgent("web")}
+                              className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-500 to-cyan-600 text-white rounded-full font-bold text-sm shadow-lg hover:from-blue-600 hover:to-cyan-700 transition-all"
+                            >
+                              <span>Try Agent</span>
+                              <ArrowRight size={16} />
+                            </button>
+                          ) : product.id === "whatsapp" ? (
+                            <div
+                              className="flex flex-col gap-1.5 w-full max-w-sm mx-auto"
+                              onClick={(e) => e.stopPropagation()}
+                            >
+                              <div className="flex items-center justify-between bg-white/40 border border-white/50 backdrop-blur-md rounded-xl p-2 px-3 shadow-sm">
+                                <div className="flex flex-col pointer-events-none">
+                                  <span className="text-[10px] uppercase text-gray-500 font-bold tracking-wider">
+                                    {user ? "Click button to message →" : "Login to Message"}
+                                  </span>
+                                  <span className="text-sm font-mono font-bold text-gray-800">
+                                    {user ? "+971524934182" : "+971 *** *** ****"}
                                   </span>
                                 </div>
+                                <button
+                                  onClick={() => {
+                                    if (!user) {
+                                      setShowAuthModal(true);
+                                      return;
+                                    }
+                                    logAgentUsage("whatsapp");
+                                    window.open(
+                                      "https://wa.me/971524934182?text=Hello",
+                                      "_blank",
+                                    );
+                                  }}
+                                  disabled={!user}
+                                  className={`p-2 bg-[#25D366] text-white rounded-full shadow-md transition-colors ${user ? 'hover:bg-[#128C7E] cursor-pointer' : 'opacity-50 cursor-not-allowed'
+                                    }`}
+                                  title={user ? "Chat on WhatsApp" : "Login to chat"}
+                                >
+                                  <MessageCircle size={16} />
+                                </button>
                               </div>
-                            )}
-                          </div>
-                        ) : (
-                          <div className="flex flex-col gap-1.5 w-full max-w-sm mx-auto">
-                            {/* Incoming Calls Card */}
-                            <div className="flex items-center justify-between bg-white/40 border border-white/50 backdrop-blur-md rounded-xl p-2 px-3 shadow-sm">
-                              <div
-                                className="flex flex-col cursor-pointer"
-                                onClick={() => {
-                                  navigator.clipboard.writeText("+18137974755");
-                                  setCopySuccess(true);
-                                  setTimeout(() => setCopySuccess(false), 2000);
-                                }}
-                                title="Click to copy"
-                              >
-                                <span className="text-[10px] uppercase text-gray-500 font-bold tracking-wider">
-                                  {copySuccess ? "Copied!" : "Try This Call"}
+
+                              <div className="flex items-center gap-2 px-2">
+                                <div className="h-px bg-gray-300 flex-1"></div>
+                                <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">
+                                  OR
                                 </span>
-                                <span className="text-sm font-mono font-bold text-gray-800 hover:text-purple-600 transition-colors">
-                                  +1 813 797 4755
-                                </span>
+                                <div className="h-px bg-gray-300 flex-1"></div>
                               </div>
-                              <a
-                                href="tel:+18137974755"
-                                className="p-2 bg-purple-500 text-white rounded-full shadow-md hover:bg-purple-600 transition-colors"
-                                title="Call this number"
-                              >
-                                <Phone size={16} />
-                              </a>
-                            </div>
 
-                            <div className="flex items-center gap-2 px-2">
-                              <div className="h-px bg-gray-300 flex-1"></div>
-                              <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">
-                                OR
-                              </span>
-                              <div className="h-px bg-gray-300 flex-1"></div>
-                            </div>
-
-                            {/* Outgoing Calls Form */}
-                            <div className="flex items-center gap-1 p-1.5 bg-white/60 border border-white/50 backdrop-blur-md rounded-full shadow-sm">
-                              <CountryCodeSelect
-                                value={selectedCountry}
-                                onChange={setSelectedCountry}
-                                disabled={
-                                  isCallLoading ||
-                                  callState === "connecting" ||
-                                  callState === "connected"
-                                }
-                              />
-                              <div className="w-px h-6 bg-gray-300/50"></div>
-                              <input
-                                type="tel"
-                                placeholder="Your Number"
-                                value={phoneNumber}
-                                onChange={(e) => {
-                                  const value = e.target.value.replace(
-                                    /\D/g,
-                                    "",
-                                  ); // Only digits
-                                  if (
-                                    value.length <= selectedCountry.maxLength
-                                  ) {
-                                    setPhoneNumber(value);
-                                  }
-                                }}
-                                maxLength={selectedCountry.maxLength}
-                                onKeyDown={(e) => {
-                                  if (e.key === "Enter" && !isCallLoading) {
-                                    handleMakeCall();
-                                  }
-                                }}
-                                disabled={
-                                  isCallLoading ||
-                                  callState === "connecting" ||
-                                  callState === "connected"
-                                }
-                                className="bg-transparent border-none outline-none text-gray-900 px-3 py-2 flex-1 text-sm font-medium w-0 min-w-0 disabled:opacity-50"
-                              />
-                              <button
-                                onClick={() => handleTryAgent("voice")}
-                                disabled={
-                                  isCallLoading ||
-                                  callState === "connecting" ||
-                                  callState === "connected"
-                                }
-                                className="flex items-center gap-2 px-6 py-2 bg-gradient-to-r from-purple-500 to-pink-600 text-white rounded-full font-bold hover:from-purple-600 hover:to-pink-700 transition-all disabled:opacity-50 whitespace-nowrap shrink-0"
-                              >
-                                {callState === "connecting" ? (
-                                  <>
-                                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white" />
-                                    Connecting...
-                                  </>
-                                ) : callState === "connected" ? (
-                                  <>
-                                    <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-                                    Connected
-                                  </>
-                                ) : callState === "disconnected" ? (
-                                  <>
-                                    Call Again <ArrowRight size={16} />
-                                  </>
-                                ) : (
-                                  <>
-                                    Call Me <ArrowRight size={16} />
-                                  </>
-                                )}
-                              </button>
-                            </div>
-
-                            {callStatus.type && (
-                              <div
-                                className={`px-4 py-2.5 rounded-xl backdrop-blur-md border shadow-sm transition-all duration-300 animate-slide-up ${callStatus.type === "success"
-                                  ? "bg-white/40 border-white/50"
-                                  : "bg-white/40 border-white/50"
-                                  }`}
-                              >
-                                <div className="flex items-center gap-2">
-                                  {callStatus.type === "success" ? (
-                                    <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse shrink-0" />
-                                  ) : (
-                                    <div className="w-2 h-2 bg-red-500 rounded-full shrink-0" />
-                                  )}
-                                  <span className="text-xs font-medium text-white">
-                                    {callStatus.message}
-                                  </span>
-                                </div>
+                              <div className="flex items-center gap-1 p-1.5 bg-white/60 border border-white/50 backdrop-blur-md rounded-full shadow-sm">
+                                <CountryCodeSelect
+                                  value={selectedCountry}
+                                  onChange={setSelectedCountry}
+                                />
+                                <input
+                                  type="tel"
+                                  placeholder="Your Number"
+                                  className="bg-transparent text-black outline-none px-3 py-2 flex-1 text-sm font-medium w-0 min-w-0"
+                                  value={whatsappNumber}
+                                  onChange={(e) => {
+                                    const value = e.target.value.replace(
+                                      /\D/g,
+                                      "",
+                                    ); // Only digits
+                                    if (
+                                      value.length <= selectedCountry.maxLength
+                                    ) {
+                                      setWhatsappNumber(value);
+                                    }
+                                  }}
+                                  maxLength={selectedCountry.maxLength}
+                                  onKeyDown={(e) => {
+                                    if (e.key === "Enter" && !isWhatsappLoading) {
+                                      handleWhatsappDemo();
+                                    }
+                                  }}
+                                  disabled={isWhatsappLoading}
+                                />
+                                <button
+                                  onClick={() => handleTryAgent("whatsapp")}
+                                  disabled={isWhatsappLoading}
+                                  className="flex items-center gap-2 px-6 py-2 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-full font-bold hover:from-green-600 hover:to-emerald-700 transition-all disabled:opacity-50 whitespace-nowrap shrink-0"
+                                >
+                                  {isWhatsappLoading ? "Sending..." : "Get Demo"}
+                                  <ArrowRight size={16} />
+                                </button>
                               </div>
-                            )}
 
-                            {callState === "disconnected" &&
-                              !callStatus.type && (
-                                <div className="px-4 py-2.5 rounded-xl backdrop-blur-md border bg-white/40 border-white/50 shadow-sm">
+                              {whatsappStatus.type && (
+                                <div
+                                  className={`px-4 py-2.5 rounded-xl backdrop-blur-md border shadow-sm transition-all duration-300 animate-slide-up ${whatsappStatus.type === "success"
+                                    ? "bg-white/40 border-white/50"
+                                    : "bg-white/40 border-white/50"
+                                    }`}
+                                >
                                   <div className="flex items-center gap-2">
-                                    <div className="w-2 h-2 bg-orange-500 rounded-full shrink-0" />
+                                    {whatsappStatus.type === "success" ? (
+                                      <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse shrink-0" />
+                                    ) : (
+                                      <div className="w-2 h-2 bg-red-500 rounded-full shrink-0" />
+                                    )}
                                     <span className="text-xs font-medium text-white">
-                                      Call Disconnected - Ready for next call
+                                      {whatsappStatus.message}
                                     </span>
                                   </div>
                                 </div>
                               )}
-                          </div>
-                        )}
+                            </div>
+                          ) : (
+                            <div className="flex flex-col gap-1.5 w-full max-w-sm mx-auto">
+                              {/* Incoming Calls Card */}
+                              <div className="flex items-center justify-between bg-white/40 border border-white/50 backdrop-blur-md rounded-xl p-2 px-3 shadow-sm">
+                                <div className="flex flex-col pointer-events-none">
+                                  <span className="text-[10px] uppercase text-gray-500 font-bold tracking-wider">
+                                    {user ? "Click button to call →" : "Login to Call"}
+                                  </span>
+                                  <span className="text-sm font-mono font-bold text-gray-800">
+                                    {user ? "+1 813 797 4755" : "+1 813 *** ****"}
+                                  </span>
+                                </div>
+                                <a
+                                  href={user ? "tel:+18137974755" : "#"}
+                                  onClick={(e) => {
+                                    if (!user) {
+                                      e.preventDefault();
+                                      setShowAuthModal(true);
+                                    } else {
+                                      logAgentUsage("calling");
+                                    }
+                                  }}
+                                  className={`p-2 bg-purple-500 text-white rounded-full shadow-md transition-colors ${user ? 'hover:bg-purple-600 cursor-pointer' : 'opacity-50 cursor-not-allowed'
+                                    }`}
+                                  title={user ? "Call this number" : "Login to call"}
+                                >
+                                  <Phone size={16} />
+                                </a>
+                              </div>
+
+                              <div className="flex items-center gap-2 px-2">
+                                <div className="h-px bg-gray-300 flex-1"></div>
+                                <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">
+                                  OR
+                                </span>
+                                <div className="h-px bg-gray-300 flex-1"></div>
+                              </div>
+
+                              {/* Outgoing Calls Form */}
+                              <div className="flex items-center gap-1 p-1.5 bg-white/60 border border-white/50 backdrop-blur-md rounded-full shadow-sm">
+                                <CountryCodeSelect
+                                  value={selectedCountry}
+                                  onChange={setSelectedCountry}
+                                  disabled={
+                                    isCallLoading ||
+                                    callState === "connecting" ||
+                                    callState === "connected"
+                                  }
+                                />
+                                <div className="w-px h-6 bg-gray-300/50"></div>
+                                <input
+                                  type="tel"
+                                  placeholder="Your Number"
+                                  value={phoneNumber}
+                                  onChange={(e) => {
+                                    const value = e.target.value.replace(
+                                      /\D/g,
+                                      "",
+                                    ); // Only digits
+                                    if (
+                                      value.length <= selectedCountry.maxLength
+                                    ) {
+                                      setPhoneNumber(value);
+                                    }
+                                  }}
+                                  maxLength={selectedCountry.maxLength}
+                                  onKeyDown={(e) => {
+                                    if (e.key === "Enter" && !isCallLoading) {
+                                      handleMakeCall();
+                                    }
+                                  }}
+                                  disabled={
+                                    isCallLoading ||
+                                    callState === "connecting" ||
+                                    callState === "connected"
+                                  }
+                                  className="bg-transparent border-none outline-none text-gray-900 px-3 py-2 flex-1 text-sm font-medium w-0 min-w-0 disabled:opacity-50"
+                                />
+                                <button
+                                  onClick={() => handleTryAgent("voice")}
+                                  disabled={
+                                    isCallLoading ||
+                                    callState === "connecting" ||
+                                    callState === "connected"
+                                  }
+                                  className="flex items-center gap-2 px-6 py-2 bg-gradient-to-r from-purple-500 to-pink-600 text-white rounded-full font-bold hover:from-purple-600 hover:to-pink-700 transition-all disabled:opacity-50 whitespace-nowrap shrink-0"
+                                >
+                                  {callState === "connecting" ? (
+                                    <>
+                                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white" />
+                                      Connecting...
+                                    </>
+                                  ) : callState === "connected" ? (
+                                    <>
+                                      <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
+                                      Connected
+                                    </>
+                                  ) : callState === "disconnected" ? (
+                                    <>
+                                      Call Again <ArrowRight size={16} />
+                                    </>
+                                  ) : (
+                                    <>
+                                      Call Me <ArrowRight size={16} />
+                                    </>
+                                  )}
+                                </button>
+                              </div>
+
+                              {callStatus.type && (
+                                <div
+                                  className={`px-4 py-2.5 rounded-xl backdrop-blur-md border shadow-sm transition-all duration-300 animate-slide-up ${callStatus.type === "success"
+                                    ? "bg-white/40 border-white/50"
+                                    : "bg-white/40 border-white/50"
+                                    }`}
+                                >
+                                  <div className="flex items-center gap-2">
+                                    {callStatus.type === "success" ? (
+                                      <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse shrink-0" />
+                                    ) : (
+                                      <div className="w-2 h-2 bg-red-500 rounded-full shrink-0" />
+                                    )}
+                                    <span className="text-xs font-medium text-white">
+                                      {callStatus.message}
+                                    </span>
+                                  </div>
+                                </div>
+                              )}
+
+                              {callState === "disconnected" &&
+                                !callStatus.type && (
+                                  <div className="px-4 py-2.5 rounded-xl backdrop-blur-md border bg-white/40 border-white/50 shadow-sm">
+                                    <div className="flex items-center gap-2">
+                                      <div className="w-2 h-2 bg-orange-500 rounded-full shrink-0" />
+                                      <span className="text-xs font-medium text-white">
+                                        Call Disconnected - Ready for next call
+                                      </span>
+                                    </div>
+                                  </div>
+                                )}
+                            </div>
+                          )}
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            );
-          })}
+              );
+            })}
           </div>
         </main>
       </section>

@@ -695,10 +695,10 @@ export default function Home() {
                           <div className="bg-white/60 backdrop-blur-sm rounded-xl p-3 border border-white/50">
                             <div className="flex items-center justify-between">
                               <div className="flex flex-col flex-1 pointer-events-none">
-                                <span className="text-[10px] uppercase text-gray-500 font-bold tracking-wider">
+                                <span className="text-[10px] uppercase font-bold tracking-wider" style={{ color: user ? '#10b981' : '#22d3ee' }}>
                                   {user ? "Click button to message →" : "Login to Message"}
                                 </span>
-                                <span className="text-xs font-mono font-bold text-gray-800">
+                                <span className="text-xs font-mono font-bold" style={{ color: user ? '#ffffff' : '#cbd5e1' }}>
                                   {user ? "+971524934182" : "+971 *** *** ****"}
                                 </span>
                               </div>
@@ -784,10 +784,10 @@ export default function Home() {
                           <div className="bg-white/60 backdrop-blur-sm rounded-xl p-3 border border-white/50">
                             <div className="flex items-center justify-between">
                               <div className="flex flex-col flex-1 pointer-events-none">
-                                <span className="text-[10px] uppercase text-gray-500 font-bold tracking-wider">
+                                <span className="text-[10px] uppercase font-bold tracking-wider" style={{ color: user ? '#a855f7' : '#22d3ee' }}>
                                   {user ? "Click button to call →" : "Login to Call"}
                                 </span>
-                                <span className="text-xs font-mono font-bold text-gray-800">
+                                <span className="text-xs font-mono font-bold" style={{ color: user ? '#ffffff' : '#cbd5e1' }}>
                                   {user ? "+1 813 797 4755" : "+1 813 *** ****"}
                                 </span>
                               </div>
@@ -1272,10 +1272,10 @@ export default function Home() {
                             >
                               <div className="flex items-center justify-between bg-white/40 border border-white/50 backdrop-blur-md rounded-xl p-2 px-3 shadow-sm">
                                 <div className="flex flex-col pointer-events-none">
-                                  <span className="text-[10px] uppercase text-gray-500 font-bold tracking-wider">
+                                  <span className="text-[10px] uppercase font-bold tracking-wider" style={{ color: user ? '#10b981' : '#22d3ee' }}>
                                     {user ? "Click button to message →" : "Login to Message"}
                                   </span>
-                                  <span className="text-sm font-mono font-bold text-gray-800">
+                                  <span className="text-sm font-mono font-bold" style={{ color: user ? '#ffffff' : '#cbd5e1' }}>
                                     {user ? "+971524934182" : "+971 *** *** ****"}
                                   </span>
                                 </div>
@@ -1372,10 +1372,10 @@ export default function Home() {
                               {/* Incoming Calls Card */}
                               <div className="flex items-center justify-between bg-white/40 border border-white/50 backdrop-blur-md rounded-xl p-2 px-3 shadow-sm">
                                 <div className="flex flex-col pointer-events-none">
-                                  <span className="text-[10px] uppercase text-gray-500 font-bold tracking-wider">
+                                  <span className="text-[10px] uppercase font-bold tracking-wider" style={{ color: user ? '#a855f7' : '#22d3ee' }}>
                                     {user ? "Click button to call →" : "Login to Call"}
                                   </span>
-                                  <span className="text-sm font-mono font-bold text-gray-800">
+                                  <span className="text-sm font-mono font-bold" style={{ color: user ? '#ffffff' : '#cbd5e1' }}>
                                     {user ? "+1 813 797 4755" : "+1 813 *** ****"}
                                   </span>
                                 </div>

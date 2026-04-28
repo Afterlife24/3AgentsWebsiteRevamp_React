@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../contexts/AuthContext";
 import NavBar from "../../../components/NavBar";
 
 interface CompanyData {
@@ -12,11 +11,11 @@ interface CompanyData {
     phoneNumber: string;
     address: string;
     description: string;
+    email: string;
 }
 
 export default function CompanyDetails() {
     const navigate = useNavigate();
-    const { user } = useAuth();
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
     const [success, setSuccess] = useState("");
@@ -30,14 +29,12 @@ export default function CompanyDetails() {
         phoneNumber: "",
         address: "",
         description: "",
+        email: "",
     });
 
     useEffect(() => {
-        // Redirect if not logged in
-        if (!user) {
-            navigate("/login");
-        }
-    }, [user, navigate]);
+        // No authentication required - anyone can access this page
+    }, []);
 
     const handleChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -58,23 +55,14 @@ export default function CompanyDetails() {
             // Use VITE_AUTH_API and remove /auth suffix to get base API URL
             const AUTH_API = import.meta.env.VITE_AUTH_API || "http://localhost:5000/api/auth";
             const API_URL = AUTH_API.replace(/\/auth$/, "");
-            const token = localStorage.getItem("auth_token"); // Changed from "token" to "auth_token"
-
-            if (!token) {
-                setError("You must be logged in to submit company details");
-                setLoading(false);
-                return;
-            }
 
             console.log("Submitting to:", `${API_URL}/company-details`);
-            console.log("Token:", token ? "Present" : "Missing");
             console.log("Form data:", formData);
 
             const response = await fetch(`${API_URL}/company-details`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`,
                 },
                 body: JSON.stringify(formData),
             });
@@ -142,6 +130,22 @@ export default function CompanyDetails() {
                     {/* Form Card */}
                     <div className="bg-white/5 backdrop-blur-lg rounded-2xl p-8 border border-white/10 shadow-2xl">
                         <form onSubmit={handleSubmit} className="space-y-6">
+                            {/* Email */}
+                            <div>
+                                <label className="block text-sm font-medium mb-2">
+                                    Email <span className="text-red-400">*</span>
+                                </label>
+                                <input
+                                    type="email"
+                                    name="email"
+                                    value={formData.email}
+                                    onChange={handleChange}
+                                    required
+                                    className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white placeholder-gray-400"
+                                    placeholder="your@email.com"
+                                />
+                            </div>
+
                             {/* Company Name */}
                             <div>
                                 <label className="block text-sm font-medium mb-2">
